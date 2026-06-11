@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +8,6 @@
 <meta name="apple-mobile-web-app-title" content="Irianis"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="IMG_0581.png"/>
-
 <meta name="theme-color" content="#0A0A0A"/>
 <title>Irianis Marcano – Estilista & Nails</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -18,7 +16,6 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;background:var(--black);color:var(--text);font-family:'Inter',sans-serif;overflow:hidden;}
 
-/* SPLASH */
 #splash{position:fixed;inset:0;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:20px;transition:opacity 0.6s ease;}
 .logo-circle{width:120px;height:120px;border-radius:50%;background:var(--black);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(201,168,76,0.3);animation:pulse 2s ease-in-out infinite;}
 @keyframes pulse{0%,100%{box-shadow:0 0 30px rgba(201,168,76,0.2)}50%{box-shadow:0 0 60px rgba(201,168,76,0.5)}}
@@ -29,13 +26,11 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
 .loading-bar::after{content:'';position:absolute;left:-100%;top:0;height:100%;width:100%;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:load 1.5s ease forwards 0.3s;}
 @keyframes load{to{left:100%}}
 
-/* LAYOUT */
 #app{height:100vh;display:none;flex-direction:column;}
 .screen{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:calc(72px + var(--safe-bottom));display:none;}
 .screen.active{display:block;}
 .screen::-webkit-scrollbar{display:none;}
 
-/* TOPBAR */
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .topbar-brand{display:flex;align-items:center;gap:10px;}
 .topbar-logo{width:34px;height:34px;border-radius:50%;background:var(--black);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--gold);}
@@ -44,31 +39,35 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
 .topbar-date{font-size:11px;color:var(--text-muted);text-align:right;}
 .topbar-datenum{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);display:block;line-height:1;}
 
-/* BOTTOM NAV */
 .bottomnav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;padding-bottom:var(--safe-bottom);z-index:100;}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;cursor:pointer;color:var(--text-muted);font-size:10px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s;border:none;background:none;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;cursor:pointer;color:var(--text-muted);font-size:9px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s;border:none;background:none;}
 .nav-btn.active{color:var(--gold);}
 .nav-btn svg{width:22px;height:22px;}
 .nav-btn.active svg path,.nav-btn.active svg rect,.nav-btn.active svg circle{stroke:var(--gold);}
 
-/* HOME */
 .home-hero{padding:20px 18px 12px;}
 .greeting{font-size:13px;color:var(--text-muted);margin-bottom:2px;}
 .greeting strong{color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;display:block;line-height:1.1;}
 .stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 18px 16px;}
 .stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px;text-align:center;}
-.stat-num{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--gold);line-height:1;}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);line-height:1;}
 .stat-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+
+/* GANANCIAS */
+.earnings-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px 16px;}
+.earnings-card{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));border:1px solid rgba(201,168,76,0.3);border-radius:var(--radius);padding:14px 12px;text-align:center;}
+.earnings-num{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);line-height:1;}
+.earnings-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+.earnings-currency{font-size:12px;color:var(--gold-dim);margin-top:1px;}
+
 .section-title{padding:0 18px 10px;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold-dim);}
 
-/* NOTIF BANNER */
 .notif-banner{margin:0 18px 14px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;}
 .notif-banner svg{flex-shrink:0;}
 .notif-banner-text{font-size:12px;color:var(--text-muted);line-height:1.4;}
 .notif-banner-text b{color:var(--gold);display:block;font-size:13px;margin-bottom:2px;}
 .notif-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-left:auto;animation:pulse 1.5s infinite;}
 
-/* APPOINTMENT CARDS */
 .appt-list{padding:0 18px;display:flex;flex-direction:column;gap:10px;}
 .appt-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color 0.2s;}
 .appt-card:active{border-color:var(--gold);}
@@ -79,17 +78,16 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
 .appt-info{flex:1;}
 .appt-client{font-size:15px;font-weight:500;color:var(--text);}
 .appt-service{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.appt-price{font-size:12px;color:var(--gold);margin-top:2px;}
 .appt-badge{font-size:10px;padding:3px 8px;border-radius:20px;letter-spacing:0.5px;white-space:nowrap;}
 .badge-confirmed{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
 .badge-pending{background:rgba(255,180,0,0.1);color:#FFB400;border:1px solid rgba(255,180,0,0.2);}
 .badge-done{background:rgba(100,200,120,0.1);color:#64C878;border:1px solid rgba(100,200,120,0.2);}
 .appt-empty{text-align:center;padding:40px 18px;color:var(--text-muted);font-size:14px;}
 
-/* FAB */
 .fab{position:fixed;right:18px;bottom:calc(78px + var(--safe-bottom));width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(201,168,76,0.4);z-index:90;transition:transform 0.2s;}
 .fab:active{transform:scale(0.94);}
 
-/* CALENDAR */
 .cal-header{padding:16px 18px 0;}
 .cal-month{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--text);display:flex;align-items:center;justify-content:space-between;}
 .cal-nav{background:none;border:1px solid var(--border);color:var(--text-muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
@@ -114,10 +112,10 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
 .slot-appt{background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;}
 .slot-appt .client-name{font-size:14px;font-weight:500;}
 .slot-appt .service-tag{font-size:11px;color:var(--gold);margin-top:2px;}
+.slot-appt .price-tag{font-size:12px;color:#64C878;margin-top:2px;}
 .slot-empty{height:32px;}
 .slot-del{background:none;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;padding:4px;}
 
-/* CLIENTS */
 .search-bar{padding:14px 18px;position:sticky;top:0;background:var(--black);z-index:10;}
 .search-wrap{position:relative;}
 .search-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:11px 16px 11px 40px;color:var(--text);font-size:15px;font-family:'Inter',sans-serif;outline:none;}
@@ -133,7 +131,19 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
 .client-visits .num{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);line-height:1;}
 .client-visits .lbl{font-size:10px;color:var(--text-muted);}
 
-/* MODALS */
+/* PORTFOLIO */
+.portfolio-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px;}
+.portfolio-item{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;background:var(--surface2);border:1px solid var(--border);}
+.portfolio-item img{width:100%;height:100%;object-fit:cover;}
+.portfolio-item .p-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:8px;font-size:11px;color:var(--text);}
+.portfolio-item .p-del{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);border:none;color:white;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.portfolio-add{border:2px dashed var(--border);border-radius:12px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:8px;color:var(--text-muted);font-size:12px;background:none;}
+.portfolio-add:active{border-color:var(--gold);}
+.portfolio-filter{display:flex;gap:8px;padding:0 18px 14px;overflow-x:auto;}
+.portfolio-filter::-webkit-scrollbar{display:none;}
+.p-chip{padding:6px 14px;border-radius:20px;font-size:12px;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;white-space:nowrap;background:none;}
+.p-chip.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.1);}
+
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:flex;flex-direction:column;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s;}
 .modal-overlay.open{opacity:1;pointer-events:all;}
 .modal-sheet{background:var(--surface);border-top:1px solid var(--border);border-radius:20px 20px 0 0;padding:20px 20px calc(20px + var(--safe-bottom));transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);max-height:90vh;overflow-y:auto;}
@@ -144,6 +154,8 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
 .form-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--gold-dim);margin-bottom:6px;display:block;}
 .form-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:15px;font-family:'Inter',sans-serif;outline:none;color-scheme:dark;}
 .form-input:focus{border-color:var(--gold);}
+.phone-row{display:flex;gap:8px;align-items:center;}
+.phone-flag{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--text);white-space:nowrap;flex-shrink:0;}
 .service-chips{display:flex;flex-wrap:wrap;gap:8px;}
 .chip{padding:7px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;transition:all 0.2s;}
 .chip.selected{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.1);}
@@ -151,7 +163,6 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
 .btn-primary:active{opacity:0.85;}
 .btn-danger{width:100%;padding:13px;background:rgba(220,60,60,0.1);border:1px solid rgba(220,60,60,0.25);border-radius:12px;font-size:14px;color:#E05555;cursor:pointer;margin-top:8px;font-family:'Inter',sans-serif;}
 
-/* CLIENT DETAIL */
 .detail-header{background:linear-gradient(135deg,var(--surface2),var(--black));border-bottom:1px solid var(--border);padding:20px;text-align:center;}
 .detail-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--black);font-weight:600;margin:0 auto 12px;border:2px solid var(--gold);}
 .detail-name{font-family:'Cormorant Garamond',serif;font-size:24px;}
@@ -170,11 +181,9 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
 .modal-close{position:absolute;top:16px;right:16px;background:var(--surface3);border:none;color:var(--text-muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
 .whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.25);border-radius:12px;color:#25D366;font-size:14px;font-weight:500;cursor:pointer;margin:12px 0;}
 
-/* TOAST */
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--surface2);border:1px solid var(--gold);border-radius:12px;padding:12px 20px;font-size:14px;color:var(--text);z-index:999;transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);white-space:nowrap;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
-/* NOTIF PERMISSION SCREEN */
 .perm-card{margin:20px 18px;background:var(--surface2);border:1px solid rgba(201,168,76,0.3);border-radius:16px;padding:24px;text-align:center;}
 .perm-icon{font-size:40px;margin-bottom:12px;}
 .perm-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:8px;}
@@ -183,7 +192,6 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
 .perm-granted{background:rgba(100,200,120,0.1);color:#64C878;border:1px solid rgba(100,200,120,0.2);}
 .perm-denied{background:rgba(220,60,60,0.1);color:#E05555;border:1px solid rgba(220,60,60,0.2);}
 .perm-pending{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
-
 .upcoming-list{padding:0 18px;display:flex;flex-direction:column;gap:8px;margin-top:4px;}
 .upcoming-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;}
 .upcoming-time{font-size:11px;color:var(--text-muted);text-align:center;min-width:36px;}
@@ -227,6 +235,19 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
       <div class="stat-card"><div class="stat-num" id="statSemana">0</div><div class="stat-label">Semana</div></div>
       <div class="stat-card"><div class="stat-num" id="statClientas">0</div><div class="stat-label">Clientas</div></div>
     </div>
+    <div class="section-title">💰 Ganancias</div>
+    <div class="earnings-row">
+      <div class="earnings-card">
+        <div class="earnings-num" id="earnHoy">$0</div>
+        <div class="earnings-label">Hoy</div>
+        <div class="earnings-currency">CLP</div>
+      </div>
+      <div class="earnings-card">
+        <div class="earnings-num" id="earnSemana">$0</div>
+        <div class="earnings-label">Esta semana</div>
+        <div class="earnings-currency">CLP</div>
+      </div>
+    </div>
     <div id="notifBanner"></div>
     <div class="section-title" id="homeDayTitle">Citas de hoy</div>
     <div class="appt-list" id="homeApptList"></div>
@@ -265,12 +286,31 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
     <div style="height:20px;"></div>
   </div>
 
+  <!-- PORTFOLIO -->
+  <div class="screen" id="screen-portfolio">
+    <div style="padding:16px 18px 8px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--text);">Mis Trabajos 📸</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Galería de tus mejores creaciones</div>
+    </div>
+    <div class="portfolio-filter" id="portfolioFilter">
+      <span class="p-chip active" onclick="filterPortfolio('Todos',this)">Todos</span>
+      <span class="p-chip" onclick="filterPortfolio('Manicure',this)">Manicure</span>
+      <span class="p-chip" onclick="filterPortfolio('Pedicure',this)">Pedicure</span>
+      <span class="p-chip" onclick="filterPortfolio('Gel',this)">Gel</span>
+      <span class="p-chip" onclick="filterPortfolio('Extensiones',this)">Extensiones</span>
+      <span class="p-chip" onclick="filterPortfolio('Cabello',this)">Cabello</span>
+      <span class="p-chip" onclick="filterPortfolio('Maquillaje',this)">Maquillaje</span>
+    </div>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+    <div style="height:20px;"></div>
+  </div>
+
   <!-- NOTIFICACIONES -->
   <div class="screen" id="screen-notif">
     <div class="perm-card">
       <div class="perm-icon">🔔</div>
       <div class="perm-title">Avisos 2 horas antes</div>
-      <div class="perm-desc">La app te avisa automáticamente 2 horas antes de cada cita con el nombre de la clienta y el servicio. Funciona aunque tengas el iPhone bloqueado.</div>
+      <div class="perm-desc">La app te avisa automáticamente 2 horas antes de cada cita con el nombre de la clienta y el servicio.</div>
       <button class="btn-primary" id="permBtn" onclick="requestNotifPermission()">Activar notificaciones</button>
       <div id="permStatus"></div>
     </div>
@@ -291,6 +331,10 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
     <button class="nav-btn" id="nav-clients" onclick="goTo('clients')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       Clientas
+    </button>
+    <button class="nav-btn" id="nav-portfolio" onclick="goTo('portfolio')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Portfolio
     </button>
     <button class="nav-btn" id="nav-notif" onclick="goTo('notif')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
@@ -314,7 +358,10 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
     </div>
     <div class="form-group">
       <label class="form-label">Teléfono (opcional)</label>
-      <input class="form-input" id="bPhone" type="tel" placeholder="+1 555 0000"/>
+      <div class="phone-row">
+        <div class="phone-flag">🇨🇱 +56</div>
+        <input class="form-input" id="bPhone" type="tel" placeholder="9 1234 5678" style="flex:1;"/>
+      </div>
     </div>
     <div class="form-group">
       <label class="form-label">Fecha y hora</label>
@@ -334,6 +381,10 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
         <span class="chip" onclick="toggleChip(this)">Maquillaje</span>
         <span class="chip" onclick="toggleChip(this)">Cejas</span>
       </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">💰 Precio (CLP)</label>
+      <input class="form-input" id="bPrice" type="number" placeholder="Ej: 15000"/>
     </div>
     <div class="form-group">
       <label class="form-label">Notas</label>
@@ -371,397 +422,351 @@ html,body{height:100%;background:var(--black);color:var(--text);font-family:'Int
   </div>
 </div>
 
+<!-- PORTFOLIO ADD MODAL -->
+<div class="modal-overlay" id="portfolioModal" onclick="closeOnOverlay(event,'portfolioModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Agregar Trabajo</div>
+    <div class="form-group">
+      <label class="form-label">Foto</label>
+      <input type="file" accept="image/*" id="pPhoto" style="display:none" onchange="previewPhoto(this)"/>
+      <div onclick="document.getElementById('pPhoto').click()" style="border:2px dashed var(--border);border-radius:12px;height:160px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;" id="photoPreview">
+        <span style="color:var(--text-muted);font-size:13px;">📷 Toca para elegir foto</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Categoría</label>
+      <div class="service-chips" id="pCategory">
+        <span class="chip" onclick="toggleChip(this)">Manicure</span>
+        <span class="chip" onclick="toggleChip(this)">Pedicure</span>
+        <span class="chip" onclick="toggleChip(this)">Gel</span>
+        <span class="chip" onclick="toggleChip(this)">Extensiones</span>
+        <span class="chip" onclick="toggleChip(this)">Cabello</span>
+        <span class="chip" onclick="toggleChip(this)">Maquillaje</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descripción (opcional)</label>
+      <input class="form-input" id="pDesc" type="text" placeholder="Ej: Gel con nail art floral"/>
+    </div>
+    <button class="btn-primary" onclick="savePhoto()">Guardar foto ✓</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════
 // STORAGE
-// ═══════════════════════════════════════
-function loadBookings() {
-  try { return JSON.parse(localStorage.getItem('im_bookings') || '[]'); } catch { return []; }
-}
-function saveBookings(b) { localStorage.setItem('im_bookings', JSON.stringify(b)); }
-function loadClients() {
-  try { return JSON.parse(localStorage.getItem('im_clients') || '[]'); } catch { return []; }
-}
-function saveClients(c) { localStorage.setItem('im_clients', JSON.stringify(c)); }
+function loadBookings(){try{return JSON.parse(localStorage.getItem('im_bookings')||'[]')}catch{return[]}}
+function saveBookings(b){localStorage.setItem('im_bookings',JSON.stringify(b))}
+function loadClients(){try{return JSON.parse(localStorage.getItem('im_clients')||'[]')}catch{return[]}}
+function saveClients(c){localStorage.setItem('im_clients',JSON.stringify(c))}
+function loadPortfolio(){try{return JSON.parse(localStorage.getItem('im_portfolio')||'[]')}catch{return[]}}
+function savePortfolio(p){localStorage.setItem('im_portfolio',JSON.stringify(p))}
 
-// ═══════════════════════════════════════
-// NOTIFICATIONS — 2 HORAS ANTES
-// ═══════════════════════════════════════
-let notifTimers = [];
-
-function clearNotifTimers() {
-  notifTimers.forEach(t => clearTimeout(t));
-  notifTimers = [];
-}
-
-function scheduleNotifications() {
+// NOTIFICATIONS
+let notifTimers=[];
+function clearNotifTimers(){notifTimers.forEach(t=>clearTimeout(t));notifTimers=[];}
+function scheduleNotifications(){
   clearNotifTimers();
-  if (Notification.permission !== 'granted') return;
-  const bookings = loadBookings();
-  const now = Date.now();
-  bookings.forEach(b => {
-    const apptTime = new Date(b.datetime).getTime();
-    const alertTime = apptTime - 2 * 60 * 60 * 1000; // 2 horas antes
-    const delay = alertTime - now;
-    if (delay > 0 && delay < 7 * 24 * 60 * 60 * 1000) { // dentro de los próximos 7 días
-      const t = setTimeout(() => {
-        const h = new Date(b.datetime).toLocaleTimeString('es', {hour:'2-digit',minute:'2-digit'});
-        new Notification('💅 Irianis — Cita en 2 horas', {
-          body: `${b.client} · ${b.service} a las ${h}`,
-          icon: 'icons/icon-192.png',
-          badge: 'icons/icon-192.png',
-          tag: 'cita-' + b.id,
-        });
-      }, delay);
+  if(Notification.permission!=='granted')return;
+  const bookings=loadBookings();
+  const now=Date.now();
+  bookings.forEach(b=>{
+    const apptTime=new Date(b.datetime).getTime();
+    const alertTime=apptTime-2*60*60*1000;
+    const delay=alertTime-now;
+    if(delay>0&&delay<7*24*60*60*1000){
+      const t=setTimeout(()=>{
+        const h=new Date(b.datetime).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
+        new Notification('💅 Irianis — Cita en 2 horas',{body:`${b.client} · ${b.service} a las ${h}`,icon:'IMG_0581.png',tag:'cita-'+b.id});
+      },delay);
       notifTimers.push(t);
     }
   });
 }
-
-async function requestNotifPermission() {
-  if (!('Notification' in window)) {
-    showToast('⚠️ Este navegador no soporta notificaciones');
-    return;
-  }
-  const result = await Notification.requestPermission();
+async function requestNotifPermission(){
+  if(!('Notification' in window)){showToast('⚠️ Este navegador no soporta notificaciones');return;}
+  const result=await Notification.requestPermission();
   updatePermUI();
-  if (result === 'granted') {
-    scheduleNotifications();
-    showToast('🔔 Notificaciones activadas');
-  } else {
-    showToast('⚠️ Permiso denegado. Actívalo en Ajustes del iPhone');
-  }
+  if(result==='granted'){scheduleNotifications();showToast('🔔 Notificaciones activadas');}
+  else{showToast('⚠️ Permiso denegado. Actívalo en Ajustes del iPhone');}
 }
-
-function updatePermUI() {
-  const perm = ('Notification' in window) ? Notification.permission : 'unsupported';
-  const btn = document.getElementById('permBtn');
-  const status = document.getElementById('permStatus');
-  const banner = document.getElementById('notifBanner');
-
-  if (perm === 'granted') {
-    btn.textContent = '✓ Notificaciones activas';
-    btn.style.opacity = '0.6';
-    btn.onclick = null;
-    status.innerHTML = '<span class="perm-status perm-granted">✓ Activadas — recibirás aviso 2 horas antes de cada cita</span>';
-    if (banner) banner.innerHTML = '';
-  } else if (perm === 'denied') {
-    btn.textContent = 'Permiso bloqueado';
-    btn.style.opacity = '0.5';
-    status.innerHTML = '<span class="perm-status perm-denied">Bloqueado. Ve a Ajustes del iPhone → Safari → Notificaciones</span>';
-  } else {
-    status.innerHTML = '<span class="perm-status perm-pending">Pendiente de activar</span>';
-    if (banner) banner.innerHTML = `
-      <div class="notif-banner" onclick="goTo('notif')">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-        <div class="notif-banner-text"><b>Activa los avisos</b>Recibe una notificación 2 horas antes de cada cita</div>
-        <div class="notif-dot"></div>
-      </div>`;
+function updatePermUI(){
+  const perm=('Notification' in window)?Notification.permission:'unsupported';
+  const btn=document.getElementById('permBtn');
+  const status=document.getElementById('permStatus');
+  const banner=document.getElementById('notifBanner');
+  if(perm==='granted'){
+    btn.textContent='✓ Notificaciones activas';btn.style.opacity='0.6';btn.onclick=null;
+    status.innerHTML='<span class="perm-status perm-granted">✓ Activadas — recibirás aviso 2 horas antes</span>';
+    if(banner)banner.innerHTML='';
+  }else if(perm==='denied'){
+    btn.textContent='Permiso bloqueado';btn.style.opacity='0.5';
+    status.innerHTML='<span class="perm-status perm-denied">Bloqueado. Ve a Ajustes → Safari → Notificaciones</span>';
+  }else{
+    status.innerHTML='<span class="perm-status perm-pending">Pendiente de activar</span>';
+    if(banner)banner.innerHTML=`<div class="notif-banner" onclick="goTo('notif')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><div class="notif-banner-text"><b>Activa los avisos</b>Recibe una notificación 2 horas antes de cada cita</div><div class="notif-dot"></div></div>`;
   }
   renderUpcoming();
 }
-
-function renderUpcoming() {
-  const bookings = loadBookings().sort((a,b) => new Date(a.datetime)-new Date(b.datetime));
-  const now = Date.now();
-  const future = bookings.filter(b => new Date(b.datetime).getTime() > now).slice(0, 8);
-  const el = document.getElementById('upcomingList');
-  if (!el) return;
-  if (!future.length) { el.innerHTML = '<p style="padding:20px 18px;color:var(--text-muted);font-size:14px;">No hay citas próximas agendadas</p>'; return; }
-  el.innerHTML = future.map(b => {
-    const d = new Date(b.datetime);
-    const alertMs = d.getTime() - 2*60*60*1000 - now;
-    const bell = Notification.permission === 'granted' && alertMs > 0 ? '🔔' : '○';
-    return `<div class="upcoming-item">
-      <div class="upcoming-time"><b>${d.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'})}</b>${d.toLocaleDateString('es',{day:'numeric',month:'short'})}</div>
-      <div class="upcoming-info"><div class="upcoming-client">${b.client}</div><div class="upcoming-service">${b.service}</div></div>
-      <div class="upcoming-bell">${bell}</div>
-    </div>`;
+function renderUpcoming(){
+  const bookings=loadBookings().sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
+  const now=Date.now();
+  const future=bookings.filter(b=>new Date(b.datetime).getTime()>now).slice(0,8);
+  const el=document.getElementById('upcomingList');
+  if(!el)return;
+  if(!future.length){el.innerHTML='<p style="padding:20px 18px;color:var(--text-muted);font-size:14px;">No hay citas próximas agendadas</p>';return;}
+  el.innerHTML=future.map(b=>{
+    const d=new Date(b.datetime);
+    const alertMs=d.getTime()-2*60*60*1000-now;
+    const bell=Notification.permission==='granted'&&alertMs>0?'🔔':'○';
+    return `<div class="upcoming-item"><div class="upcoming-time"><b>${d.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'})}</b>${d.toLocaleDateString('es',{day:'numeric',month:'short'})}</div><div class="upcoming-info"><div class="upcoming-client">${b.client}</div><div class="upcoming-service">${b.service}</div></div><div class="upcoming-bell">${bell}</div></div>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════
 // BOOKING
-// ═══════════════════════════════════════
-function openBookingModal() {
-  // Default datetime = next hour
-  const d = new Date(); d.setHours(d.getHours()+1, 0, 0, 0);
-  document.getElementById('bDatetime').value = d.toISOString().slice(0,16);
-  document.getElementById('bName').value = '';
-  document.getElementById('bPhone').value = '';
-  document.getElementById('bNotes').value = '';
-  document.querySelectorAll('#serviceChips .chip').forEach(c => c.classList.remove('selected'));
+function openBookingModal(){
+  const d=new Date();d.setHours(d.getHours()+1,0,0,0);
+  document.getElementById('bDatetime').value=d.toISOString().slice(0,16);
+  document.getElementById('bName').value='';
+  document.getElementById('bPhone').value='';
+  document.getElementById('bNotes').value='';
+  document.getElementById('bPrice').value='';
+  document.querySelectorAll('#serviceChips .chip').forEach(c=>c.classList.remove('selected'));
   document.getElementById('bookingModal').classList.add('open');
 }
-
-function saveBooking() {
-  const name = document.getElementById('bName').value.trim();
-  const phone = document.getElementById('bPhone').value.trim();
-  const dt = document.getElementById('bDatetime').value;
-  const notes = document.getElementById('bNotes').value.trim();
-  const services = [...document.querySelectorAll('#serviceChips .chip.selected')].map(c=>c.textContent).join(', ');
-  if (!name) { showToast('⚠️ Escribe el nombre de la clienta'); return; }
-  if (!dt) { showToast('⚠️ Selecciona fecha y hora'); return; }
-
-  const bookings = loadBookings();
-  const booking = { id: Date.now(), client: name, phone, datetime: dt, service: services || 'Servicio general', notes };
+function saveBooking(){
+  const name=document.getElementById('bName').value.trim();
+  const phone=document.getElementById('bPhone').value.trim();
+  const dt=document.getElementById('bDatetime').value;
+  const notes=document.getElementById('bNotes').value.trim();
+  const price=document.getElementById('bPrice').value.trim();
+  const services=[...document.querySelectorAll('#serviceChips .chip.selected')].map(c=>c.textContent).join(', ');
+  if(!name){showToast('⚠️ Escribe el nombre de la clienta');return;}
+  if(!dt){showToast('⚠️ Selecciona fecha y hora');return;}
+  const bookings=loadBookings();
+  const fullPhone=phone?'+56'+phone.replace(/\D/g,''):'';
+  const booking={id:Date.now(),client:name,phone:fullPhone,datetime:dt,service:services||'Servicio general',notes,price:price?parseInt(price):0};
   bookings.push(booking);
   saveBookings(bookings);
-
-  // Update clients
-  const clients = loadClients();
-  let ci = clients.find(c => c.name.toLowerCase() === name.toLowerCase());
-  if (!ci) {
-    ci = { name, phone, visits: 0, since: new Date().getFullYear().toString(), history: [] };
-    clients.push(ci);
-  }
-  ci.visits++;
-  ci.phone = phone || ci.phone;
-  const dateStr = new Date(dt).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'});
-  ci.history.unshift({ service: services || 'Servicio general', date: dateStr, price: '' });
+  const clients=loadClients();
+  let ci=clients.find(c=>c.name.toLowerCase()===name.toLowerCase());
+  if(!ci){ci={name,phone:fullPhone,visits:0,since:new Date().getFullYear().toString(),history:[]};clients.push(ci);}
+  ci.visits++;ci.phone=fullPhone||ci.phone;
+  const dateStr=new Date(dt).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'});
+  ci.history.unshift({service:services||'Servicio general',date:dateStr,price:price?'$'+parseInt(price).toLocaleString('es-CL'):''});
   saveClients(clients);
-
-  closeModal('bookingModal');
-  scheduleNotifications();
-  refreshAll();
-  showToast('🗓 Reserva guardada con éxito');
+  closeModal('bookingModal');scheduleNotifications();refreshAll();showToast('🗓 Reserva guardada con éxito');
+}
+function deleteBooking(id){
+  if(!confirm('¿Eliminar esta reserva?'))return;
+  const bookings=loadBookings().filter(b=>b.id!==id);
+  saveBookings(bookings);scheduleNotifications();refreshAll();showToast('🗑 Reserva eliminada');
 }
 
-function deleteBooking(id) {
-  if (!confirm('¿Eliminar esta reserva?')) return;
-  const bookings = loadBookings().filter(b => b.id !== id);
-  saveBookings(bookings);
-  scheduleNotifications();
-  refreshAll();
-  showToast('🗑 Reserva eliminada');
+// GANANCIAS
+function calcEarnings(){
+  const now=new Date();
+  const todayStr=now.toDateString();
+  const startOfWeek=new Date(now);startOfWeek.setDate(now.getDate()-now.getDay());startOfWeek.setHours(0,0,0,0);
+  const endOfWeek=new Date(startOfWeek);endOfWeek.setDate(startOfWeek.getDate()+7);
+  const bookings=loadBookings();
+  const earnHoy=bookings.filter(b=>new Date(b.datetime).toDateString()===todayStr).reduce((s,b)=>s+(b.price||0),0);
+  const earnSemana=bookings.filter(b=>{const d=new Date(b.datetime);return d>=startOfWeek&&d<endOfWeek;}).reduce((s,b)=>s+(b.price||0),0);
+  const fmt=n=>n>=1000?'$'+Math.round(n/1000)+'k':'$'+n;
+  document.getElementById('earnHoy').textContent=fmt(earnHoy);
+  document.getElementById('earnSemana').textContent=fmt(earnSemana);
 }
 
-// ═══════════════════════════════════════
 // HOME
-// ═══════════════════════════════════════
-const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-
-function refreshHome() {
-  const now = new Date();
-  const todayStr = now.toDateString();
-  const bookings = loadBookings();
-  const todayAppts = bookings.filter(b => new Date(b.datetime).toDateString() === todayStr)
-    .sort((a,b) => new Date(a.datetime)-new Date(b.datetime));
-
-  // Week count
-  const startOfWeek = new Date(now); startOfWeek.setDate(now.getDate() - now.getDay()); startOfWeek.setHours(0,0,0,0);
-  const endOfWeek = new Date(startOfWeek); endOfWeek.setDate(startOfWeek.getDate()+7);
-  const weekCount = bookings.filter(b => { const d=new Date(b.datetime); return d>=startOfWeek && d<endOfWeek; }).length;
-
-  document.getElementById('statHoy').textContent = todayAppts.length;
-  document.getElementById('statSemana').textContent = weekCount;
-  document.getElementById('statClientas').textContent = loadClients().length;
-
-  const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-  document.getElementById('homeDayTitle').textContent = `${days[now.getDay()]} ${now.getDate()} — Citas de hoy`;
-
-  const list = document.getElementById('homeApptList');
-  if (!todayAppts.length) {
-    list.innerHTML = '<div class="appt-empty">Sin citas agendadas para hoy 🌸</div>';
-    return;
-  }
-  list.innerHTML = todayAppts.map(b => {
-    const d = new Date(b.datetime);
-    const h = d.getHours(), m = d.getMinutes();
-    const hStr = (h>12?h-12:h||12)+'';
-    const mStr = m.toString().padStart(2,'0');
-    const ampm = h>=12?'PM':'AM';
-    const nowMs = Date.now(), apptMs = d.getTime();
-    const badge = apptMs < nowMs ? 'badge-done">Lista' : 'badge-confirmed">Confirmada';
-    return `<div class="appt-card">
-      <div class="appt-time"><div class="appt-hour">${hStr}:${mStr}</div><div class="appt-ampm">${ampm}</div></div>
-      <div class="appt-divider"></div>
-      <div class="appt-info"><div class="appt-client">${b.client}</div><div class="appt-service">${b.service}</div></div>
-      <span class="appt-badge ${badge}</span>
-    </div>`;
+const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+function refreshHome(){
+  const now=new Date();
+  const todayStr=now.toDateString();
+  const bookings=loadBookings();
+  const todayAppts=bookings.filter(b=>new Date(b.datetime).toDateString()===todayStr).sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
+  const startOfWeek=new Date(now);startOfWeek.setDate(now.getDate()-now.getDay());startOfWeek.setHours(0,0,0,0);
+  const endOfWeek=new Date(startOfWeek);endOfWeek.setDate(startOfWeek.getDate()+7);
+  const weekCount=bookings.filter(b=>{const d=new Date(b.datetime);return d>=startOfWeek&&d<endOfWeek;}).length;
+  document.getElementById('statHoy').textContent=todayAppts.length;
+  document.getElementById('statSemana').textContent=weekCount;
+  document.getElementById('statClientas').textContent=loadClients().length;
+  calcEarnings();
+  const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  document.getElementById('homeDayTitle').textContent=`${days[now.getDay()]} ${now.getDate()} — Citas de hoy`;
+  const list=document.getElementById('homeApptList');
+  if(!todayAppts.length){list.innerHTML='<div class="appt-empty">Sin citas agendadas para hoy 🌸</div>';return;}
+  list.innerHTML=todayAppts.map(b=>{
+    const d=new Date(b.datetime);
+    const h=d.getHours(),m=d.getMinutes();
+    const hStr=(h>12?h-12:h||12)+'';
+    const mStr=m.toString().padStart(2,'0');
+    const ampm=h>=12?'PM':'AM';
+    const nowMs=Date.now(),apptMs=d.getTime();
+    const badge=apptMs<nowMs?'badge-done">Lista':'badge-confirmed">Confirmada';
+    return `<div class="appt-card"><div class="appt-time"><div class="appt-hour">${hStr}:${mStr}</div><div class="appt-ampm">${ampm}</div></div><div class="appt-divider"></div><div class="appt-info"><div class="appt-client">${b.client}</div><div class="appt-service">${b.service}</div>${b.price?`<div class="appt-price">$${b.price.toLocaleString('es-CL')}</div>`:''}</div><span class="appt-badge ${badge}</span></div>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════
 // CALENDAR
-// ═══════════════════════════════════════
-let calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
-let selectedDay = new Date().getDate();
-
-function renderCalendar() {
-  document.getElementById('calMonthLabel').textContent = `${MONTHS[calMonth]} ${calYear}`;
-  const first = new Date(calYear, calMonth, 1).getDay();
-  const days = new Date(calYear, calMonth+1, 0).getDate();
-  const prevDays = new Date(calYear, calMonth, 0).getDate();
-  const bookings = loadBookings();
-  const today = new Date();
-
-  // Build day→clients map
-  const dayMap = {};
-  bookings.forEach(b => {
-    const d = new Date(b.datetime);
-    if (d.getFullYear()===calYear && d.getMonth()===calMonth) {
-      const day = d.getDate();
-      if (!dayMap[day]) dayMap[day] = [];
+let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),selectedDay=new Date().getDate();
+function renderCalendar(){
+  document.getElementById('calMonthLabel').textContent=`${MONTHS[calMonth]} ${calYear}`;
+  const first=new Date(calYear,calMonth,1).getDay();
+  const days=new Date(calYear,calMonth+1,0).getDate();
+  const prevDays=new Date(calYear,calMonth,0).getDate();
+  const bookings=loadBookings();
+  const today=new Date();
+  const dayMap={};
+  bookings.forEach(b=>{
+    const d=new Date(b.datetime);
+    if(d.getFullYear()===calYear&&d.getMonth()===calMonth){
+      const day=d.getDate();
+      if(!dayMap[day])dayMap[day]=[];
       dayMap[day].push(b.client.split(' ')[0]);
     }
   });
-
-  let html = '';
-  for(let i=0;i<first;i++) html += `<div class="cal-day other-month"><span class="day-num">${prevDays-first+1+i}</span></div>`;
+  let html='';
+  for(let i=0;i<first;i++)html+=`<div class="cal-day other-month"><span class="day-num">${prevDays-first+1+i}</span></div>`;
   for(let d=1;d<=days;d++){
-    const isToday = calYear===today.getFullYear() && calMonth===today.getMonth() && d===today.getDate();
-    const isSel = d===selectedDay;
-    const names = dayMap[d] || [];
-    const shown = names.slice(0,2);
-    const extra = names.length>2 ? names.length-2 : 0;
-    html += `<div class="cal-day${isToday?' today':''}${isSel?' selected':''}${names.length?' has-appt':''}" onclick="selectDay(this,${d})">
-      <span class="day-num">${d}</span>
-      ${shown.map(n=>`<div class="cal-name">${n}</div>`).join('')}
-      ${extra?`<div class="cal-more">+${extra}</div>`:''}
-    </div>`;
+    const isToday=calYear===today.getFullYear()&&calMonth===today.getMonth()&&d===today.getDate();
+    const isSel=d===selectedDay;
+    const names=dayMap[d]||[];
+    const shown=names.slice(0,2);
+    const extra=names.length>2?names.length-2:0;
+    html+=`<div class="cal-day${isToday?' today':''}${isSel?' selected':''}${names.length?' has-appt':''}" onclick="selectDay(this,${d})"><span class="day-num">${d}</span>${shown.map(n=>`<div class="cal-name">${n}</div>`).join('')}${extra?`<div class="cal-more">+${extra}</div>`:''}</div>`;
   }
-  document.getElementById('calDays').innerHTML = html;
+  document.getElementById('calDays').innerHTML=html;
   renderDaySchedule(selectedDay);
 }
-
-function renderDaySchedule(d) {
-  const bookings = loadBookings().filter(b => {
-    const bd = new Date(b.datetime);
-    return bd.getFullYear()===calYear && bd.getMonth()===calMonth && bd.getDate()===d;
-  }).sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
-
-  document.getElementById('selectedDayTitle').textContent = `${d} de ${MONTHS[calMonth]} — ${bookings.length} cita${bookings.length!==1?'s':''}`;
-
-  if (!bookings.length) {
-    document.getElementById('daySchedule').innerHTML = '<div class="appt-empty">Sin citas este día</div>';
-    return;
-  }
-  document.getElementById('daySchedule').innerHTML = bookings.map(b => {
-    const dt = new Date(b.datetime);
-    const timeStr = dt.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
-    return `<div class="time-slot">
-      <div class="time-label">${timeStr}</div>
-      <div class="slot-line">
-        <div class="slot-appt">
-          <div><div class="client-name">${b.client}</div><div class="service-tag">${b.service}</div>${b.notes?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">📝 ${b.notes}</div>`:''}</div>
-          <button class="slot-del" onclick="deleteBooking(${b.id})" title="Eliminar">✕</button>
-        </div>
-      </div>
-    </div>`;
+function renderDaySchedule(d){
+  const bookings=loadBookings().filter(b=>{const bd=new Date(b.datetime);return bd.getFullYear()===calYear&&bd.getMonth()===calMonth&&bd.getDate()===d;}).sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
+  document.getElementById('selectedDayTitle').textContent=`${d} de ${MONTHS[calMonth]} — ${bookings.length} cita${bookings.length!==1?'s':''}`;
+  if(!bookings.length){document.getElementById('daySchedule').innerHTML='<div class="appt-empty">Sin citas este día</div>';return;}
+  document.getElementById('daySchedule').innerHTML=bookings.map(b=>{
+    const dt=new Date(b.datetime);
+    const timeStr=dt.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="time-slot"><div class="time-label">${timeStr}</div><div class="slot-line"><div class="slot-appt"><div><div class="client-name">${b.client}</div><div class="service-tag">${b.service}</div>${b.price?`<div class="price-tag">$${b.price.toLocaleString('es-CL')}</div>`:''} ${b.notes?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">📝 ${b.notes}</div>`:''}</div><button class="slot-del" onclick="deleteBooking(${b.id})">✕</button></div></div></div>`;
   }).join('');
 }
+function selectDay(el,d){selectedDay=d;renderCalendar();}
+function changeMonth(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}selectedDay=1;renderCalendar();}
 
-function selectDay(el, d) {
-  selectedDay = d;
-  renderCalendar();
-}
-function changeMonth(dir) {
-  calMonth+=dir;
-  if(calMonth>11){calMonth=0;calYear++;}
-  if(calMonth<0){calMonth=11;calYear--;}
-  selectedDay = 1;
-  renderCalendar();
-}
-
-// ═══════════════════════════════════════
 // CLIENTS
-// ═══════════════════════════════════════
-function renderClients(list) {
-  const el = document.getElementById('clientList');
-  if (!list.length) { el.innerHTML = '<p style="padding:20px 0;color:var(--text-muted);text-align:center;font-size:14px;">Sin clientas registradas aún</p>'; return; }
-  el.innerHTML = list.map((c,i) => `
-    <div class="client-card" onclick="openClient(${i})">
-      <div class="client-avatar">${c.name[0].toUpperCase()}</div>
-      <div style="flex:1;overflow:hidden;">
-        <div class="client-name-text">${c.name}</div>
-        <div class="client-last">${c.history[0]?.date||'—'} · ${c.history[0]?.service||''}</div>
-      </div>
-      <div class="client-visits"><div class="num">${c.visits}</div><div class="lbl">visitas</div></div>
-    </div>`).join('');
+function renderClients(list){
+  const el=document.getElementById('clientList');
+  if(!list.length){el.innerHTML='<p style="padding:20px 0;color:var(--text-muted);text-align:center;font-size:14px;">Sin clientas registradas aún</p>';return;}
+  el.innerHTML=list.map((c,i)=>`<div class="client-card" onclick="openClient(${i})"><div class="client-avatar">${c.name[0].toUpperCase()}</div><div style="flex:1;overflow:hidden;"><div class="client-name-text">${c.name}</div><div class="client-last">${c.history[0]?.date||'—'} · ${c.history[0]?.service||''}</div></div><div class="client-visits"><div class="num">${c.visits}</div><div class="lbl">visitas</div></div></div>`).join('');
 }
+function filterClients(q){const clients=loadClients();renderClients(clients.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())));}
 
-function filterClients(q) {
-  const clients = loadClients();
-  renderClients(clients.filter(c => c.name.toLowerCase().includes(q.toLowerCase())));
-}
-
-let currentClientIdx = -1;
-function openClient(i) {
-  const clients = loadClients();
-  const c = clients[i]; currentClientIdx = i;
-  document.getElementById('detailAvatar').textContent = c.name[0].toUpperCase();
-  document.getElementById('detailName').textContent = c.name;
-  document.getElementById('detailPhone').textContent = c.phone || 'Sin teléfono';
-  document.getElementById('detailVisits').textContent = c.visits;
-  document.getElementById('detailSince').textContent = c.since;
-  // next appointment
-  const future = loadBookings().filter(b => b.client.toLowerCase()===c.name.toLowerCase() && new Date(b.datetime)>new Date())
-    .sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
-  const nextAppt = future[0] ? new Date(future[0].datetime).toLocaleDateString('es',{day:'numeric',month:'short'}) : '—';
-  document.getElementById('detailNext').textContent = nextAppt;
-  document.getElementById('detailHistory').innerHTML = c.history.length
-    ? c.history.map(h=>`<div class="history-item"><div class="history-dot"></div><div class="history-text"><div class="history-service">${h.service}</div><div class="history-date">${h.date}</div>${h.price?`<div class="history-price">${h.price}</div>`:''}</div></div>`).join('')
-    : '<p style="color:var(--text-muted);font-size:13px;">Sin historial aún</p>';
-
-  const waBtn = document.getElementById('waBtn');
-  if (c.phone) {
-    const msg = encodeURIComponent(`Hola ${c.name.split(' ')[0]}! 💅 Te recuerdo tu cita con Irianis Marcano ${nextAppt !== '—' ? 'el ' + nextAppt : 'próximamente'}. ¡Te esperamos!`);
-    waBtn.onclick = () => window.open(`https://wa.me/${c.phone.replace(/\D/g,'')}?text=${msg}`);
-    waBtn.style.opacity = '1';
-  } else {
-    waBtn.onclick = () => showToast('⚠️ Agrega el teléfono de la clienta');
-    waBtn.style.opacity = '0.5';
+let currentClientIdx=-1;
+function openClient(i){
+  const clients=loadClients();
+  const c=clients[i];currentClientIdx=i;
+  document.getElementById('detailAvatar').textContent=c.name[0].toUpperCase();
+  document.getElementById('detailName').textContent=c.name;
+  document.getElementById('detailPhone').textContent=c.phone||'Sin teléfono';
+  document.getElementById('detailVisits').textContent=c.visits;
+  document.getElementById('detailSince').textContent=c.since;
+  const future=loadBookings().filter(b=>b.client.toLowerCase()===c.name.toLowerCase()&&new Date(b.datetime)>new Date()).sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
+  const nextAppt=future[0]?new Date(future[0].datetime).toLocaleDateString('es',{day:'numeric',month:'short'}):'—';
+  document.getElementById('detailNext').textContent=nextAppt;
+  document.getElementById('detailHistory').innerHTML=c.history.length?c.history.map(h=>`<div class="history-item"><div class="history-dot"></div><div class="history-text"><div class="history-service">${h.service}</div><div class="history-date">${h.date}</div>${h.price?`<div class="history-price">${h.price}</div>`:''}</div></div>`).join(''):'<p style="color:var(--text-muted);font-size:13px;">Sin historial aún</p>';
+  const waBtn=document.getElementById('waBtn');
+  if(c.phone){
+    const nombre=c.name.split(' ')[0];
+    const fechaTexto=nextAppt!=='—'?nextAppt:'próximamente';
+    const msg=encodeURIComponent(`Hola mi bella💅 ✨Te recuerdo tu cita con Irianis Marcano el ${fechaTexto}. ¡Te esperamos!`);
+    waBtn.onclick=()=>window.open(`https://wa.me/${c.phone.replace(/\D/g,'')}?text=${msg}`);
+    waBtn.style.opacity='1';
+  }else{
+    waBtn.onclick=()=>showToast('⚠️ Agrega el teléfono de la clienta');
+    waBtn.style.opacity='0.5';
   }
   document.getElementById('clientModal').classList.add('open');
 }
 
-// ═══════════════════════════════════════
+// PORTFOLIO
+let currentPortfolioFilter='Todos';
+function renderPortfolio(filter){
+  filter=filter||currentPortfolioFilter;
+  const photos=loadPortfolio();
+  const filtered=filter==='Todos'?photos:photos.filter(p=>p.category===filter);
+  const grid=document.getElementById('portfolioGrid');
+  let html=`<div class="portfolio-add" onclick="document.getElementById('portfolioModal').classList.add('open')"><span style="font-size:28px;">📷</span><span>Agregar foto</span></div>`;
+  html+=filtered.map((p,i)=>`<div class="portfolio-item"><img src="${p.data}" alt="${p.desc||p.category}"/><div class="p-label">${p.category}${p.desc?' · '+p.desc:''}</div><button class="p-del" onclick="deletePhoto(${p.id})">✕</button></div>`).join('');
+  grid.innerHTML=html;
+}
+function filterPortfolio(cat,el){
+  currentPortfolioFilter=cat;
+  document.querySelectorAll('.p-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderPortfolio(cat);
+}
+let photoDataURL='';
+function previewPhoto(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    photoDataURL=e.target.result;
+    document.getElementById('photoPreview').innerHTML=`<img src="${photoDataURL}" style="width:100%;height:100%;object-fit:cover;"/>`;
+  };
+  reader.readAsDataURL(file);
+}
+function savePhoto(){
+  if(!photoDataURL){showToast('⚠️ Selecciona una foto');return;}
+  const category=[...document.querySelectorAll('#pCategory .chip.selected')].map(c=>c.textContent)[0]||'General';
+  const desc=document.getElementById('pDesc').value.trim();
+  const portfolio=loadPortfolio();
+  portfolio.unshift({id:Date.now(),data:photoDataURL,category,desc});
+  savePortfolio(portfolio);
+  photoDataURL='';
+  document.getElementById('photoPreview').innerHTML='<span style="color:var(--text-muted);font-size:13px;">📷 Toca para elegir foto</span>';
+  document.getElementById('pDesc').value='';
+  document.querySelectorAll('#pCategory .chip').forEach(c=>c.classList.remove('selected'));
+  closeModal('portfolioModal');
+  renderPortfolio();
+  showToast('📸 Foto guardada en portfolio');
+}
+function deletePhoto(id){
+  if(!confirm('¿Eliminar esta foto?'))return;
+  savePortfolio(loadPortfolio().filter(p=>p.id!==id));
+  renderPortfolio();
+  showToast('🗑 Foto eliminada');
+}
+
 // HELPERS
-// ═══════════════════════════════════════
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function closeOnOverlay(e, id) { if(e.target===document.getElementById(id)) closeModal(id); }
-function toggleChip(el) { el.classList.toggle('selected'); }
-function goTo(screen) {
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeOnOverlay(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+function toggleChip(el){el.classList.toggle('selected');}
+function goTo(screen){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('screen-'+screen).classList.add('active');
   document.getElementById('nav-'+screen).classList.add('active');
-  if(screen==='calendar') renderCalendar();
-  if(screen==='clients') renderClients(loadClients());
-  if(screen==='notif') { updatePermUI(); renderUpcoming(); }
+  if(screen==='calendar')renderCalendar();
+  if(screen==='clients')renderClients(loadClients());
+  if(screen==='notif'){updatePermUI();renderUpcoming();}
+  if(screen==='portfolio')renderPortfolio();
 }
-function showToast(msg) {
-  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 3000);
-}
-function refreshAll() { refreshHome(); renderCalendar(); renderClients(loadClients()); }
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function refreshAll(){refreshHome();renderCalendar();renderClients(loadClients());}
 
-// ═══════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════
-// Service Worker
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
-
-// Date header
-const now2 = new Date();
-document.getElementById('topDate').innerHTML = `<span class="topbar-datenum">${now2.getDate()}</span>${MONTHS[now2.getMonth()].slice(0,3)} ${now2.getFullYear()}`;
-
-// Splash
-setTimeout(() => {
-  document.getElementById('splash').style.opacity = '0';
-  setTimeout(() => {
-    document.getElementById('splash').style.display = 'none';
-    document.getElementById('app').style.display = 'flex';
-    refreshAll();
-    updatePermUI();
-    scheduleNotifications();
-  }, 600);
-}, 1800);
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+const now2=new Date();
+document.getElementById('topDate').innerHTML=`<span class="topbar-datenum">${now2.getDate()}</span>${MONTHS[now2.getMonth()].slice(0,3)} ${now2.getFullYear()}`;
+setTimeout(()=>{
+  document.getElementById('splash').style.opacity='0';
+  setTimeout(()=>{
+    document.getElementById('splash').style.display='none';
+    document.getElementById('app').style.display='flex';
+    refreshAll();updatePermUI();scheduleNotifications();
+  },600);
+},1800);
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Done"
