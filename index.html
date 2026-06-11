@@ -2,771 +2,1072 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="Irianis"/>
-<link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="IMG_0581.png"/>
-<meta name="theme-color" content="#0A0A0A"/>
-<title>Irianis Marcano – Estilista & Nails</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="manifest" href="manifest.json"/>
+<title>Irianis Marcano</title>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA3DzWSOux9jsBQHxeQxttkr-votu3IbY8",
+    authDomain: "irianis-app.firebaseapp.com",
+    projectId: "irianis-app",
+    storageBucket: "irianis-app.firebasestorage.app",
+    messagingSenderId: "262340090612",
+    appId: "1:262340090612:web:cc36489953931147fb5ca1"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  window.fbDb = db;
+  window.fbAuth = auth;
+  window.fbFns = { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, onSnapshot, signInWithEmailAndPassword, signOut, onAuthStateChanged };
+
+  window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
 <style>
-:root{--gold:#C9A84C;--gold-light:#E8C96A;--gold-dim:#8B6914;--black:#0A0A0A;--surface:#111111;--surface2:#1A1A1A;--surface3:#222222;--border:#2A2A2A;--text:#F0EDE6;--text-muted:#888;--radius:14px;--safe-bottom:env(safe-area-inset-bottom,16px);}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;background:var(--black);color:var(--text);font-family:'Inter',sans-serif;overflow:hidden;}
+  :root {
+    --cream: #FAF8F4;
+    --cream2: #F2EEE8;
+    --cream3: #E8E2D8;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #A07830;
+    --text: #2C2416;
+    --text2: #6B5B3E;
+    --text3: #9A8868;
+    --white: #FFFFFF;
+    --shadow: 0 2px 12px rgba(44,36,22,0.08);
+    --shadow-lg: 0 8px 32px rgba(44,36,22,0.12);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
 
-#splash{position:fixed;inset:0;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:20px;transition:opacity 0.6s ease;}
-.logo-circle{width:120px;height:120px;border-radius:50%;background:var(--black);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(201,168,76,0.3);animation:pulse 2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{box-shadow:0 0 30px rgba(201,168,76,0.2)}50%{box-shadow:0 0 60px rgba(201,168,76,0.5)}}
-.logo-initials{font-family:'Cormorant Garamond',serif;font-size:42px;font-style:italic;color:var(--gold);line-height:1;}
-.brand-name{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:3px;text-transform:uppercase;color:var(--text);}
-.brand-sub{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold-dim);}
-.loading-bar{width:120px;height:1px;background:var(--border);position:relative;overflow:hidden;}
-.loading-bar::after{content:'';position:absolute;left:-100%;top:0;height:100%;width:100%;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:load 1.5s ease forwards 0.3s;}
-@keyframes load{to{left:100%}}
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-#app{height:100vh;display:none;flex-direction:column;}
-.screen{flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:calc(72px + var(--safe-bottom));display:none;}
-.screen.active{display:block;}
-.screen::-webkit-scrollbar{display:none;}
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.topbar-brand{display:flex;align-items:center;gap:10px;}
-.topbar-logo{width:34px;height:34px;border-radius:50%;background:var(--black);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--gold);}
-.topbar-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--text);letter-spacing:0.5px;}
-.topbar-sub{font-size:10px;color:var(--gold-dim);letter-spacing:1px;text-transform:uppercase;}
-.topbar-date{font-size:11px;color:var(--text-muted);text-align:right;}
-.topbar-datenum{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);display:block;line-height:1;}
+  /* ── LOGIN ── */
+  #loginScreen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #1a1508 0%, #2e2010 60%, #1a1508 100%);
+    padding: 32px 24px;
+  }
+  .login-logo {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    background: rgba(201,168,76,0.08);
+  }
+  .login-logo span {
+    font-size: 38px; font-weight: 300; letter-spacing: 2px;
+    color: var(--gold); font-style: italic;
+    font-family: Georgia, serif;
+  }
+  #loginScreen h1 { color: var(--gold); font-size: 22px; font-weight: 300; letter-spacing: 3px; margin-bottom: 4px; text-transform: uppercase; }
+  #loginScreen p { color: var(--text3); font-size: 13px; letter-spacing: 1px; margin-bottom: 40px; }
+  .login-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    width: 100%; max-width: 340px;
+    backdrop-filter: blur(8px);
+  }
+  .login-card input {
+    width: 100%; padding: 14px 16px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: var(--radius-sm);
+    color: #fff; font-size: 15px;
+    outline: none; margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .login-card input::placeholder { color: rgba(255,255,255,0.35); }
+  .login-card input:focus { border-color: var(--gold); }
+  .btn-login {
+    width: 100%; padding: 15px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    border: none; border-radius: var(--radius-sm);
+    color: #fff; font-size: 15px; font-weight: 600;
+    letter-spacing: 1px; cursor: pointer; margin-top: 4px;
+    transition: opacity 0.2s;
+  }
+  .btn-login:active { opacity: 0.85; }
+  #loginError { color: #ff8080; font-size: 13px; text-align: center; margin-top: 10px; min-height: 18px; }
 
-.bottomnav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;padding-bottom:var(--safe-bottom);z-index:100;}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;cursor:pointer;color:var(--text-muted);font-size:9px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s;border:none;background:none;}
-.nav-btn.active{color:var(--gold);}
-.nav-btn svg{width:22px;height:22px;}
-.nav-btn.active svg path,.nav-btn.active svg rect,.nav-btn.active svg circle{stroke:var(--gold);}
+  /* ── APP SHELL ── */
+  #appShell { display: none; }
+  .header {
+    background: #1a1508;
+    padding: 16px 20px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header-title { color: var(--gold); font-size: 18px; font-weight: 300; letter-spacing: 2px; font-style: italic; font-family: Georgia, serif; }
+  .header-sub { color: var(--text3); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
+  .btn-logout { background: none; border: 1px solid rgba(201,168,76,0.3); border-radius: 8px; color: var(--gold); padding: 6px 12px; font-size: 12px; cursor: pointer; }
 
-.home-hero{padding:20px 18px 12px;}
-.greeting{font-size:13px;color:var(--text-muted);margin-bottom:2px;}
-.greeting strong{color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;display:block;line-height:1.1;}
-.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 18px 16px;}
-.stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px;text-align:center;}
-.stat-num{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);line-height:1;}
-.stat-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+  /* ── NAV ── */
+  .nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: #1a1508;
+    display: flex; border-top: 1px solid rgba(201,168,76,0.15);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .nav-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    padding: 10px 4px 8px; background: none; border: none; cursor: pointer;
+    color: rgba(201,168,76,0.4); font-size: 10px; letter-spacing: 0.5px;
+    transition: color 0.2s; gap: 3px;
+  }
+  .nav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+  .nav-btn.active { color: var(--gold); }
 
-/* GANANCIAS */
-.earnings-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px 16px;}
-.earnings-card{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));border:1px solid rgba(201,168,76,0.3);border-radius:var(--radius);padding:14px 12px;text-align:center;}
-.earnings-num{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);line-height:1;}
-.earnings-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
-.earnings-currency{font-size:12px;color:var(--gold-dim);margin-top:1px;}
+  /* ── CONTENT ── */
+  .content { padding: 20px 16px 100px; }
 
-.section-title{padding:0 18px 10px;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gold-dim);}
+  /* ── CARDS ── */
+  .card {
+    background: var(--white); border-radius: var(--radius);
+    padding: 18px 16px; margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .card-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text3); margin-bottom: 12px; }
 
-.notif-banner{margin:0 18px 14px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;}
-.notif-banner svg{flex-shrink:0;}
-.notif-banner-text{font-size:12px;color:var(--text-muted);line-height:1.4;}
-.notif-banner-text b{color:var(--gold);display:block;font-size:13px;margin-bottom:2px;}
-.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-left:auto;animation:pulse 1.5s infinite;}
+  /* ── STATS ROW ── */
+  .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .stat-card {
+    background: var(--white); border-radius: var(--radius); padding: 16px 14px;
+    box-shadow: var(--shadow); text-align: center;
+  }
+  .stat-card.gold { background: linear-gradient(135deg, #1a1508, #2e2010); }
+  .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 6px; }
+  .stat-card.gold .stat-label { color: rgba(201,168,76,0.6); }
+  .stat-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
+  .stat-card.gold .stat-value { color: var(--gold); }
+  .stat-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
+  .stat-card.gold .stat-sub { color: rgba(201,168,76,0.5); }
 
-.appt-list{padding:0 18px;display:flex;flex-direction:column;gap:10px;}
-.appt-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color 0.2s;}
-.appt-card:active{border-color:var(--gold);}
-.appt-time{text-align:center;min-width:44px;}
-.appt-hour{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);line-height:1;}
-.appt-ampm{font-size:10px;color:var(--text-muted);}
-.appt-divider{width:1px;height:40px;background:var(--border);}
-.appt-info{flex:1;}
-.appt-client{font-size:15px;font-weight:500;color:var(--text);}
-.appt-service{font-size:12px;color:var(--text-muted);margin-top:2px;}
-.appt-price{font-size:12px;color:var(--gold);margin-top:2px;}
-.appt-badge{font-size:10px;padding:3px 8px;border-radius:20px;letter-spacing:0.5px;white-space:nowrap;}
-.badge-confirmed{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);}
-.badge-pending{background:rgba(255,180,0,0.1);color:#FFB400;border:1px solid rgba(255,180,0,0.2);}
-.badge-done{background:rgba(100,200,120,0.1);color:#64C878;border:1px solid rgba(100,200,120,0.2);}
-.appt-empty{text-align:center;padding:40px 18px;color:var(--text-muted);font-size:14px;}
+  /* ── BUTTONS ── */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    border: none; border-radius: var(--radius-sm); color: #fff;
+    padding: 13px 20px; font-size: 14px; font-weight: 600;
+    cursor: pointer; width: 100%; transition: opacity 0.2s;
+  }
+  .btn-primary:active { opacity: 0.85; }
+  .btn-secondary {
+    background: var(--cream2); border: 1px solid var(--cream3);
+    border-radius: var(--radius-sm); color: var(--text2);
+    padding: 11px 16px; font-size: 13px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-secondary:active { background: var(--cream3); }
+  .btn-danger {
+    background: none; border: 1px solid #fca5a5;
+    border-radius: 8px; color: #ef4444;
+    padding: 8px 14px; font-size: 12px; cursor: pointer;
+  }
+  .btn-icon {
+    background: none; border: none; cursor: pointer;
+    color: var(--text3); padding: 6px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .btn-icon:active { background: var(--cream2); }
+  .btn-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
 
-.fab{position:fixed;right:18px;bottom:calc(78px + var(--safe-bottom));width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(201,168,76,0.4);z-index:90;transition:transform 0.2s;}
-.fab:active{transform:scale(0.94);}
+  /* ── FORM ── */
+  .form-group { margin-bottom: 14px; }
+  label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 6px; }
+  input, select, textarea {
+    width: 100%; padding: 12px 14px;
+    background: var(--cream); border: 1.5px solid var(--cream3);
+    border-radius: var(--radius-sm); color: var(--text);
+    font-size: 15px; outline: none; transition: border-color 0.2s;
+    font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--gold); background: #fff; }
+  .phone-row { display: flex; gap: 8px; align-items: stretch; }
+  .phone-flag {
+    background: var(--cream); border: 1.5px solid var(--cream3);
+    border-radius: var(--radius-sm); padding: 12px 14px;
+    font-size: 15px; white-space: nowrap; color: var(--text2);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .phone-row input { flex: 1; }
 
-.cal-header{padding:16px 18px 0;}
-.cal-month{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--text);display:flex;align-items:center;justify-content:space-between;}
-.cal-nav{background:none;border:1px solid var(--border);color:var(--text-muted);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
-.cal-grid{padding:10px 12px;}
-.cal-days-header{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;margin-bottom:6px;}
-.cal-days-header span{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;}
-.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
-.cal-day{min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:5px 3px 4px;border-radius:8px;cursor:pointer;position:relative;font-size:13px;color:var(--text-muted);border:1px solid transparent;transition:border-color 0.15s;}
-.cal-day .day-num{line-height:1;font-size:13px;}
-.cal-day.has-appt{background:rgba(201,168,76,0.07);border-color:rgba(201,168,76,0.2);}
-.cal-day.today .day-num{color:var(--gold);font-weight:700;}
-.cal-day.selected{background:rgba(201,168,76,0.18);border-color:var(--gold);}
-.cal-day.selected .day-num{color:var(--gold);font-weight:700;}
-.cal-day.other-month{opacity:0.2;}
-.cal-day:active{background:var(--surface3);}
-.cal-name{font-size:8px;color:var(--gold);line-height:1.2;text-align:center;margin-top:3px;overflow:hidden;width:100%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word;}
-.cal-more{font-size:7px;color:var(--gold-dim);text-align:center;margin-top:1px;}
-.day-schedule{padding:0 18px;}
-.time-slot{display:flex;gap:14px;margin-bottom:2px;}
-.time-label{font-size:11px;color:var(--text-muted);min-width:42px;padding-top:12px;text-align:right;}
-.slot-line{flex:1;border-left:1px solid var(--border);padding:8px 0 8px 14px;}
-.slot-appt{background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;}
-.slot-appt .client-name{font-size:14px;font-weight:500;}
-.slot-appt .service-tag{font-size:11px;color:var(--gold);margin-top:2px;}
-.slot-appt .price-tag{font-size:12px;color:#64C878;margin-top:2px;}
-.slot-empty{height:32px;}
-.slot-del{background:none;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;padding:4px;}
+  /* ── CITAS LIST ── */
+  .cita-item {
+    background: var(--white); border-radius: var(--radius); padding: 14px 16px;
+    margin-bottom: 10px; box-shadow: var(--shadow);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .cita-color { width: 4px; height: 44px; border-radius: 2px; flex-shrink: 0; }
+  .cita-info { flex: 1; min-width: 0; }
+  .cita-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .cita-detail { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .cita-price { font-size: 14px; font-weight: 600; color: var(--gold); }
+  .cita-actions { display: flex; gap: 4px; }
 
-.search-bar{padding:14px 18px;position:sticky;top:0;background:var(--black);z-index:10;}
-.search-wrap{position:relative;}
-.search-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:11px 16px 11px 40px;color:var(--text);font-size:15px;font-family:'Inter',sans-serif;outline:none;}
-.search-input:focus{border-color:var(--gold);}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);}
-.client-list{padding:0 18px;display:flex;flex-direction:column;gap:8px;}
-.client-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:14px;cursor:pointer;}
-.client-card:active{border-color:var(--gold);}
-.client-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--black);font-weight:600;flex-shrink:0;}
-.client-name-text{font-size:15px;font-weight:500;}
-.client-last{font-size:12px;color:var(--text-muted);margin-top:2px;}
-.client-visits{margin-left:auto;text-align:center;}
-.client-visits .num{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);line-height:1;}
-.client-visits .lbl{font-size:10px;color:var(--text-muted);}
+  /* ── SECTION HEADER ── */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .section-title { font-size: 18px; font-weight: 600; color: var(--text); }
+  .badge { background: var(--gold); color: #fff; border-radius: 20px; padding: 2px 10px; font-size: 11px; font-weight: 600; }
 
-/* PORTFOLIO */
-.portfolio-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px;}
-.portfolio-item{position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;background:var(--surface2);border:1px solid var(--border);}
-.portfolio-item img{width:100%;height:100%;object-fit:cover;}
-.portfolio-item .p-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:8px;font-size:11px;color:var(--text);}
-.portfolio-item .p-del{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);border:none;color:white;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
-.portfolio-add{border:2px dashed var(--border);border-radius:12px;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:8px;color:var(--text-muted);font-size:12px;background:none;}
-.portfolio-add:active{border-color:var(--gold);}
-.portfolio-filter{display:flex;gap:8px;padding:0 18px 14px;overflow-x:auto;}
-.portfolio-filter::-webkit-scrollbar{display:none;}
-.p-chip{padding:6px 14px;border-radius:20px;font-size:12px;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;white-space:nowrap;background:none;}
-.p-chip.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.1);}
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+    display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--white); border-radius: 20px 20px 0 0;
+    width: 100%; max-width: 480px; padding: 20px 20px 40px;
+    max-height: 90vh; overflow-y: auto;
+    transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-handle { width: 36px; height: 4px; background: var(--cream3); border-radius: 2px; margin: 0 auto 18px; }
+  .modal-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
 
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:flex;flex-direction:column;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s;}
-.modal-overlay.open{opacity:1;pointer-events:all;}
-.modal-sheet{background:var(--surface);border-top:1px solid var(--border);border-radius:20px 20px 0 0;padding:20px 20px calc(20px + var(--safe-bottom));transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);max-height:90vh;overflow-y:auto;}
-.modal-overlay.open .modal-sheet{transform:translateY(0);}
-.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;}
-.modal-title{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:20px;}
-.form-group{margin-bottom:14px;}
-.form-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--gold-dim);margin-bottom:6px;display:block;}
-.form-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-size:15px;font-family:'Inter',sans-serif;outline:none;color-scheme:dark;}
-.form-input:focus{border-color:var(--gold);}
-.phone-row{display:flex;gap:8px;align-items:center;}
-.phone-flag{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--text);white-space:nowrap;flex-shrink:0;}
-.service-chips{display:flex;flex-wrap:wrap;gap:8px;}
-.chip{padding:7px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;transition:all 0.2s;}
-.chip.selected{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.1);}
-.btn-primary{width:100%;padding:15px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border:none;border-radius:12px;font-size:15px;font-weight:600;color:var(--black);cursor:pointer;margin-top:8px;letter-spacing:0.5px;font-family:'Inter',sans-serif;}
-.btn-primary:active{opacity:0.85;}
-.btn-danger{width:100%;padding:13px;background:rgba(220,60,60,0.1);border:1px solid rgba(220,60,60,0.25);border-radius:12px;font-size:14px;color:#E05555;cursor:pointer;margin-top:8px;font-family:'Inter',sans-serif;}
+  /* ── PORTFOLIO ── */
+  .portfolio-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .portfolio-item { aspect-ratio: 1; border-radius: 10px; overflow: hidden; position: relative; background: var(--cream2); }
+  .portfolio-item img { width: 100%; height: 100%; object-fit: cover; }
+  .portfolio-item-del { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 24px; height: 24px; color: #fff; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
 
-.detail-header{background:linear-gradient(135deg,var(--surface2),var(--black));border-bottom:1px solid var(--border);padding:20px;text-align:center;}
-.detail-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dim),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--black);font-weight:600;margin:0 auto 12px;border:2px solid var(--gold);}
-.detail-name{font-family:'Cormorant Garamond',serif;font-size:24px;}
-.detail-phone{font-size:13px;color:var(--text-muted);margin-top:4px;}
-.detail-stats{display:grid;grid-template-columns:1fr 1fr 1fr;padding:16px 20px;border-bottom:1px solid var(--border);}
-.detail-stat{text-align:center;}
-.detail-stat .n{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);}
-.detail-stat .l{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;}
-.history-list{padding:16px 20px;}
-.history-item{display:flex;gap:12px;margin-bottom:14px;}
-.history-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:5px;flex-shrink:0;}
-.history-text{flex:1;}
-.history-service{font-size:14px;font-weight:500;}
-.history-date{font-size:12px;color:var(--text-muted);margin-top:2px;}
-.history-price{font-size:13px;color:var(--gold);margin-top:2px;}
-.modal-close{position:absolute;top:16px;right:16px;background:var(--surface3);border:none;color:var(--text-muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
-.whatsapp-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.25);border-radius:12px;color:#25D366;font-size:14px;font-weight:500;cursor:pointer;margin:12px 0;}
+  /* ── CLIENTAS ── */
+  .clienta-item {
+    background: var(--white); border-radius: var(--radius); padding: 14px 16px;
+    margin-bottom: 10px; box-shadow: var(--shadow);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .clienta-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 18px; font-weight: 600; flex-shrink: 0;
+  }
+  .clienta-info { flex: 1; min-width: 0; }
+  .clienta-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .clienta-detail { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .clienta-actions { display: flex; gap: 6px; }
 
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--surface2);border:1px solid var(--gold);border-radius:12px;padding:12px 20px;font-size:14px;color:var(--text);z-index:999;transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);white-space:nowrap;pointer-events:none;}
-.toast.show{transform:translateX(-50%) translateY(0);}
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 8px; margin-bottom: 18px; overflow-x: auto; padding-bottom: 2px; }
+  .tab-btn {
+    padding: 8px 16px; border-radius: 20px; border: none; background: var(--cream2);
+    color: var(--text2); font-size: 13px; cursor: pointer; white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #fff; }
 
-.perm-card{margin:20px 18px;background:var(--surface2);border:1px solid rgba(201,168,76,0.3);border-radius:16px;padding:24px;text-align:center;}
-.perm-icon{font-size:40px;margin-bottom:12px;}
-.perm-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:8px;}
-.perm-desc{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:20px;}
-.perm-status{font-size:12px;padding:8px 16px;border-radius:20px;display:inline-block;margin-top:8px;}
-.perm-granted{background:rgba(100,200,120,0.1);color:#64C878;border:1px solid rgba(100,200,120,0.2);}
-.perm-denied{background:rgba(220,60,60,0.1);color:#E05555;border:1px solid rgba(220,60,60,0.2);}
-.perm-pending{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
-.upcoming-list{padding:0 18px;display:flex;flex-direction:column;gap:8px;margin-top:4px;}
-.upcoming-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;}
-.upcoming-time{font-size:11px;color:var(--text-muted);text-align:center;min-width:36px;}
-.upcoming-time b{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);display:block;line-height:1;}
-.upcoming-info{flex:1;}
-.upcoming-client{font-size:13px;font-weight:500;}
-.upcoming-service{font-size:11px;color:var(--text-muted);margin-top:1px;}
-.upcoming-bell{font-size:14px;}
+  /* ── TODAY CITAS ── */
+  .today-empty { text-align: center; padding: 40px 20px; color: var(--text3); }
+  .today-empty svg { width: 48px; height: 48px; stroke: var(--cream3); margin-bottom: 12px; }
+
+  /* ── CALENDAR ── */
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .cal-day-label { text-align: center; font-size: 10px; color: var(--text3); padding: 4px 0; font-weight: 600; text-transform: uppercase; }
+  .cal-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; border-radius: 8px; cursor: pointer; position: relative;
+    transition: background 0.15s;
+  }
+  .cal-day:active { background: var(--cream2); }
+  .cal-day.today { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #fff; font-weight: 700; }
+  .cal-day.has-cita::after {
+    content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 4px; border-radius: 50%; background: var(--gold);
+  }
+  .cal-day.today.has-cita::after { background: #fff; }
+  .cal-day.other-month { color: var(--cream3); }
+  .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .cal-month { font-size: 16px; font-weight: 600; color: var(--text); }
+
+  /* ── WHATSAPP ── */
+  .wa-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: #25D366; border: none; border-radius: var(--radius-sm);
+    color: #fff; padding: 10px 16px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .wa-btn:active { opacity: 0.85; }
+  .wa-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+  /* ── MISC ── */
+  .divider { height: 1px; background: var(--cream2); margin: 16px 0; }
+  .loading { text-align: center; padding: 40px; color: var(--text3); }
+  .chip { display: inline-block; background: var(--cream2); border-radius: 20px; padding: 3px 10px; font-size: 11px; color: var(--text2); margin: 2px; }
+  .gold-text { color: var(--gold); }
+  .tag-service {
+    display: inline-block; background: rgba(201,168,76,0.12);
+    color: var(--gold-dark); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 600;
+  }
 </style>
 </head>
 <body>
 
-<div id="splash">
-  <div class="logo-circle"><span class="logo-initials">IM</span></div>
-  <div style="text-align:center;">
-    <div class="brand-name">Irianis Marcano</div>
-    <div class="brand-sub">Estilista & Nails</div>
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-logo"><span>IM</span></div>
+  <h1>Irianis Marcano</h1>
+  <p>Estilista & Nails</p>
+  <div class="login-card">
+    <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email"/>
+    <input type="password" id="loginPass" placeholder="Contraseña"/>
+    <button class="btn-login" onclick="doLogin()">Entrar</button>
+    <div id="loginError"></div>
   </div>
-  <div class="loading-bar"></div>
 </div>
 
-<div id="app">
-  <div class="topbar">
-    <div class="topbar-brand">
-      <div class="topbar-logo">IM</div>
-      <div>
-        <div class="topbar-title">Irianis Marcano</div>
-        <div class="topbar-sub">Estilista & Nails</div>
-      </div>
+<!-- APP -->
+<div id="appShell">
+  <div class="header">
+    <div>
+      <div class="header-title">Irianis Marcano</div>
+      <div class="header-sub">Estilista &amp; Nails</div>
     </div>
-    <div class="topbar-date" id="topDate"></div>
+    <button class="btn-logout" onclick="doLogout()">Salir</button>
   </div>
 
-  <!-- HOME -->
-  <div class="screen active" id="screen-home">
-    <div class="home-hero">
-      <div class="greeting">Bienvenida, <strong>Irianis ✨</strong></div>
-    </div>
+  <!-- INICIO -->
+  <div id="tab-inicio" class="content" style="display:none">
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-num" id="statHoy">0</div><div class="stat-label">Hoy</div></div>
-      <div class="stat-card"><div class="stat-num" id="statSemana">0</div><div class="stat-label">Semana</div></div>
-      <div class="stat-card"><div class="stat-num" id="statClientas">0</div><div class="stat-label">Clientas</div></div>
-    </div>
-    <div class="section-title">💰 Ganancias</div>
-    <div class="earnings-row">
-      <div class="earnings-card">
-        <div class="earnings-num" id="earnHoy">$0</div>
-        <div class="earnings-label">Hoy</div>
-        <div class="earnings-currency">CLP</div>
+      <div class="stat-card gold">
+        <div class="stat-label">Hoy</div>
+        <div class="stat-value" id="statHoy">$0</div>
+        <div class="stat-sub" id="statHoyCitas">0 citas</div>
       </div>
-      <div class="earnings-card">
-        <div class="earnings-num" id="earnSemana">$0</div>
-        <div class="earnings-label">Esta semana</div>
-        <div class="earnings-currency">CLP</div>
+      <div class="stat-card">
+        <div class="stat-label">Esta semana</div>
+        <div class="stat-value" id="statSemana">$0</div>
+        <div class="stat-sub" id="statSemanaCitas">0 citas</div>
       </div>
     </div>
-    <div id="notifBanner"></div>
-    <div class="section-title" id="homeDayTitle">Citas de hoy</div>
-    <div class="appt-list" id="homeApptList"></div>
-    <div style="height:20px;"></div>
+    <div class="card">
+      <div class="card-title">Próximas citas</div>
+      <div id="listProximas"><div class="loading">Cargando...</div></div>
+    </div>
   </div>
 
-  <!-- CALENDAR -->
-  <div class="screen" id="screen-calendar">
-    <div class="cal-header">
-      <div class="cal-month">
-        <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
-        <span id="calMonthLabel"></span>
-        <button class="cal-nav" onclick="changeMonth(1)">›</button>
-      </div>
+  <!-- CITAS -->
+  <div id="tab-citas" class="content" style="display:none">
+    <div class="section-header">
+      <div class="section-title">Agenda</div>
+      <button class="btn-primary" style="width:auto;padding:10px 18px" onclick="openModal('modalCita')">+ Nueva cita</button>
     </div>
-    <div class="cal-grid">
-      <div class="cal-days-header">
-        <span>D</span><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span>
-      </div>
-      <div class="cal-days" id="calDays"></div>
+    <div id="calWidget"></div>
+    <div style="margin-top:16px">
+      <div class="card-title" id="citasDateLabel">Todas las citas</div>
+      <div id="listCitas"><div class="loading">Cargando...</div></div>
     </div>
-    <div class="section-title" id="selectedDayTitle"></div>
-    <div class="day-schedule" id="daySchedule"></div>
-    <div style="height:20px;"></div>
   </div>
 
-  <!-- CLIENTS -->
-  <div class="screen" id="screen-clients">
-    <div class="search-bar">
-      <div class="search-wrap">
-        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input class="search-input" type="text" placeholder="Buscar clienta…" oninput="filterClients(this.value)"/>
-      </div>
+  <!-- CLIENTAS -->
+  <div id="tab-clientas" class="content" style="display:none">
+    <div class="section-header">
+      <div class="section-title">Clientas</div>
+      <button class="btn-primary" style="width:auto;padding:10px 18px" onclick="openModal('modalClienta')">+ Nueva</button>
     </div>
-    <div class="client-list" id="clientList"></div>
-    <div style="height:20px;"></div>
+    <div id="listClientas"><div class="loading">Cargando...</div></div>
   </div>
 
   <!-- PORTFOLIO -->
-  <div class="screen" id="screen-portfolio">
-    <div style="padding:16px 18px 8px;">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--text);">Mis Trabajos 📸</div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">Galería de tus mejores creaciones</div>
+  <div id="tab-portfolio" class="content" style="display:none">
+    <div class="section-header">
+      <div class="section-title">Portfolio</div>
+      <button class="btn-primary" style="width:auto;padding:10px 18px" onclick="openModal('modalPortfolio')">+ Foto</button>
     </div>
-    <div class="portfolio-filter" id="portfolioFilter">
-      <span class="p-chip active" onclick="filterPortfolio('Todos',this)">Todos</span>
-      <span class="p-chip" onclick="filterPortfolio('Manicure',this)">Manicure</span>
-      <span class="p-chip" onclick="filterPortfolio('Pedicure',this)">Pedicure</span>
-      <span class="p-chip" onclick="filterPortfolio('Gel',this)">Gel</span>
-      <span class="p-chip" onclick="filterPortfolio('Extensiones',this)">Extensiones</span>
-      <span class="p-chip" onclick="filterPortfolio('Cabello',this)">Cabello</span>
-      <span class="p-chip" onclick="filterPortfolio('Maquillaje',this)">Maquillaje</span>
-    </div>
+    <div class="tabs" id="portfolioTabs"></div>
     <div class="portfolio-grid" id="portfolioGrid"></div>
-    <div style="height:20px;"></div>
   </div>
 
-  <!-- NOTIFICACIONES -->
-  <div class="screen" id="screen-notif">
-    <div class="perm-card">
-      <div class="perm-icon">🔔</div>
-      <div class="perm-title">Avisos 2 horas antes</div>
-      <div class="perm-desc">La app te avisa automáticamente 2 horas antes de cada cita con el nombre de la clienta y el servicio.</div>
-      <button class="btn-primary" id="permBtn" onclick="requestNotifPermission()">Activar notificaciones</button>
-      <div id="permStatus"></div>
-    </div>
-    <div class="section-title" style="margin-top:8px;">Próximas citas con aviso</div>
-    <div class="upcoming-list" id="upcomingList"></div>
-    <div style="height:20px;"></div>
-  </div>
-
-  <nav class="bottomnav">
-    <button class="nav-btn active" id="nav-home" onclick="goTo('home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showTab('inicio',this)">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Inicio
     </button>
-    <button class="nav-btn" id="nav-calendar" onclick="goTo('calendar')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    <button class="nav-btn" onclick="showTab('citas',this)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Agenda
     </button>
-    <button class="nav-btn" id="nav-clients" onclick="goTo('clients')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    <button class="nav-btn" onclick="showTab('clientas',this)">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
       Clientas
     </button>
-    <button class="nav-btn" id="nav-portfolio" onclick="goTo('portfolio')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <button class="nav-btn" onclick="showTab('portfolio',this)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
       Portfolio
-    </button>
-    <button class="nav-btn" id="nav-notif" onclick="goTo('notif')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-      Avisos
     </button>
   </nav>
 </div>
 
-<button class="fab" onclick="openBookingModal()" id="fabBtn">
-  <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-</button>
-
-<!-- BOOKING MODAL -->
-<div class="modal-overlay" id="bookingModal" onclick="closeOnOverlay(event,'bookingModal')">
-  <div class="modal-sheet">
+<!-- MODAL: NUEVA/EDITAR CITA -->
+<div class="modal-overlay" id="modalCita">
+  <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">Nueva Reserva</div>
+    <div class="modal-title" id="modalCitaTitle">Nueva Cita</div>
+    <input type="hidden" id="editCitaId"/>
     <div class="form-group">
-      <label class="form-label">Clienta</label>
-      <input class="form-input" id="bName" type="text" placeholder="Nombre completo"/>
+      <label>Nombre de la clienta</label>
+      <input type="text" id="citaNombre" placeholder="Ej: María García"/>
     </div>
     <div class="form-group">
-      <label class="form-label">Teléfono (opcional)</label>
+      <label>Teléfono</label>
       <div class="phone-row">
         <div class="phone-flag">🇨🇱 +56</div>
-        <input class="form-input" id="bPhone" type="tel" placeholder="9 1234 5678" style="flex:1;"/>
+        <input type="tel" id="citaTelefono" placeholder="912345678"/>
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">Fecha y hora</label>
-      <input class="form-input" id="bDatetime" type="datetime-local"/>
+      <label>Instagram (opcional)</label>
+      <input type="text" id="citaInstagram" placeholder="@nombre"/>
     </div>
     <div class="form-group">
-      <label class="form-label">Servicio</label>
-      <div class="service-chips" id="serviceChips">
-        <span class="chip" onclick="toggleChip(this)">Manicure</span>
-        <span class="chip" onclick="toggleChip(this)">Pedicure</span>
-        <span class="chip" onclick="toggleChip(this)">Gel</span>
-        <span class="chip" onclick="toggleChip(this)">Extensiones</span>
-        <span class="chip" onclick="toggleChip(this)">Tinte</span>
-        <span class="chip" onclick="toggleChip(this)">Corte</span>
-        <span class="chip" onclick="toggleChip(this)">Alisado</span>
-        <span class="chip" onclick="toggleChip(this)">Peinado</span>
-        <span class="chip" onclick="toggleChip(this)">Maquillaje</span>
-        <span class="chip" onclick="toggleChip(this)">Cejas</span>
+      <label>Servicio</label>
+      <select id="citaServicio">
+        <option value="">Seleccionar servicio...</option>
+        <option>Manicure</option>
+        <option>Pedicure</option>
+        <option>Uñas esculpidas</option>
+        <option>Uñas acrílicas</option>
+        <option>Gel</option>
+        <option>Nail art</option>
+        <option>Tinte cabello</option>
+        <option>Corte cabello</option>
+        <option>Peinado</option>
+        <option>Tratamiento capilar</option>
+        <option>Maquillaje</option>
+        <option>Depilación</option>
+        <option>Otro</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-group">
+        <label>Fecha</label>
+        <input type="date" id="citaFecha"/>
+      </div>
+      <div class="form-group">
+        <label>Hora</label>
+        <input type="time" id="citaHora"/>
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">💰 Precio (CLP)</label>
-      <input class="form-input" id="bPrice" type="number" placeholder="Ej: 15000"/>
+      <label>Precio (CLP $)</label>
+      <input type="number" id="citaPrecio" placeholder="0"/>
     </div>
     <div class="form-group">
-      <label class="form-label">Notas</label>
-      <input class="form-input" id="bNotes" type="text" placeholder="Ej: alérgica a amoniaco…"/>
+      <label>Notas</label>
+      <textarea id="citaNotas" rows="2" placeholder="Detalles adicionales..."></textarea>
     </div>
-    <button class="btn-primary" onclick="saveBooking()">Guardar reserva ✓</button>
+    <button class="btn-primary" onclick="saveCita()">Guardar cita</button>
+    <div style="height:10px"></div>
+    <button class="btn-secondary" style="width:100%" onclick="closeModal('modalCita')">Cancelar</button>
   </div>
 </div>
 
-<!-- CLIENT DETAIL MODAL -->
-<div class="modal-overlay" id="clientModal" onclick="closeOnOverlay(event,'clientModal')">
-  <div class="modal-sheet" style="position:relative;">
-    <button class="modal-close" onclick="closeModal('clientModal')">✕</button>
+<!-- MODAL: NUEVA CLIENTA -->
+<div class="modal-overlay" id="modalClienta">
+  <div class="modal">
     <div class="modal-handle"></div>
-    <div class="detail-header">
-      <div class="detail-avatar" id="detailAvatar">M</div>
-      <div class="detail-name" id="detailName"></div>
-      <div class="detail-phone" id="detailPhone"></div>
+    <div class="modal-title">Nueva Clienta</div>
+    <div class="form-group">
+      <label>Nombre completo</label>
+      <input type="text" id="clientaNombre" placeholder="Ej: María García"/>
     </div>
-    <div class="detail-stats">
-      <div class="detail-stat"><div class="n" id="detailVisits">0</div><div class="l">Visitas</div></div>
-      <div class="detail-stat"><div class="n" id="detailSince">—</div><div class="l">Desde</div></div>
-      <div class="detail-stat"><div class="n" id="detailNext">—</div><div class="l">Próxima</div></div>
-    </div>
-    <div class="history-list">
-      <div class="section-title" style="padding:0 0 10px;">Historial</div>
-      <div id="detailHistory"></div>
-    </div>
-    <div style="padding:0 0 4px;">
-      <div class="whatsapp-btn" id="waBtn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        Enviar recordatorio por WhatsApp
+    <div class="form-group">
+      <label>Teléfono</label>
+      <div class="phone-row">
+        <div class="phone-flag">🇨🇱 +56</div>
+        <input type="tel" id="clientaTelefono" placeholder="912345678"/>
       </div>
     </div>
+    <div class="form-group">
+      <label>Instagram (opcional)</label>
+      <input type="text" id="clientaInstagram" placeholder="@nombre"/>
+    </div>
+    <div class="form-group">
+      <label>Notas</label>
+      <textarea id="clientaNotas" rows="2" placeholder="Preferencias, alergias, etc..."></textarea>
+    </div>
+    <button class="btn-primary" onclick="saveClienta()">Guardar clienta</button>
+    <div style="height:10px"></div>
+    <button class="btn-secondary" style="width:100%" onclick="closeModal('modalClienta')">Cancelar</button>
   </div>
 </div>
 
-<!-- PORTFOLIO ADD MODAL -->
-<div class="modal-overlay" id="portfolioModal" onclick="closeOnOverlay(event,'portfolioModal')">
-  <div class="modal-sheet">
+<!-- MODAL: PORTFOLIO -->
+<div class="modal-overlay" id="modalPortfolio">
+  <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">Agregar Trabajo</div>
+    <div class="modal-title">Agregar foto al portfolio</div>
     <div class="form-group">
-      <label class="form-label">Foto</label>
-      <input type="file" accept="image/*" id="pPhoto" style="display:none" onchange="previewPhoto(this)"/>
-      <div onclick="document.getElementById('pPhoto').click()" style="border:2px dashed var(--border);border-radius:12px;height:160px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;" id="photoPreview">
-        <span style="color:var(--text-muted);font-size:13px;">📷 Toca para elegir foto</span>
-      </div>
+      <label>Foto</label>
+      <input type="file" id="portfolioFile" accept="image/*" onchange="previewPortfolio(this)"/>
+    </div>
+    <div id="portfolioPreview" style="margin-bottom:14px;display:none">
+      <img id="portfolioPreviewImg" style="width:100%;border-radius:10px;max-height:200px;object-fit:cover"/>
     </div>
     <div class="form-group">
-      <label class="form-label">Categoría</label>
-      <div class="service-chips" id="pCategory">
-        <span class="chip" onclick="toggleChip(this)">Manicure</span>
-        <span class="chip" onclick="toggleChip(this)">Pedicure</span>
-        <span class="chip" onclick="toggleChip(this)">Gel</span>
-        <span class="chip" onclick="toggleChip(this)">Extensiones</span>
-        <span class="chip" onclick="toggleChip(this)">Cabello</span>
-        <span class="chip" onclick="toggleChip(this)">Maquillaje</span>
-      </div>
+      <label>Categoría</label>
+      <select id="portfolioCategoria">
+        <option>Manicure</option>
+        <option>Pedicure</option>
+        <option>Uñas esculpidas</option>
+        <option>Gel</option>
+        <option>Nail art</option>
+        <option>Cabello</option>
+        <option>Maquillaje</option>
+        <option>Otro</option>
+      </select>
     </div>
     <div class="form-group">
-      <label class="form-label">Descripción (opcional)</label>
-      <input class="form-input" id="pDesc" type="text" placeholder="Ej: Gel con nail art floral"/>
+      <label>Clienta (opcional)</label>
+      <select id="portfolioClientaId"><option value="">Sin vincular</option></select>
     </div>
-    <button class="btn-primary" onclick="savePhoto()">Guardar foto ✓</button>
+    <button class="btn-primary" onclick="savePortfolio()">Guardar foto</button>
+    <div style="height:10px"></div>
+    <button class="btn-secondary" style="width:100%" onclick="closeModal('modalPortfolio')">Cancelar</button>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- MODAL: VER CITA -->
+<div class="modal-overlay" id="modalVerCita">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div id="modalVerCitaContent"></div>
+    <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closeModal('modalVerCita')">Cerrar</button>
+  </div>
+</div>
+
+<!-- MODAL: VER CLIENTA -->
+<div class="modal-overlay" id="modalVerClienta">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div id="modalVerClientaContent"></div>
+    <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closeModal('modalVerClienta')">Cerrar</button>
+  </div>
+</div>
 
 <script>
-// STORAGE
-function loadBookings(){try{return JSON.parse(localStorage.getItem('im_bookings')||'[]')}catch{return[]}}
-function saveBookings(b){localStorage.setItem('im_bookings',JSON.stringify(b))}
-function loadClients(){try{return JSON.parse(localStorage.getItem('im_clients')||'[]')}catch{return[]}}
-function saveClients(c){localStorage.setItem('im_clients',JSON.stringify(c))}
-function loadPortfolio(){try{return JSON.parse(localStorage.getItem('im_portfolio')||'[]')}catch{return[]}}
-function savePortfolio(p){localStorage.setItem('im_portfolio',JSON.stringify(p))}
+// ── STATE ──
+let allCitas = [];
+let allClientas = [];
+let allPortfolio = [];
+let currentTab = 'inicio';
+let calCurrentDate = new Date();
+let selectedCalDate = null;
+let portfolioImageData = null;
 
-// NOTIFICATIONS
-let notifTimers=[];
-function clearNotifTimers(){notifTimers.forEach(t=>clearTimeout(t));notifTimers=[];}
-function scheduleNotifications(){
-  clearNotifTimers();
-  if(Notification.permission!=='granted')return;
-  const bookings=loadBookings();
-  const now=Date.now();
-  bookings.forEach(b=>{
-    const apptTime=new Date(b.datetime).getTime();
-    const alertTime=apptTime-2*60*60*1000;
-    const delay=alertTime-now;
-    if(delay>0&&delay<7*24*60*60*1000){
-      const t=setTimeout(()=>{
-        const h=new Date(b.datetime).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
-        new Notification('💅 Irianis — Cita en 2 horas',{body:`${b.client} · ${b.service} a las ${h}`,icon:'IMG_0581.png',tag:'cita-'+b.id});
-      },delay);
-      notifTimers.push(t);
+// ── FIREBASE READY ──
+window.addEventListener('firebaseReady', init);
+
+function init() {
+  window.fbFns.onAuthStateChanged(window.fbAuth, user => {
+    if (user) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appShell').style.display = 'block';
+      showTab('inicio', document.querySelector('.nav-btn'));
+      listenData();
+    } else {
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('appShell').style.display = 'none';
     }
   });
 }
-async function requestNotifPermission(){
-  if(!('Notification' in window)){showToast('⚠️ Este navegador no soporta notificaciones');return;}
-  const result=await Notification.requestPermission();
-  updatePermUI();
-  if(result==='granted'){scheduleNotifications();showToast('🔔 Notificaciones activadas');}
-  else{showToast('⚠️ Permiso denegado. Actívalo en Ajustes del iPhone');}
-}
-function updatePermUI(){
-  const perm=('Notification' in window)?Notification.permission:'unsupported';
-  const btn=document.getElementById('permBtn');
-  const status=document.getElementById('permStatus');
-  const banner=document.getElementById('notifBanner');
-  if(perm==='granted'){
-    btn.textContent='✓ Notificaciones activas';btn.style.opacity='0.6';btn.onclick=null;
-    status.innerHTML='<span class="perm-status perm-granted">✓ Activadas — recibirás aviso 2 horas antes</span>';
-    if(banner)banner.innerHTML='';
-  }else if(perm==='denied'){
-    btn.textContent='Permiso bloqueado';btn.style.opacity='0.5';
-    status.innerHTML='<span class="perm-status perm-denied">Bloqueado. Ve a Ajustes → Safari → Notificaciones</span>';
-  }else{
-    status.innerHTML='<span class="perm-status perm-pending">Pendiente de activar</span>';
-    if(banner)banner.innerHTML=`<div class="notif-banner" onclick="goTo('notif')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><div class="notif-banner-text"><b>Activa los avisos</b>Recibe una notificación 2 horas antes de cada cita</div><div class="notif-dot"></div></div>`;
+
+// ── AUTH ──
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+  try {
+    await window.fbFns.signInWithEmailAndPassword(window.fbAuth, email, pass);
+  } catch(e) {
+    errEl.textContent = 'Correo o contraseña incorrectos';
   }
-  renderUpcoming();
 }
-function renderUpcoming(){
-  const bookings=loadBookings().sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
-  const now=Date.now();
-  const future=bookings.filter(b=>new Date(b.datetime).getTime()>now).slice(0,8);
-  const el=document.getElementById('upcomingList');
-  if(!el)return;
-  if(!future.length){el.innerHTML='<p style="padding:20px 18px;color:var(--text-muted);font-size:14px;">No hay citas próximas agendadas</p>';return;}
-  el.innerHTML=future.map(b=>{
-    const d=new Date(b.datetime);
-    const alertMs=d.getTime()-2*60*60*1000-now;
-    const bell=Notification.permission==='granted'&&alertMs>0?'🔔':'○';
-    return `<div class="upcoming-item"><div class="upcoming-time"><b>${d.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'})}</b>${d.toLocaleDateString('es',{day:'numeric',month:'short'})}</div><div class="upcoming-info"><div class="upcoming-client">${b.client}</div><div class="upcoming-service">${b.service}</div></div><div class="upcoming-bell">${bell}</div></div>`;
-  }).join('');
+async function doLogout() {
+  await window.fbFns.signOut(window.fbAuth);
 }
+document.getElementById('loginEmail').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('loginPass').focus(); });
+document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
-// BOOKING
-function openBookingModal(){
-  const d=new Date();d.setHours(d.getHours()+1,0,0,0);
-  document.getElementById('bDatetime').value=d.toISOString().slice(0,16);
-  document.getElementById('bName').value='';
-  document.getElementById('bPhone').value='';
-  document.getElementById('bNotes').value='';
-  document.getElementById('bPrice').value='';
-  document.querySelectorAll('#serviceChips .chip').forEach(c=>c.classList.remove('selected'));
-  document.getElementById('bookingModal').classList.add('open');
-}
-function saveBooking(){
-  const name=document.getElementById('bName').value.trim();
-  const phone=document.getElementById('bPhone').value.trim();
-  const dt=document.getElementById('bDatetime').value;
-  const notes=document.getElementById('bNotes').value.trim();
-  const price=document.getElementById('bPrice').value.trim();
-  const services=[...document.querySelectorAll('#serviceChips .chip.selected')].map(c=>c.textContent).join(', ');
-  if(!name){showToast('⚠️ Escribe el nombre de la clienta');return;}
-  if(!dt){showToast('⚠️ Selecciona fecha y hora');return;}
-  const bookings=loadBookings();
-  const fullPhone=phone?'+56'+phone.replace(/\D/g,''):'';
-  const booking={id:Date.now(),client:name,phone:fullPhone,datetime:dt,service:services||'Servicio general',notes,price:price?parseInt(price):0};
-  bookings.push(booking);
-  saveBookings(bookings);
-  const clients=loadClients();
-  let ci=clients.find(c=>c.name.toLowerCase()===name.toLowerCase());
-  if(!ci){ci={name,phone:fullPhone,visits:0,since:new Date().getFullYear().toString(),history:[]};clients.push(ci);}
-  ci.visits++;ci.phone=fullPhone||ci.phone;
-  const dateStr=new Date(dt).toLocaleDateString('es',{day:'numeric',month:'short',year:'numeric'});
-  ci.history.unshift({service:services||'Servicio general',date:dateStr,price:price?'$'+parseInt(price).toLocaleString('es-CL'):''});
-  saveClients(clients);
-  closeModal('bookingModal');scheduleNotifications();refreshAll();showToast('🗓 Reserva guardada con éxito');
-}
-function deleteBooking(id){
-  if(!confirm('¿Eliminar esta reserva?'))return;
-  const bookings=loadBookings().filter(b=>b.id!==id);
-  saveBookings(bookings);scheduleNotifications();refreshAll();showToast('🗑 Reserva eliminada');
-}
+// ── LISTEN DATA ──
+function listenData() {
+  const { collection, onSnapshot, query, orderBy } = window.fbFns;
+  const db = window.fbDb;
 
-// GANANCIAS
-function calcEarnings(){
-  const now=new Date();
-  const todayStr=now.toDateString();
-  const startOfWeek=new Date(now);startOfWeek.setDate(now.getDate()-now.getDay());startOfWeek.setHours(0,0,0,0);
-  const endOfWeek=new Date(startOfWeek);endOfWeek.setDate(startOfWeek.getDate()+7);
-  const bookings=loadBookings();
-  const earnHoy=bookings.filter(b=>new Date(b.datetime).toDateString()===todayStr).reduce((s,b)=>s+(b.price||0),0);
-  const earnSemana=bookings.filter(b=>{const d=new Date(b.datetime);return d>=startOfWeek&&d<endOfWeek;}).reduce((s,b)=>s+(b.price||0),0);
-  const fmt=n=>n>=1000?'$'+Math.round(n/1000)+'k':'$'+n;
-  document.getElementById('earnHoy').textContent=fmt(earnHoy);
-  document.getElementById('earnSemana').textContent=fmt(earnSemana);
-}
-
-// HOME
-const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-function refreshHome(){
-  const now=new Date();
-  const todayStr=now.toDateString();
-  const bookings=loadBookings();
-  const todayAppts=bookings.filter(b=>new Date(b.datetime).toDateString()===todayStr).sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
-  const startOfWeek=new Date(now);startOfWeek.setDate(now.getDate()-now.getDay());startOfWeek.setHours(0,0,0,0);
-  const endOfWeek=new Date(startOfWeek);endOfWeek.setDate(startOfWeek.getDate()+7);
-  const weekCount=bookings.filter(b=>{const d=new Date(b.datetime);return d>=startOfWeek&&d<endOfWeek;}).length;
-  document.getElementById('statHoy').textContent=todayAppts.length;
-  document.getElementById('statSemana').textContent=weekCount;
-  document.getElementById('statClientas').textContent=loadClients().length;
-  calcEarnings();
-  const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-  document.getElementById('homeDayTitle').textContent=`${days[now.getDay()]} ${now.getDate()} — Citas de hoy`;
-  const list=document.getElementById('homeApptList');
-  if(!todayAppts.length){list.innerHTML='<div class="appt-empty">Sin citas agendadas para hoy 🌸</div>';return;}
-  list.innerHTML=todayAppts.map(b=>{
-    const d=new Date(b.datetime);
-    const h=d.getHours(),m=d.getMinutes();
-    const hStr=(h>12?h-12:h||12)+'';
-    const mStr=m.toString().padStart(2,'0');
-    const ampm=h>=12?'PM':'AM';
-    const nowMs=Date.now(),apptMs=d.getTime();
-    const badge=apptMs<nowMs?'badge-done">Lista':'badge-confirmed">Confirmada';
-    return `<div class="appt-card"><div class="appt-time"><div class="appt-hour">${hStr}:${mStr}</div><div class="appt-ampm">${ampm}</div></div><div class="appt-divider"></div><div class="appt-info"><div class="appt-client">${b.client}</div><div class="appt-service">${b.service}</div>${b.price?`<div class="appt-price">$${b.price.toLocaleString('es-CL')}</div>`:''}</div><span class="appt-badge ${badge}</span></div>`;
-  }).join('');
-}
-
-// CALENDAR
-let calYear=new Date().getFullYear(),calMonth=new Date().getMonth(),selectedDay=new Date().getDate();
-function renderCalendar(){
-  document.getElementById('calMonthLabel').textContent=`${MONTHS[calMonth]} ${calYear}`;
-  const first=new Date(calYear,calMonth,1).getDay();
-  const days=new Date(calYear,calMonth+1,0).getDate();
-  const prevDays=new Date(calYear,calMonth,0).getDate();
-  const bookings=loadBookings();
-  const today=new Date();
-  const dayMap={};
-  bookings.forEach(b=>{
-    const d=new Date(b.datetime);
-    if(d.getFullYear()===calYear&&d.getMonth()===calMonth){
-      const day=d.getDate();
-      if(!dayMap[day])dayMap[day]=[];
-      dayMap[day].push(b.client.split(' ')[0]);
-    }
+  onSnapshot(query(collection(db,'citas'), orderBy('fecha')), snap => {
+    allCitas = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderAll();
   });
-  let html='';
-  for(let i=0;i<first;i++)html+=`<div class="cal-day other-month"><span class="day-num">${prevDays-first+1+i}</span></div>`;
-  for(let d=1;d<=days;d++){
-    const isToday=calYear===today.getFullYear()&&calMonth===today.getMonth()&&d===today.getDate();
-    const isSel=d===selectedDay;
-    const names=dayMap[d]||[];
-    const shown=names.slice(0,2);
-    const extra=names.length>2?names.length-2:0;
-    html+=`<div class="cal-day${isToday?' today':''}${isSel?' selected':''}${names.length?' has-appt':''}" onclick="selectDay(this,${d})"><span class="day-num">${d}</span>${shown.map(n=>`<div class="cal-name">${n}</div>`).join('')}${extra?`<div class="cal-more">+${extra}</div>`:''}</div>`;
+  onSnapshot(collection(db,'clientas'), snap => {
+    allClientas = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderClientas();
+    populateClientaSelect();
+  });
+  onSnapshot(collection(db,'portfolio'), snap => {
+    allPortfolio = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderPortfolio();
+  });
+}
+
+// ── TABS ──
+function showTab(name, btn) {
+  ['inicio','citas','clientas','portfolio'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = 'none';
+  });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).style.display = 'block';
+  if(btn) btn.classList.add('active');
+  currentTab = name;
+  if(name==='citas') renderCalendar();
+  if(name==='portfolio') renderPortfolio();
+}
+
+// ── RENDER ALL ──
+function renderAll() {
+  renderInicio();
+  renderCitasList();
+  if(currentTab==='citas') renderCalendar();
+}
+
+// ── INICIO ──
+function renderInicio() {
+  const today = new Date().toISOString().split('T')[0];
+  const startWeek = getStartOfWeek(new Date());
+  const endWeek = getEndOfWeek(new Date());
+
+  const citasHoy = allCitas.filter(c => c.fecha === today);
+  const citasSemana = allCitas.filter(c => c.fecha >= startWeek && c.fecha <= endWeek);
+
+  const ganHoy = citasHoy.reduce((s,c) => s + (Number(c.precio)||0), 0);
+  const ganSemana = citasSemana.reduce((s,c) => s + (Number(c.precio)||0), 0);
+
+  document.getElementById('statHoy').textContent = '$' + ganHoy.toLocaleString('es-CL');
+  document.getElementById('statHoyCitas').textContent = citasHoy.length + ' cita' + (citasHoy.length!==1?'s':'');
+  document.getElementById('statSemana').textContent = '$' + ganSemana.toLocaleString('es-CL');
+  document.getElementById('statSemanaCitas').textContent = citasSemana.length + ' cita' + (citasSemana.length!==1?'s':'');
+
+  const proximas = allCitas.filter(c => c.fecha >= today).slice(0,5);
+  const el = document.getElementById('listProximas');
+  if(!proximas.length) {
+    el.innerHTML = '<div class="today-empty"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div>Sin citas próximas</div></div>';
+    return;
   }
-  document.getElementById('calDays').innerHTML=html;
-  renderDaySchedule(selectedDay);
+  el.innerHTML = proximas.map(c => citaItemHTML(c)).join('');
 }
-function renderDaySchedule(d){
-  const bookings=loadBookings().filter(b=>{const bd=new Date(b.datetime);return bd.getFullYear()===calYear&&bd.getMonth()===calMonth&&bd.getDate()===d;}).sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
-  document.getElementById('selectedDayTitle').textContent=`${d} de ${MONTHS[calMonth]} — ${bookings.length} cita${bookings.length!==1?'s':''}`;
-  if(!bookings.length){document.getElementById('daySchedule').innerHTML='<div class="appt-empty">Sin citas este día</div>';return;}
-  document.getElementById('daySchedule').innerHTML=bookings.map(b=>{
-    const dt=new Date(b.datetime);
-    const timeStr=dt.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
-    return `<div class="time-slot"><div class="time-label">${timeStr}</div><div class="slot-line"><div class="slot-appt"><div><div class="client-name">${b.client}</div><div class="service-tag">${b.service}</div>${b.price?`<div class="price-tag">$${b.price.toLocaleString('es-CL')}</div>`:''} ${b.notes?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">📝 ${b.notes}</div>`:''}</div><button class="slot-del" onclick="deleteBooking(${b.id})">✕</button></div></div></div>`;
-  }).join('');
-}
-function selectDay(el,d){selectedDay=d;renderCalendar();}
-function changeMonth(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}selectedDay=1;renderCalendar();}
 
-// CLIENTS
-function renderClients(list){
-  const el=document.getElementById('clientList');
-  if(!list.length){el.innerHTML='<p style="padding:20px 0;color:var(--text-muted);text-align:center;font-size:14px;">Sin clientas registradas aún</p>';return;}
-  el.innerHTML=list.map((c,i)=>`<div class="client-card" onclick="openClient(${i})"><div class="client-avatar">${c.name[0].toUpperCase()}</div><div style="flex:1;overflow:hidden;"><div class="client-name-text">${c.name}</div><div class="client-last">${c.history[0]?.date||'—'} · ${c.history[0]?.service||''}</div></div><div class="client-visits"><div class="num">${c.visits}</div><div class="lbl">visitas</div></div></div>`).join('');
+function getStartOfWeek(d) {
+  const day = d.getDay(), diff = d.getDate() - day + (day===0?-6:1);
+  return new Date(d.setDate(diff)).toISOString().split('T')[0];
 }
-function filterClients(q){const clients=loadClients();renderClients(clients.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())));}
+function getEndOfWeek(d) {
+  const start = new Date(getStartOfWeek(new Date()));
+  start.setDate(start.getDate()+6);
+  return start.toISOString().split('T')[0];
+}
 
-let currentClientIdx=-1;
-function openClient(i){
-  const clients=loadClients();
-  const c=clients[i];currentClientIdx=i;
-  document.getElementById('detailAvatar').textContent=c.name[0].toUpperCase();
-  document.getElementById('detailName').textContent=c.name;
-  document.getElementById('detailPhone').textContent=c.phone||'Sin teléfono';
-  document.getElementById('detailVisits').textContent=c.visits;
-  document.getElementById('detailSince').textContent=c.since;
-  const future=loadBookings().filter(b=>b.client.toLowerCase()===c.name.toLowerCase()&&new Date(b.datetime)>new Date()).sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
-  const nextAppt=future[0]?new Date(future[0].datetime).toLocaleDateString('es',{day:'numeric',month:'short'}):'—';
-  document.getElementById('detailNext').textContent=nextAppt;
-  document.getElementById('detailHistory').innerHTML=c.history.length?c.history.map(h=>`<div class="history-item"><div class="history-dot"></div><div class="history-text"><div class="history-service">${h.service}</div><div class="history-date">${h.date}</div>${h.price?`<div class="history-price">${h.price}</div>`:''}</div></div>`).join(''):'<p style="color:var(--text-muted);font-size:13px;">Sin historial aún</p>';
-  const waBtn=document.getElementById('waBtn');
-  if(c.phone){
-    const nombre=c.name.split(' ')[0];
-    const fechaTexto=nextAppt!=='—'?nextAppt:'próximamente';
-    const msg=encodeURIComponent(`Hola mi bella💅 ✨Te recuerdo tu cita con Irianis Marcano el ${fechaTexto}. ¡Te esperamos!`);
-    waBtn.onclick=()=>window.open(`https://wa.me/${c.phone.replace(/\D/g,'')}?text=${msg}`);
-    waBtn.style.opacity='1';
-  }else{
-    waBtn.onclick=()=>showToast('⚠️ Agrega el teléfono de la clienta');
-    waBtn.style.opacity='0.5';
+// ── CITAS LIST ──
+function renderCitasList() {
+  const el = document.getElementById('listCitas');
+  let citas = allCitas;
+  if(selectedCalDate) {
+    citas = allCitas.filter(c => c.fecha === selectedCalDate);
+    document.getElementById('citasDateLabel').textContent = formatDate(selectedCalDate);
+  } else {
+    document.getElementById('citasDateLabel').textContent = 'Todas las citas';
   }
-  document.getElementById('clientModal').classList.add('open');
+  if(!citas.length) {
+    el.innerHTML = '<div class="today-empty">Sin citas para este día</div>';
+    return;
+  }
+  el.innerHTML = citas.map(c => citaItemHTML(c)).join('');
 }
 
-// PORTFOLIO
-let currentPortfolioFilter='Todos';
-function renderPortfolio(filter){
-  filter=filter||currentPortfolioFilter;
-  const photos=loadPortfolio();
-  const filtered=filter==='Todos'?photos:photos.filter(p=>p.category===filter);
-  const grid=document.getElementById('portfolioGrid');
-  let html=`<div class="portfolio-add" onclick="document.getElementById('portfolioModal').classList.add('open')"><span style="font-size:28px;">📷</span><span>Agregar foto</span></div>`;
-  html+=filtered.map((p,i)=>`<div class="portfolio-item"><img src="${p.data}" alt="${p.desc||p.category}"/><div class="p-label">${p.category}${p.desc?' · '+p.desc:''}</div><button class="p-del" onclick="deletePhoto(${p.id})">✕</button></div>`).join('');
-  grid.innerHTML=html;
+function citaItemHTML(c) {
+  const colors = {'Manicure':'#C9A84C','Pedicure':'#A07830','Uñas esculpidas':'#8B6914','Gel':'#D4B483','Nail art':'#E8C97A','Cabello':'#6B5B3E','Tinte cabello':'#9A8868','Maquillaje':'#C4956A'};
+  const color = colors[c.servicio] || '#C9A84C';
+  return `<div class="cita-item">
+    <div class="cita-color" style="background:${color}"></div>
+    <div class="cita-info" onclick="verCita('${c.id}')">
+      <div class="cita-name">${c.nombre}</div>
+      <div class="cita-detail">${c.servicio||''} • ${formatDate(c.fecha)} ${c.hora||''}</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      ${c.precio ? `<div class="cita-price">$${Number(c.precio).toLocaleString('es-CL')}</div>` : ''}
+      <div class="cita-actions" style="margin-top:4px">
+        <button class="btn-icon" onclick="editCita('${c.id}')" title="Editar">
+          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="btn-icon" onclick="deleteCita('${c.id}')" title="Eliminar">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
 }
-function filterPortfolio(cat,el){
-  currentPortfolioFilter=cat;
-  document.querySelectorAll('.p-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  renderPortfolio(cat);
+
+// ── CALENDAR ──
+function renderCalendar() {
+  const el = document.getElementById('calWidget');
+  const year = calCurrentDate.getFullYear();
+  const month = calCurrentDate.getMonth();
+  const today = new Date().toISOString().split('T')[0];
+  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const dias = ['Lu','Ma','Mi','Ju','Vi','Sa','Do'];
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const startEmpty = firstDay === 0 ? 6 : firstDay - 1;
+
+  const citasDates = new Set(allCitas.map(c => c.fecha));
+
+  let html = `<div class="card">
+    <div class="cal-header">
+      <button class="btn-icon" onclick="calPrev()"><svg viewBox="0 0 24 24" style="width:20px;height:20px"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div class="cal-month">${meses[month]} ${year}</div>
+      <button class="btn-icon" onclick="calNext()"><svg viewBox="0 0 24 24" style="width:20px;height:20px"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+    <div class="calendar-grid">
+      ${dias.map(d=>`<div class="cal-day-label">${d}</div>`).join('')}
+      ${Array(startEmpty).fill('<div class="cal-day other-month"></div>').join('')}`;
+
+  for(let d=1; d<=daysInMonth; d++) {
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = dateStr === today;
+    const hasCita = citasDates.has(dateStr);
+    const isSelected = dateStr === selectedCalDate;
+    html += `<div class="cal-day ${isToday?'today':''} ${hasCita?'has-cita':''} ${isSelected&&!isToday?'':''}${isSelected?'selected-day':''}" 
+      style="${isSelected&&!isToday?'background:var(--cream2);font-weight:700':''}"
+      onclick="calSelectDay('${dateStr}')">${d}</div>`;
+  }
+  html += '</div></div>';
+  el.innerHTML = html;
 }
-let photoDataURL='';
-function previewPhoto(input){
-  const file=input.files[0];
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{
-    photoDataURL=e.target.result;
-    document.getElementById('photoPreview').innerHTML=`<img src="${photoDataURL}" style="width:100%;height:100%;object-fit:cover;"/>`;
+
+function calPrev() { calCurrentDate.setMonth(calCurrentDate.getMonth()-1); renderCalendar(); }
+function calNext() { calCurrentDate.setMonth(calCurrentDate.getMonth()+1); renderCalendar(); }
+function calSelectDay(date) {
+  selectedCalDate = selectedCalDate === date ? null : date;
+  renderCalendar();
+  renderCitasList();
+}
+
+// ── CITA MODAL ──
+function openNewCita() {
+  document.getElementById('editCitaId').value = '';
+  document.getElementById('modalCitaTitle').textContent = 'Nueva Cita';
+  ['citaNombre','citaTelefono','citaInstagram','citaNotas','citaPrecio'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('citaServicio').value = '';
+  document.getElementById('citaFecha').value = new Date().toISOString().split('T')[0];
+  document.getElementById('citaHora').value = '';
+  openModal('modalCita');
+}
+
+function editCita(id) {
+  const c = allCitas.find(x => x.id === id);
+  if(!c) return;
+  document.getElementById('editCitaId').value = id;
+  document.getElementById('modalCitaTitle').textContent = 'Editar Cita';
+  document.getElementById('citaNombre').value = c.nombre || '';
+  document.getElementById('citaTelefono').value = c.telefono || '';
+  document.getElementById('citaInstagram').value = c.instagram || '';
+  document.getElementById('citaServicio').value = c.servicio || '';
+  document.getElementById('citaFecha').value = c.fecha || '';
+  document.getElementById('citaHora').value = c.hora || '';
+  document.getElementById('citaPrecio').value = c.precio || '';
+  document.getElementById('citaNotas').value = c.notas || '';
+  openModal('modalCita');
+}
+
+async function saveCita() {
+  const id = document.getElementById('editCitaId').value;
+  const data = {
+    nombre: document.getElementById('citaNombre').value.trim(),
+    telefono: document.getElementById('citaTelefono').value.trim(),
+    instagram: document.getElementById('citaInstagram').value.trim(),
+    servicio: document.getElementById('citaServicio').value,
+    fecha: document.getElementById('citaFecha').value,
+    hora: document.getElementById('citaHora').value,
+    precio: document.getElementById('citaPrecio').value,
+    notas: document.getElementById('citaNotas').value.trim(),
+    updatedAt: new Date().toISOString()
+  };
+  if(!data.nombre || !data.fecha) { alert('Nombre y fecha son requeridos'); return; }
+  const { collection, addDoc, updateDoc, doc } = window.fbFns;
+  const db = window.fbDb;
+  if(id) {
+    await updateDoc(doc(db,'citas',id), data);
+  } else {
+    data.createdAt = new Date().toISOString();
+    await addDoc(collection(db,'citas'), data);
+  }
+  closeModal('modalCita');
+}
+
+async function deleteCita(id) {
+  if(!confirm('¿Eliminar esta cita?')) return;
+  const { doc, deleteDoc } = window.fbFns;
+  await deleteDoc(doc(window.fbDb,'citas',id));
+}
+
+function verCita(id) {
+  const c = allCitas.find(x=>x.id===id);
+  if(!c) return;
+  const tel = c.telefono ? '+56'+c.telefono : null;
+  const msg = encodeURIComponent(`Hola mi bella💅 ✨Te recuerdo tu cita con Irianis Marcano el ${formatDate(c.fecha)}${c.hora?' a las '+c.hora:''}. ¡Te esperamos!`);
+  document.getElementById('modalVerCitaContent').innerHTML = `
+    <div class="modal-title">${c.nombre}</div>
+    <div style="margin-bottom:16px">
+      ${c.servicio?`<span class="tag-service">${c.servicio}</span> `:''}
+      <span class="chip">${formatDate(c.fecha)}${c.hora?' '+c.hora:''}</span>
+      ${c.precio?`<span class="chip">$${Number(c.precio).toLocaleString('es-CL')}</span>`:''}
+    </div>
+    ${c.telefono?`<div style="margin-bottom:8px;font-size:14px;color:var(--text2)">📞 +56${c.telefono}</div>`:''}
+    ${c.instagram?`<div style="margin-bottom:8px;font-size:14px;color:var(--text2)">📷 ${c.instagram}</div>`:''}
+    ${c.notas?`<div style="margin-bottom:16px;font-size:13px;color:var(--text3);font-style:italic">${c.notas}</div>`:''}
+    ${tel?`<button class="wa-btn" style="width:100%;justify-content:center;margin-bottom:8px" onclick="window.open('https://wa.me/${tel}?text=${msg}','_blank')">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      Recordatorio WhatsApp
+    </button>`:''}
+    ${c.instagram?`<button class="btn-secondary" style="width:100%;margin-bottom:8px" onclick="window.open('https://instagram.com/${c.instagram.replace('@','')}','_blank')">📷 Ver Instagram</button>`:''}
+  `;
+  openModal('modalVerCita');
+}
+
+// ── CLIENTAS ──
+function renderClientas() {
+  const el = document.getElementById('listClientas');
+  if(!allClientas.length) {
+    el.innerHTML = '<div class="today-empty">Sin clientas registradas</div>';
+    return;
+  }
+  const sorted = [...allClientas].sort((a,b) => a.nombre.localeCompare(b.nombre));
+  el.innerHTML = sorted.map(c => `
+    <div class="clienta-item">
+      <div class="clienta-avatar">${c.nombre.charAt(0).toUpperCase()}</div>
+      <div class="clienta-info" onclick="verClienta('${c.id}')">
+        <div class="clienta-name">${c.nombre}</div>
+        <div class="clienta-detail">${c.telefono?'+56'+c.telefono:''}${c.instagram?' • '+c.instagram:''}</div>
+      </div>
+      <div class="clienta-actions">
+        ${c.telefono?`<button class="btn-icon" onclick="window.open('https://wa.me/+56${c.telefono}','_blank')">
+          <svg viewBox="0 0 24 24" fill="#25D366" stroke="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        </button>`:''}
+        <button class="btn-icon" onclick="deleteClienta('${c.id}')">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function verClienta(id) {
+  const c = allClientas.find(x=>x.id===id);
+  if(!c) return;
+  const fotos = allPortfolio.filter(p=>p.clientaId===id);
+  document.getElementById('modalVerClientaContent').innerHTML = `
+    <div class="modal-title">${c.nombre}</div>
+    ${c.telefono?`<div style="margin-bottom:8px;font-size:14px;color:var(--text2)">📞 +56${c.telefono}</div>`:''}
+    ${c.instagram?`<div style="margin-bottom:8px;font-size:14px;color:var(--text2)">📷 ${c.instagram}</div>`:''}
+    ${c.notas?`<div style="margin-bottom:16px;font-size:13px;color:var(--text3);font-style:italic">${c.notas}</div>`:''}
+    ${fotos.length?`<div class="card-title" style="margin-bottom:10px">Fotos (${fotos.length})</div>
+    <div class="portfolio-grid" style="margin-bottom:16px">
+      ${fotos.map(f=>`<div class="portfolio-item"><img src="${f.url}" onclick="sharePhoto('${f.url}','${c.telefono||''}','${c.instagram||''}')"/></div>`).join('')}
+    </div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${c.telefono?`<button class="wa-btn" onclick="window.open('https://wa.me/+56${c.telefono}','_blank')">
+        <svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:18px;height:18px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        WhatsApp
+      </button>`:''}
+      ${c.instagram?`<button class="btn-secondary" onclick="window.open('https://instagram.com/${c.instagram.replace('@','')}','_blank')">📷 Instagram</button>`:''}
+    </div>
+  `;
+  openModal('modalVerClienta');
+}
+
+async function saveClienta() {
+  const data = {
+    nombre: document.getElementById('clientaNombre').value.trim(),
+    telefono: document.getElementById('clientaTelefono').value.trim(),
+    instagram: document.getElementById('clientaInstagram').value.trim(),
+    notas: document.getElementById('clientaNotas').value.trim(),
+    createdAt: new Date().toISOString()
+  };
+  if(!data.nombre) { alert('El nombre es requerido'); return; }
+  const { collection, addDoc } = window.fbFns;
+  await addDoc(collection(window.fbDb,'clientas'), data);
+  ['clientaNombre','clientaTelefono','clientaInstagram','clientaNotas'].forEach(id=>document.getElementById(id).value='');
+  closeModal('modalClienta');
+}
+
+async function deleteClienta(id) {
+  if(!confirm('¿Eliminar esta clienta?')) return;
+  const { doc, deleteDoc } = window.fbFns;
+  await deleteDoc(doc(window.fbDb,'clientas',id));
+}
+
+function populateClientaSelect() {
+  const sel = document.getElementById('portfolioClientaId');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Sin vincular</option>' + 
+    allClientas.sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');
+  sel.value = cur;
+}
+
+// ── PORTFOLIO ──
+let activePortfolioFilter = '';
+
+function renderPortfolio() {
+  const categories = [...new Set(allPortfolio.map(p=>p.categoria).filter(Boolean))];
+  const tabsEl = document.getElementById('portfolioTabs');
+  tabsEl.innerHTML = `<button class="tab-btn ${!activePortfolioFilter?'active':''}" onclick="filterPortfolio('')">Todas</button>` +
+    categories.map(c=>`<button class="tab-btn ${activePortfolioFilter===c?'active':''}" onclick="filterPortfolio('${c}')">${c}</button>`).join('');
+
+  const filtered = activePortfolioFilter ? allPortfolio.filter(p=>p.categoria===activePortfolioFilter) : allPortfolio;
+  const grid = document.getElementById('portfolioGrid');
+  if(!filtered.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3)">Sin fotos aún</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(p=>`
+    <div class="portfolio-item">
+      <img src="${p.url}" loading="lazy"/>
+      <button class="portfolio-item-del" onclick="deletePortfolio('${p.id}')">×</button>
+    </div>
+  `).join('');
+}
+
+function filterPortfolio(cat) {
+  activePortfolioFilter = cat;
+  renderPortfolio();
+}
+
+function previewPortfolio(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    portfolioImageData = e.target.result;
+    document.getElementById('portfolioPreviewImg').src = portfolioImageData;
+    document.getElementById('portfolioPreview').style.display = 'block';
   };
   reader.readAsDataURL(file);
 }
-function savePhoto(){
-  if(!photoDataURL){showToast('⚠️ Selecciona una foto');return;}
-  const category=[...document.querySelectorAll('#pCategory .chip.selected')].map(c=>c.textContent)[0]||'General';
-  const desc=document.getElementById('pDesc').value.trim();
-  const portfolio=loadPortfolio();
-  portfolio.unshift({id:Date.now(),data:photoDataURL,category,desc});
-  savePortfolio(portfolio);
-  photoDataURL='';
-  document.getElementById('photoPreview').innerHTML='<span style="color:var(--text-muted);font-size:13px;">📷 Toca para elegir foto</span>';
-  document.getElementById('pDesc').value='';
-  document.querySelectorAll('#pCategory .chip').forEach(c=>c.classList.remove('selected'));
-  closeModal('portfolioModal');
-  renderPortfolio();
-  showToast('📸 Foto guardada en portfolio');
-}
-function deletePhoto(id){
-  if(!confirm('¿Eliminar esta foto?'))return;
-  savePortfolio(loadPortfolio().filter(p=>p.id!==id));
-  renderPortfolio();
-  showToast('🗑 Foto eliminada');
+
+async function savePortfolio() {
+  if(!portfolioImageData) { alert('Selecciona una foto'); return; }
+  const categoria = document.getElementById('portfolioCategoria').value;
+  const clientaId = document.getElementById('portfolioClientaId').value;
+
+  try {
+    // Compress image before saving to Firestore
+    const compressed = await compressImage(portfolioImageData, 800, 0.7);
+
+    const { collection, addDoc } = window.fbFns;
+    await addDoc(collection(window.fbDb,'portfolio'), {
+      url: compressed, categoria, clientaId: clientaId || null,
+      createdAt: new Date().toISOString()
+    });
+
+    portfolioImageData = null;
+    document.getElementById('portfolioPreview').style.display = 'none';
+    document.getElementById('portfolioFile').value = '';
+    closeModal('modalPortfolio');
+  } catch(e) {
+    alert('Error al guardar la foto: ' + e.message);
+    console.error(e);
+  }
 }
 
-// HELPERS
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-function closeOnOverlay(e,id){if(e.target===document.getElementById(id))closeModal(id);}
-function toggleChip(el){el.classList.toggle('selected');}
-function goTo(screen){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('screen-'+screen).classList.add('active');
-  document.getElementById('nav-'+screen).classList.add('active');
-  if(screen==='calendar')renderCalendar();
-  if(screen==='clients')renderClients(loadClients());
-  if(screen==='notif'){updatePermUI();renderUpcoming();}
-  if(screen==='portfolio')renderPortfolio();
+function compressImage(dataUrl, maxSize, quality) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let w = img.width, h = img.height;
+      if(w > maxSize || h > maxSize) {
+        if(w > h) { h = h * maxSize / w; w = maxSize; }
+        else { w = w * maxSize / h; h = maxSize; }
+      }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = dataUrl;
+  });
 }
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
-function refreshAll(){refreshHome();renderCalendar();renderClients(loadClients());}
 
-// INIT
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-const now2=new Date();
-document.getElementById('topDate').innerHTML=`<span class="topbar-datenum">${now2.getDate()}</span>${MONTHS[now2.getMonth()].slice(0,3)} ${now2.getFullYear()}`;
-setTimeout(()=>{
-  document.getElementById('splash').style.opacity='0';
-  setTimeout(()=>{
-    document.getElementById('splash').style.display='none';
-    document.getElementById('app').style.display='flex';
-    refreshAll();updatePermUI();scheduleNotifications();
-  },600);
-},1800);
+async function deletePortfolio(id) {
+  if(!confirm('¿Eliminar esta foto?')) return;
+  const { doc, deleteDoc } = window.fbFns;
+  await deleteDoc(doc(window.fbDb,'portfolio',id));
+}
+
+// ── MODAL UTILS ──
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); });
+});
+
+// Fix: nueva cita button
+document.querySelector('[onclick="openModal(\'modalCita\')"]').addEventListener('click', () => {
+  // prefill date
+  document.getElementById('editCitaId').value = '';
+  document.getElementById('modalCitaTitle').textContent = 'Nueva Cita';
+  document.getElementById('citaFecha').value = new Date().toISOString().split('T')[0];
+});
+
+// ── HELPERS ──
+function formatDate(str) {
+  if(!str) return '';
+  const [y,m,d] = str.split('-');
+  const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
+}
+
+// Service worker
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/Irisapp/sw.js').catch(()=>{});
+}
 </script>
 </body>
 </html>
