@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="Irianis"/>
@@ -55,133 +55,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   padding-top:calc(40px + env(safe-area-inset-top));
   padding-bottom:calc(40px + env(safe-area-inset-bottom));
 }
-/* Shimmer background decoration */
 #installScreen::before{
   content:'';position:absolute;inset:0;
   background:radial-gradient(ellipse 70% 50% at 50% 20%, rgba(201,168,76,0.06) 0%, transparent 70%),
              radial-gradient(ellipse 40% 30% at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
   pointer-events:none;
 }
-
-.install-logo-wrap{
-  position:relative;margin-bottom:28px;
-}
-.install-logo-ring{
-  width:100px;height:100px;border-radius:50%;
-  border:1.5px solid rgba(201,168,76,0.35);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
-}
-.install-logo-ring::before{
-  content:'';position:absolute;inset:-6px;border-radius:50%;
-  border:1px solid rgba(201,168,76,0.12);
-}
-.install-logo-ring::after{
-  content:'';position:absolute;inset:-12px;border-radius:50%;
-  border:1px solid rgba(201,168,76,0.06);
-}
-.install-logo-img{
-  width:90px;height:90px;border-radius:50%;
-  object-fit:cover;display:block;
-}
-.install-logo-fallback{
-  width:90px;height:90px;border-radius:50%;
-  background:rgba(201,168,76,0.1);
-  display:flex;align-items:center;justify-content:center;
-  font-size:32px;font-weight:300;letter-spacing:2px;
-  color:var(--gold);font-style:italic;font-family:Georgia,serif;
-}
-
-.install-name{
-  color:var(--gold);font-size:26px;font-weight:300;
-  letter-spacing:4px;text-transform:uppercase;
-  font-family:Georgia,serif;font-style:italic;
-  margin-bottom:6px;text-align:center;
-}
-.install-tagline{
-  color:rgba(201,168,76,0.5);font-size:11px;
-  letter-spacing:2.5px;text-transform:uppercase;
-  margin-bottom:40px;text-align:center;
-}
-
-.install-divider{
-  width:40px;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.4),transparent);
-  margin:0 auto 32px;
-}
-
-.install-label{
-  font-size:11px;text-transform:uppercase;letter-spacing:2px;
-  color:rgba(255,255,255,0.3);margin-bottom:20px;text-align:center;
-}
-
-.install-steps{
-  width:100%;max-width:320px;
-  display:flex;flex-direction:column;gap:14px;
-  margin-bottom:36px;
-}
-.install-step{
-  display:flex;align-items:center;gap:16px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(201,168,76,0.12);
-  border-radius:14px;padding:14px 18px;
-}
-.install-step-num{
-  width:30px;height:30px;border-radius:50%;
-  background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;color:var(--gold);
-  flex-shrink:0;
-}
-.install-step-icon{
-  font-size:20px;flex-shrink:0;width:28px;text-align:center;
-}
-.install-step-text{
-  flex:1;
-}
-.install-step-title{
-  font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);
-  margin-bottom:2px;
-}
-.install-step-sub{
-  font-size:11px;color:rgba(255,255,255,0.35);line-height:1.4;
-}
-
-.install-btn-check{
-  width:100%;max-width:320px;
-  padding:16px;
-  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-  border:none;border-radius:14px;
-  color:#fff;font-size:15px;font-weight:600;
-  letter-spacing:0.5px;cursor:pointer;
-  transition:opacity 0.2s,transform 0.15s;
-  margin-bottom:12px;
-}
+.install-logo-wrap{position:relative;margin-bottom:28px;}
+.install-logo-ring{width:100px;height:100px;border-radius:50%;border:1.5px solid rgba(201,168,76,0.35);display:flex;align-items:center;justify-content:center;position:relative;}
+.install-logo-ring::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(201,168,76,0.12);}
+.install-logo-ring::after{content:'';position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(201,168,76,0.06);}
+.install-logo-img{width:90px;height:90px;border-radius:50%;object-fit:cover;display:block;}
+.install-logo-fallback{width:90px;height:90px;border-radius:50%;background:rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:300;letter-spacing:2px;color:var(--gold);font-style:italic;font-family:Georgia,serif;}
+.install-name{color:var(--gold);font-size:26px;font-weight:300;letter-spacing:4px;text-transform:uppercase;font-family:Georgia,serif;font-style:italic;margin-bottom:6px;text-align:center;}
+.install-tagline{color:rgba(201,168,76,0.5);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:40px;text-align:center;}
+.install-divider{width:40px;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.4),transparent);margin:0 auto 32px;}
+.install-label{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.3);margin-bottom:20px;text-align:center;}
+.install-steps{width:100%;max-width:320px;display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
+.install-step{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.12);border-radius:14px;padding:14px 18px;}
+.install-step-num{width:30px;height:30px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.install-step-icon{font-size:20px;flex-shrink:0;width:28px;text-align:center;}
+.install-step-text{flex:1;}
+.install-step-title{font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:2px;}
+.install-step-sub{font-size:11px;color:rgba(255,255,255,0.35);line-height:1.4;}
+.install-btn-check{width:100%;max-width:320px;padding:16px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:600;letter-spacing:0.5px;cursor:pointer;transition:opacity 0.2s,transform 0.15s;margin-bottom:12px;}
 .install-btn-check:active{opacity:0.85;transform:scale(0.98);}
-
-.install-hint{
-  font-size:11px;color:rgba(201,168,76,0.35);
-  text-align:center;letter-spacing:0.5px;
-  max-width:260px;line-height:1.5;
-}
-
-/* Feedback message */
-.install-feedback{
-  width:100%;max-width:320px;
-  border-radius:12px;padding:12px 16px;
-  font-size:13px;font-weight:600;text-align:center;
-  margin-bottom:14px;display:none;
-}
-.install-feedback.ok{
-  background:rgba(22,163,74,0.15);
-  border:1px solid rgba(22,163,74,0.3);
-  color:#4ade80;display:block;
-}
-.install-feedback.warn{
-  background:rgba(234,179,8,0.1);
-  border:1px solid rgba(234,179,8,0.25);
-  color:#fbbf24;display:block;
-}
+.install-hint{font-size:11px;color:rgba(201,168,76,0.35);text-align:center;letter-spacing:0.5px;max-width:260px;line-height:1.5;}
+.install-feedback{width:100%;max-width:320px;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:600;text-align:center;margin-bottom:14px;display:none;}
+.install-feedback.ok{background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.3);color:#4ade80;display:block;}
+.install-feedback.warn{background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.25);color:#fbbf24;display:block;}
 
 /* LOGIN */
 #loginScreen{width:100%;min-height:100vh;min-height:-webkit-fill-available;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#1a1508 0%,#2e2010 60%,#1a1508 100%);padding:32px 24px;}
@@ -258,7 +160,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 .phone-row input{flex:1;min-width:0;}
 .rut-hint{font-size:10px;color:var(--text3);margin-top:4px;}
 
-/* ITEMS */
+/* CITA ITEMS */
 .cita-item{background:var(--white);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;width:100%;overflow:hidden;}
 .cita-color{width:4px;height:44px;border-radius:2px;flex-shrink:0;}
 .cita-info{flex:1;min-width:0;}
@@ -266,6 +168,15 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 .cita-detail{font-size:12px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cita-price{font-size:14px;font-weight:600;color:var(--gold);white-space:nowrap;}
 .cita-actions{display:flex;gap:4px;flex-shrink:0;}
+
+/* ══ ESTADO CITA BUTTONS ══ */
+.estado-btns{display:flex;gap:4px;margin-top:6px;}
+.estado-btn{border:none;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;cursor:pointer;opacity:0.35;transition:opacity 0.2s,transform 0.15s;white-space:nowrap;}
+.estado-btn:active{transform:scale(0.95);}
+.estado-btn.activo{opacity:1;}
+.estado-btn.espera{background:#fef9c3;color:#854d0e;}
+.estado-btn.atendida{background:#dcfce7;color:#15803d;}
+.estado-btn.perdida{background:#fee2e2;color:#b91c1c;}
 
 .clienta-item{background:var(--white);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;width:100%;overflow:hidden;}
 .clienta-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:600;flex-shrink:0;}
@@ -286,7 +197,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 .modal-handle{width:36px;height:4px;background:var(--cream3);border-radius:2px;margin:0 auto 18px;}
 .modal-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:20px;}
 
-/* SUBSCREEN (slide-in panel) */
+/* SUBSCREEN */
 .subscreen{position:fixed;inset:0;z-index:150;background:var(--cream);transform:translateX(100%);transition:transform 0.3s ease;overflow-y:auto;}
 .subscreen.open{transform:translateX(0);}
 .subscreen-header{background:#1a1508;padding:16px 20px;padding-top:calc(16px + env(safe-area-inset-top));display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:10;}
@@ -362,10 +273,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 </head>
 <body>
 
-<!-- ══════════════════════════════════
-     PANTALLA DE INSTALACIÓN
-     Se muestra solo si NO es standalone
-══════════════════════════════════ -->
+<!-- PANTALLA DE INSTALACIÓN -->
 <div id="installScreen">
   <div class="install-logo-wrap">
     <div class="install-logo-ring">
@@ -374,14 +282,10 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
       <div class="install-logo-fallback" style="display:none">IM</div>
     </div>
   </div>
-
   <div class="install-name">Irianis Marcano</div>
   <div class="install-tagline">Estilista &amp; Nails · App profesional</div>
-
   <div class="install-divider"></div>
-
   <div class="install-label">Instala la app en tu iPhone</div>
-
   <div class="install-steps">
     <div class="install-step">
       <div class="install-step-num">1</div>
@@ -408,16 +312,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
       </div>
     </div>
   </div>
-
   <div class="install-feedback" id="installFeedback"></div>
-
-  <button class="install-btn-check" onclick="checkIfInstalled()">
-    ✓ Ya instalé la app
-  </button>
-
-  <div class="install-hint">
-    Una vez instalada, la app funcionará sin Safari, con acceso rápido desde tu pantalla de inicio
-  </div>
+  <button class="install-btn-check" onclick="checkIfInstalled()">✓ Ya instalé la app</button>
+  <div class="install-hint">Una vez instalada, la app funcionará sin Safari, con acceso rápido desde tu pantalla de inicio</div>
 </div>
 
 <!-- LOGIN -->
@@ -511,7 +408,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     <div class="section-header">
       <div class="section-title">Portfolio</div>
       <div style="display:flex;gap:8px">
-        <button class="btn-icon" onclick="shareGallery()" title="Compartir galería" style="border:1px solid var(--cream3);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text2);font-size:12px;font-weight:600">🔗 Galería</button>
+        <button class="btn-icon" onclick="shareGallery()" style="border:1px solid var(--cream3);border-radius:var(--radius-sm);padding:8px 12px;color:var(--text2);font-size:12px;font-weight:600">🔗 Galería</button>
         <button class="btn-primary" style="width:auto;padding:10px 14px" onclick="openModal('modalPortfolio')">+ Foto</button>
       </div>
     </div>
@@ -530,18 +427,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     <div class="card" style="margin-bottom:14px">
       <div class="card-title" id="gananciasLabel">Este mes</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <div style="text-align:center">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px">Ingresos</div>
-          <div style="font-size:18px;font-weight:700;color:var(--gold)" id="gTotal">$0</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px">Gastos</div>
-          <div style="font-size:18px;font-weight:700;color:var(--danger)" id="gGastos">$0</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px">Neto</div>
-          <div style="font-size:18px;font-weight:700;color:var(--text)" id="gNeto">$0</div>
-        </div>
+        <div style="text-align:center"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px">Ingresos</div><div style="font-size:18px;font-weight:700;color:var(--gold)" id="gTotal">$0</div></div>
+        <div style="text-align:center"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px">Gastos</div><div style="font-size:18px;font-weight:700;color:var(--danger)" id="gGastos">$0</div></div>
+        <div style="text-align:center"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px">Neto</div><div style="font-size:18px;font-weight:700;color:var(--text)" id="gNeto">$0</div></div>
       </div>
     </div>
     <div class="card" style="margin-bottom:14px">
@@ -559,56 +447,38 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   <div id="tab-herramientas" class="content" style="display:none">
     <div class="section-title" style="margin-bottom:20px">Herramientas</div>
     <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-        <div style="font-size:28px">📊</div>
-        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Reporte Fiscal</div><div style="font-size:12px;color:var(--text3)">Resumen mensual de ingresos y gastos</div></div>
-      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">📊</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Reporte Fiscal</div><div style="font-size:12px;color:var(--text3)">Resumen mensual de ingresos y gastos</div></div></div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenReporte')">Ver reporte</button>
     </div>
     <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-        <div style="font-size:28px">💸</div>
-        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Registro de Gastos</div><div style="font-size:12px;color:var(--text3)">Insumos, marketing y más</div></div>
-      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">💸</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Registro de Gastos</div><div style="font-size:12px;color:var(--text3)">Insumos, marketing y más</div></div></div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenGastos')">Ver gastos</button>
     </div>
     <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-        <div style="font-size:28px">⚠️</div>
-        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Clientas Perdidas</div><div style="font-size:12px;color:var(--text3)">Sin visita hace más de 45 días</div></div>
-      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">⚠️</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Clientas Perdidas</div><div style="font-size:12px;color:var(--text3)">Sin visita hace más de 45 días</div></div></div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenPerdidas')">Ver clientas</button>
     </div>
     <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-        <div style="font-size:28px">💬</div>
-        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Plantillas WhatsApp</div><div style="font-size:12px;color:var(--text3)">Mensajes listos para enviar</div></div>
-      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">💬</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Plantillas WhatsApp</div><div style="font-size:12px;color:var(--text3)">Mensajes listos para enviar</div></div></div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenPlantillas')">Ver plantillas</button>
     </div>
     <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-        <div style="font-size:28px">🕐</div>
-        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Horario de Trabajo</div><div style="font-size:12px;color:var(--text3)">Días y horas disponibles + bloqueos</div></div>
-      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">🕐</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Horario de Trabajo</div><div style="font-size:12px;color:var(--text3)">Días y horas disponibles + bloqueos</div></div></div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenHorario')">Configurar</button>
     </div>
     <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
-        <div style="font-size:28px">📝</div>
-        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Notas Rápidas</div><div style="font-size:12px;color:var(--text3)">Ideas, pedidos, pendientes</div></div>
-      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">📝</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Notas Rápidas</div><div style="font-size:12px;color:var(--text3)">Ideas, pedidos, pendientes</div></div></div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenNotas')">Abrir notas</button>
     </div>
   </div>
 
-  <!-- NAV (6 tabs) -->
+  <!-- NAV -->
   <nav class="nav">
     <button class="nav-btn active" onclick="showTab('inicio',this)">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -637,11 +507,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </nav>
 </div>
 
-<!-- ══════════════════════════════════
-     SUBSCREENS
-══════════════════════════════════ -->
-
-<!-- REPORTE FISCAL -->
+<!-- ══ SUBSCREENS ══ -->
 <div class="subscreen" id="subscreenReporte">
   <div class="subscreen-header">
     <button class="btn-back" onclick="closeSubscreen('subscreenReporte')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -653,7 +519,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- GASTOS -->
 <div class="subscreen" id="subscreenGastos">
   <div class="subscreen-header">
     <button class="btn-back" onclick="closeSubscreen('subscreenGastos')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -666,21 +531,17 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- CLIENTAS PERDIDAS -->
 <div class="subscreen" id="subscreenPerdidas">
   <div class="subscreen-header">
     <button class="btn-back" onclick="closeSubscreen('subscreenPerdidas')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="subscreen-title">Clientas Perdidas</div>
   </div>
   <div style="padding:20px 16px 40px">
-    <div style="background:#fef2f2;border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;font-size:13px;color:#7f1d1d;border-left:3px solid #ef4444;">
-      Clientas sin visita hace más de <strong>45 días</strong>. Contáctalas para que vuelvan. 💛
-    </div>
+    <div style="background:#fef2f2;border-radius:var(--radius);padding:14px 16px;margin-bottom:16px;font-size:13px;color:#7f1d1d;border-left:3px solid #ef4444;">Clientas sin visita hace más de <strong>45 días</strong>. Contáctalas para que vuelvan. 💛</div>
     <div id="listPerdidas"></div>
   </div>
 </div>
 
-<!-- PLANTILLAS WHATSAPP -->
 <div class="subscreen" id="subscreenPlantillas">
   <div class="subscreen-header">
     <button class="btn-back" onclick="closeSubscreen('subscreenPlantillas')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -689,7 +550,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   <div style="padding:20px 16px 40px" id="plantillasContent"></div>
 </div>
 
-<!-- HORARIO -->
 <div class="subscreen" id="subscreenHorario">
   <div class="subscreen-header">
     <button class="btn-back" onclick="closeSubscreen('subscreenHorario')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -719,7 +579,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- NOTAS -->
 <div class="subscreen" id="subscreenNotas">
   <div class="subscreen-header">
     <button class="btn-back" onclick="closeSubscreen('subscreenNotas')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
@@ -729,11 +588,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   <div style="padding:20px 16px 40px" id="listNotas"></div>
 </div>
 
-<!-- ══════════════════════════════════
-     MODALS
-══════════════════════════════════ -->
-
-<!-- MODAL CITA -->
+<!-- ══ MODALS ══ -->
 <div class="modal-overlay" id="modalCita">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -763,7 +618,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- MODAL CLIENTA -->
 <div class="modal-overlay" id="modalClienta">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -780,7 +634,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- MODAL PORTFOLIO -->
 <div class="modal-overlay" id="modalPortfolio">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -800,21 +653,18 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- MODAL VER CITA -->
 <div class="modal-overlay" id="modalVerCita">
   <div class="modal"><div class="modal-handle"></div><div id="modalVerCitaContent"></div>
     <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closeModal('modalVerCita')">Cerrar</button>
   </div>
 </div>
 
-<!-- MODAL VER CLIENTA -->
 <div class="modal-overlay" id="modalVerClienta">
   <div class="modal"><div class="modal-handle"></div><div id="modalVerClientaContent"></div>
     <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closeModal('modalVerClienta')">Cerrar</button>
   </div>
 </div>
 
-<!-- MODAL AVISO RESERVA -->
 <div class="modal-overlay" id="modalAvisoReserva">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -832,7 +682,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- MODAL META -->
 <div class="modal-overlay" id="modalMeta">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -844,7 +693,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- MODAL GASTO -->
 <div class="modal-overlay" id="modalGasto">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -863,7 +711,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- MODAL NOTA -->
 <div class="modal-overlay" id="modalNota">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -875,7 +722,6 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<!-- MODAL BLOQUEO -->
 <div class="modal-overlay" id="modalBloqueo">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -892,63 +738,44 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 </div>
 
 <script>
-// ══════════════════════════════════
-// PWA INSTALL DETECTION
-// ══════════════════════════════════
+// ══ PWA INSTALL DETECTION ══
 (function() {
-  // Checks if running in standalone mode (installed PWA)
   function isStandalone() {
     return (
-      window.navigator.standalone === true ||                          // iOS Safari
-      window.matchMedia('(display-mode: standalone)').matches ||      // Android / Chrome
-      window.matchMedia('(display-mode: fullscreen)').matches ||      // Fullscreen PWA
-      document.referrer.startsWith('android-app://')                  // TWA Android
+      window.navigator.standalone === true ||
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.matchMedia('(display-mode: fullscreen)').matches ||
+      document.referrer.startsWith('android-app://')
     );
   }
-
   if (isStandalone()) {
-    // Running as installed PWA — hide install screen entirely
     const el = document.getElementById('installScreen');
     if (el) el.style.display = 'none';
   } else {
-    // Running in browser — show install screen, hide the rest
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('appShell').style.display = 'none';
   }
 })();
 
-// Button: "Ya instalé la app"
 function checkIfInstalled() {
   const isStandalone =
     window.navigator.standalone === true ||
     window.matchMedia('(display-mode: standalone)').matches ||
     window.matchMedia('(display-mode: fullscreen)').matches ||
     document.referrer.startsWith('android-app://');
-
   const fb = document.getElementById('installFeedback');
-
   if (isStandalone) {
-    // Already in standalone — shouldn't normally reach here, but just in case
     fb.className = 'install-feedback ok';
     fb.textContent = '✓ ¡App instalada correctamente! Redirigiendo...';
-    setTimeout(() => {
-      document.getElementById('installScreen').style.display = 'none';
-    }, 1200);
+    setTimeout(() => { document.getElementById('installScreen').style.display = 'none'; }, 1200);
   } else {
-    // Not standalone yet
     fb.className = 'install-feedback warn';
     fb.textContent = 'Aún no detectamos la instalación. Sigue los pasos y abre desde el ícono en tu pantalla de inicio.';
-    // Auto-hide feedback after 4s
-    setTimeout(() => {
-      fb.className = 'install-feedback';
-      fb.textContent = '';
-    }, 4000);
+    setTimeout(() => { fb.className = 'install-feedback'; fb.textContent = ''; }, 4000);
   }
 }
 
-// ══════════════════════════════════
-// FRASES
-// ══════════════════════════════════
+// ══ FRASES ══
 const FRASES = [
   "Cada clienta que entra por tu puerta es una oportunidad de hacer magia. Tú tienes ese don. 💛",
   "El éxito no llega solo, lo construyes día a día con cada uña, cada color, cada sonrisa.",
@@ -1136,14 +963,21 @@ function renderCitasList() {
   el.innerHTML=citas.length?citas.map(c=>citaItemHTML(c)).join(''):'<div class="today-empty">Sin citas para este día</div>';
 }
 
+// ══ CITA ITEM HTML — con estados ══
 function citaItemHTML(c) {
   const colors={'Manicure':'#C9A84C','Pedicure':'#A07830','Uñas esculpidas':'#8B6914','Gel':'#D4B483','Nail art':'#E8C97A','Cabello':'#6B5B3E','Tinte cabello':'#9A8868','Maquillaje':'#C4956A'};
   const color=colors[c.servicio]||'#C9A84C';
+  const estado=c.estado||'espera';
   return `<div class="cita-item">
     <div class="cita-color" style="background:${color}"></div>
     <div class="cita-info" onclick="verCita('${c.id}')">
       <div class="cita-name">${c.nombre}</div>
       <div class="cita-detail">${c.servicio||''} • ${formatDate(c.fecha)} ${c.hora||''}</div>
+      <div class="estado-btns">
+        <button class="estado-btn espera ${estado==='espera'?'activo':''}" onclick="event.stopPropagation();setCitaEstado('${c.id}','espera')">🟡 En espera</button>
+        <button class="estado-btn atendida ${estado==='atendida'?'activo':''}" onclick="event.stopPropagation();setCitaEstado('${c.id}','atendida')">✅ Atendida</button>
+        <button class="estado-btn perdida ${estado==='perdida'?'activo':''}" onclick="event.stopPropagation();setCitaEstado('${c.id}','perdida')">🔴 Perdida</button>
+      </div>
     </div>
     <div style="text-align:right;flex-shrink:0">
       ${c.precio?`<div class="cita-price">$${Number(c.precio).toLocaleString('es-CL')}</div>`:''}
@@ -1153,6 +987,12 @@ function citaItemHTML(c) {
       </div>
     </div>
   </div>`;
+}
+
+// ══ CAMBIAR ESTADO DE CITA ══
+async function setCitaEstado(id, estado) {
+  const {doc,updateDoc}=window.fbFns;
+  await updateDoc(doc(window.fbDb,'citas',id),{estado});
 }
 
 // ── CALENDAR ──
@@ -1214,7 +1054,7 @@ async function saveCita(){
   if(!data.nombre||!data.fecha){alert('Nombre y fecha son requeridos');return;}
   const {collection,addDoc,updateDoc,doc}=window.fbFns;
   if(id){await updateDoc(doc(window.fbDb,'citas',id),data);closeModal('modalCita');}
-  else{data.createdAt=new Date().toISOString();await addDoc(collection(window.fbDb,'citas'),data);closeModal('modalCita');if(data.telefono)showAvisoReserva(data);}
+  else{data.createdAt=new Date().toISOString();data.estado='espera';await addDoc(collection(window.fbDb,'citas'),data);closeModal('modalCita');if(data.telefono)showAvisoReserva(data);}
 }
 function showAvisoReserva(data){
   const msg=`Hola mi bella💅 ✨ Tu cita con Irianis Marcano ha sido registrada para el ${formatDate(data.fecha)}${data.hora?' a las '+data.hora:''}. Servicio: ${data.servicio||'a confirmar'}. ¡Te esperamos!`;
@@ -1251,7 +1091,6 @@ function switchClientasTab(filter,btn){
   if(btn) btn.classList.add('active');
   renderClientas();
 }
-
 function renderClientas(){
   const el=document.getElementById('listClientas');
   const today=new Date(); const limit=45;
@@ -1264,7 +1103,6 @@ function renderClientas(){
         return diff>=limit;
       })
     : [...allClientas].sort((a,b)=>a.nombre.localeCompare(b.nombre));
-
   if(!list.length){el.innerHTML='<div class="today-empty">'+(clientasTabFilter==='perdidas'?'🎉 ¡Ninguna clienta perdida!':'Sin clientas registradas')+'</div>';return;}
   el.innerHTML=list.map(c=>{
     const citas=allCitas.filter(x=>x.nombre===c.nombre);
