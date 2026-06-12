@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="apple-mobile-web-app-title" content="Irianis"/>
@@ -15,7 +15,6 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
 
   const firebaseConfig = {
     apiKey: "AIzaSyA3DzWSOux9jsBQHxeQxttkr-votu3IbY8",
@@ -56,17 +55,26 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
+  /* FIX: prevent horizontal overflow on all devices */
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background: var(--cream);
     color: var(--text);
     min-height: 100vh;
-    overflow-x: hidden;
+    min-height: -webkit-fill-available;
   }
 
   /* ── LOGIN ── */
   #loginScreen {
+    width: 100%;
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -97,24 +105,38 @@
     width: 100%; max-width: 340px;
     backdrop-filter: blur(8px);
   }
+
+  /* FIX 1: Login inputs - visible text while typing */
   .login-card input {
     width: 100%; padding: 14px 16px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(201,168,76,0.25);
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(201,168,76,0.35);
     border-radius: var(--radius-sm);
-    color: #fff; font-size: 15px;
+    color: #ffffff !important;
+    font-size: 16px; /* prevents iOS zoom */
     outline: none; margin-bottom: 12px;
     transition: border-color 0.2s;
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: var(--gold);
   }
-  .login-card input::placeholder { color: rgba(255,255,255,0.35); }
-  .login-card input:focus { border-color: var(--gold); }
+  .login-card input::placeholder { color: rgba(255,255,255,0.45) !important; -webkit-text-fill-color: rgba(255,255,255,0.45) !important; }
+  .login-card input:focus {
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.18);
+    -webkit-text-fill-color: #ffffff !important;
+  }
+  /* FIX: kill Safari autofill blue background */
   .login-card input:-webkit-autofill,
   .login-card input:-webkit-autofill:hover,
-  .login-card input:-webkit-autofill:focus {
-    -webkit-text-fill-color: #fff;
-    -webkit-box-shadow: 0 0 0px 1000px rgba(255,255,255,0.07) inset;
+  .login-card input:-webkit-autofill:focus,
+  .login-card input:-webkit-autofill:active {
+    -webkit-text-fill-color: #ffffff !important;
+    -webkit-box-shadow: 0 0 0px 1000px #2a1e0a inset !important;
+    box-shadow: 0 0 0px 1000px #2a1e0a inset !important;
     transition: background-color 5000s ease-in-out 0s;
+    caret-color: var(--gold);
   }
+
   .btn-login {
     width: 100%; padding: 15px;
     background: linear-gradient(135deg, var(--gold), var(--gold-dark));
@@ -127,17 +149,19 @@
   #loginError { color: #ff8080; font-size: 13px; text-align: center; margin-top: 10px; min-height: 18px; }
 
   /* ── APP SHELL ── */
-  #appShell { display: none; }
+  #appShell { display: none; width: 100%; }
   .header {
     background: #1a1508;
     padding: 16px 20px 14px;
+    padding-top: calc(16px + env(safe-area-inset-top));
     display: flex; align-items: center; justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    width: 100%;
   }
   .header-title { color: var(--gold); font-size: 18px; font-weight: 300; letter-spacing: 2px; font-style: italic; font-family: Georgia, serif; }
   .header-sub { color: var(--text3); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; }
-  .btn-logout { background: none; border: 1px solid rgba(201,168,76,0.3); border-radius: 8px; color: var(--gold); padding: 6px 12px; font-size: 12px; cursor: pointer; }
+  .btn-logout { background: none; border: 1px solid rgba(201,168,76,0.3); border-radius: 8px; color: var(--gold); padding: 6px 12px; font-size: 12px; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
 
   /* ── NAV ── */
   .nav {
@@ -145,24 +169,58 @@
     background: #1a1508;
     display: flex; border-top: 1px solid rgba(201,168,76,0.15);
     padding-bottom: env(safe-area-inset-bottom);
+    width: 100%;
   }
   .nav-btn {
     flex: 1; display: flex; flex-direction: column; align-items: center;
-    padding: 10px 4px 8px; background: none; border: none; cursor: pointer;
-    color: rgba(201,168,76,0.4); font-size: 10px; letter-spacing: 0.5px;
+    padding: 10px 2px 8px; background: none; border: none; cursor: pointer;
+    color: rgba(201,168,76,0.4); font-size: 10px; letter-spacing: 0.3px;
     transition: color 0.2s; gap: 3px;
+    min-width: 0; /* FIX: prevent nav overflow */
   }
-  .nav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+  .nav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; flex-shrink: 0; }
+  .nav-btn span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
   .nav-btn.active { color: var(--gold); }
 
   /* ── CONTENT ── */
-  .content { padding: 20px 16px 100px; }
+  .content {
+    padding: 20px 16px 100px;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ── MOTIVATIONAL BANNER ── */
+  .motivational-banner {
+    background: linear-gradient(135deg, #1a1508, #2e2010);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    border-left: 3px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .motivational-banner::before {
+    content: '✨';
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    font-size: 28px; opacity: 0.4;
+  }
+  .motivational-label {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 2px;
+    color: rgba(201,168,76,0.6); margin-bottom: 6px; font-weight: 600;
+  }
+  .motivational-text {
+    font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5;
+    font-style: italic; font-family: Georgia, serif;
+    padding-right: 36px;
+  }
 
   /* ── CARDS ── */
   .card {
     background: var(--white); border-radius: var(--radius);
     padding: 18px 16px; margin-bottom: 14px;
     box-shadow: var(--shadow);
+    width: 100%;
   }
   .card-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text3); margin-bottom: 12px; }
 
@@ -171,11 +229,12 @@
   .stat-card {
     background: var(--white); border-radius: var(--radius); padding: 16px 14px;
     box-shadow: var(--shadow); text-align: center;
+    min-width: 0;
   }
   .stat-card.gold { background: linear-gradient(135deg, #1a1508, #2e2010); }
   .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 6px; }
   .stat-card.gold .stat-label { color: rgba(201,168,76,0.6); }
-  .stat-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
+  .stat-value { font-size: 24px; font-weight: 600; color: var(--text); line-height: 1; word-break: break-all; }
   .stat-card.gold .stat-value { color: var(--gold); }
   .stat-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
   .stat-card.gold .stat-sub { color: rgba(201,168,76,0.5); }
@@ -204,7 +263,7 @@
     background: none; border: none; cursor: pointer;
     color: var(--text3); padding: 6px; border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
+    transition: background 0.15s; flex-shrink: 0;
   }
   .btn-icon:active { background: var(--cream2); }
   .btn-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; }
@@ -216,8 +275,11 @@
     width: 100%; padding: 12px 14px;
     background: var(--cream); border: 1.5px solid var(--cream3);
     border-radius: var(--radius-sm); color: var(--text);
-    font-size: 15px; outline: none; transition: border-color 0.2s;
+    font-size: 16px; /* FIX: 16px prevents iOS zoom */
+    outline: none; transition: border-color 0.2s;
     font-family: inherit;
+    -webkit-appearance: none;
+    appearance: none;
   }
   input:focus, select:focus, textarea:focus { border-color: var(--gold); background: #fff; }
   .phone-row { display: flex; gap: 8px; align-items: stretch; }
@@ -225,25 +287,29 @@
     background: var(--cream); border: 1.5px solid var(--cream3);
     border-radius: var(--radius-sm); padding: 12px 14px;
     font-size: 15px; white-space: nowrap; color: var(--text2);
-    display: flex; align-items: center; gap: 4px;
+    display: flex; align-items: center; gap: 4px; flex-shrink: 0;
   }
-  .phone-row input { flex: 1; }
+  .phone-row input { flex: 1; min-width: 0; }
+
+  /* RUT input hint */
+  .rut-hint { font-size: 10px; color: var(--text3); margin-top: 4px; }
 
   /* ── CITAS LIST ── */
   .cita-item {
     background: var(--white); border-radius: var(--radius); padding: 14px 16px;
     margin-bottom: 10px; box-shadow: var(--shadow);
     display: flex; align-items: center; gap: 12px;
+    width: 100%; overflow: hidden;
   }
   .cita-color { width: 4px; height: 44px; border-radius: 2px; flex-shrink: 0; }
   .cita-info { flex: 1; min-width: 0; }
-  .cita-name { font-size: 15px; font-weight: 600; color: var(--text); }
-  .cita-detail { font-size: 12px; color: var(--text3); margin-top: 2px; }
-  .cita-price { font-size: 14px; font-weight: 600; color: var(--gold); }
-  .cita-actions { display: flex; gap: 4px; }
+  .cita-name { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cita-detail { font-size: 12px; color: var(--text3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cita-price { font-size: 14px; font-weight: 600; color: var(--gold); white-space: nowrap; }
+  .cita-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
   /* ── SECTION HEADER ── */
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 12px; }
   .section-title { font-size: 18px; font-weight: 600; color: var(--text); }
   .badge { background: var(--gold); color: #fff; border-radius: 20px; padding: 2px 10px; font-size: 11px; font-weight: 600; }
 
@@ -257,7 +323,9 @@
   .modal-overlay.open { opacity: 1; pointer-events: all; }
   .modal {
     background: var(--white); border-radius: 20px 20px 0 0;
-    width: 100%; max-width: 480px; padding: 20px 20px 40px;
+    width: 100%; max-width: 480px;
+    padding: 20px 20px;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
     max-height: 90vh; overflow-y: auto;
     transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
   }
@@ -266,9 +334,9 @@
   .modal-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
 
   /* ── PORTFOLIO ── */
-  .portfolio-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .portfolio-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; width: 100%; }
   .portfolio-item { aspect-ratio: 1; border-radius: 10px; overflow: hidden; position: relative; background: var(--cream2); }
-  .portfolio-item img { width: 100%; height: 100%; object-fit: cover; }
+  .portfolio-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .portfolio-item-del { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 24px; height: 24px; color: #fff; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
 
   /* ── CLIENTAS ── */
@@ -276,6 +344,7 @@
     background: var(--white); border-radius: var(--radius); padding: 14px 16px;
     margin-bottom: 10px; box-shadow: var(--shadow);
     display: flex; align-items: center; gap: 12px;
+    width: 100%; overflow: hidden;
   }
   .clienta-avatar {
     width: 44px; height: 44px; border-radius: 50%;
@@ -284,16 +353,17 @@
     color: #fff; font-size: 18px; font-weight: 600; flex-shrink: 0;
   }
   .clienta-info { flex: 1; min-width: 0; }
-  .clienta-name { font-size: 15px; font-weight: 600; color: var(--text); }
-  .clienta-detail { font-size: 12px; color: var(--text3); margin-top: 2px; }
-  .clienta-actions { display: flex; gap: 6px; }
+  .clienta-name { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .clienta-detail { font-size: 12px; color: var(--text3); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .clienta-actions { display: flex; gap: 6px; flex-shrink: 0; }
 
   /* ── TABS ── */
-  .tabs { display: flex; gap: 8px; margin-bottom: 18px; overflow-x: auto; padding-bottom: 2px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 18px; overflow-x: auto; padding-bottom: 2px; -webkit-overflow-scrolling: touch; }
+  .tabs::-webkit-scrollbar { display: none; }
   .tab-btn {
     padding: 8px 16px; border-radius: 20px; border: none; background: var(--cream2);
     color: var(--text2); font-size: 13px; cursor: pointer; white-space: nowrap;
-    transition: all 0.2s;
+    transition: all 0.2s; flex-shrink: 0;
   }
   .tab-btn.active { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #fff; }
 
@@ -302,7 +372,7 @@
   .today-empty svg { width: 48px; height: 48px; stroke: var(--cream3); margin-bottom: 12px; }
 
   /* ── CALENDAR ── */
-  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; width: 100%; }
   .cal-day-label { text-align: center; font-size: 10px; color: var(--text3); padding: 4px 0; font-weight: 600; text-transform: uppercase; }
   .cal-day {
     aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
@@ -328,7 +398,7 @@
     cursor: pointer; transition: opacity 0.2s;
   }
   .wa-btn:active { opacity: 0.85; }
-  .wa-btn svg { width: 18px; height: 18px; fill: currentColor; }
+  .wa-btn svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
 
   /* ── MISC ── */
   .divider { height: 1px; background: var(--cream2); margin: 16px 0; }
@@ -341,6 +411,12 @@
   }
 
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* FIX: nav text size for small phones */
+  @media (max-width: 375px) {
+    .nav-btn { font-size: 9px; padding: 10px 1px 8px; }
+    .nav-btn svg { width: 20px; height: 20px; }
+  }
 </style>
 </head>
 <body>
@@ -349,10 +425,10 @@
 <div id="loginScreen">
   <div class="login-logo"><span>IM</span></div>
   <h1>Irianis Marcano</h1>
-  <p>Estilista & Nails</p>
+  <p>Estilista &amp; Nails</p>
   <div class="login-card">
-    <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email"/>
-    <input type="password" id="loginPass" placeholder="Contraseña"/>
+    <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email" autocapitalize="none" spellcheck="false"/>
+    <input type="password" id="loginPass" placeholder="Contraseña" autocomplete="current-password"/>
     <button class="btn-login" onclick="doLogin()">Entrar</button>
     <div id="loginError"></div>
   </div>
@@ -370,6 +446,12 @@
 
   <!-- INICIO -->
   <div id="tab-inicio" class="content" style="display:none">
+    <!-- MOTIVATIONAL BANNER -->
+    <div class="motivational-banner" id="motivationalBanner">
+      <div class="motivational-label">💅 Frase del día</div>
+      <div class="motivational-text" id="motivationalText">Cargando...</div>
+    </div>
+
     <div class="stats-row">
       <div class="stat-card gold">
         <div class="stat-label">Hoy</div>
@@ -392,7 +474,7 @@
   <div id="tab-citas" class="content" style="display:none">
     <div class="section-header">
       <div class="section-title">Agenda</div>
-      <button class="btn-primary" style="width:auto;padding:10px 18px" onclick="openModal('modalCita')">+ Nueva cita</button>
+      <button class="btn-primary" style="width:auto;padding:10px 18px" onclick="openModal('modalCita');prefillNewCita()">+ Nueva cita</button>
     </div>
     <div id="calWidget"></div>
     <div style="margin-top:16px">
@@ -420,7 +502,6 @@
     <div class="portfolio-grid" id="portfolioGrid"></div>
   </div>
 
-
   <!-- GANANCIAS -->
   <div id="tab-ganancias" class="content" style="display:none">
     <div class="section-title" style="margin-bottom:18px">Ganancias</div>
@@ -446,13 +527,11 @@
         </div>
       </div>
     </div>
-    <!-- BAR CHART -->
     <div class="card" style="margin-bottom:14px">
       <div class="card-title" style="margin-bottom:14px">Ganancias por semana</div>
       <div id="barChart" style="display:flex;align-items:flex-end;gap:6px;height:100px;padding:0 4px"></div>
       <div id="barLabels" style="display:flex;gap:6px;margin-top:6px;padding:0 4px"></div>
     </div>
-    <!-- TOP SERVICIOS -->
     <div class="card">
       <div class="card-title" style="margin-bottom:12px">Servicios más solicitados</div>
       <div id="topServicios"></div>
@@ -463,23 +542,23 @@
   <nav class="nav">
     <button class="nav-btn active" onclick="showTab('inicio',this)">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Inicio
+      <span>Inicio</span>
     </button>
     <button class="nav-btn" onclick="showTab('citas',this)">
       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Agenda
+      <span>Agenda</span>
     </button>
     <button class="nav-btn" onclick="showTab('clientas',this)">
       <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-      Clientas
+      <span>Clientas</span>
     </button>
     <button class="nav-btn" onclick="showTab('portfolio',this)">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-      Portfolio
+      <span>Portfolio</span>
     </button>
     <button class="nav-btn" onclick="showTab('ganancias',this)">
       <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-      Ganancias
+      <span>Ganancias</span>
     </button>
   </nav>
 </div>
@@ -492,7 +571,7 @@
     <input type="hidden" id="editCitaId"/>
     <div class="form-group">
       <label>Nombre de la clienta</label>
-      <input type="text" id="citaNombre" placeholder="Ej: María García"/>
+      <input type="text" id="citaNombre" placeholder="Ej: María García" autocapitalize="words"/>
     </div>
     <div class="form-group">
       <label>Teléfono</label>
@@ -503,7 +582,7 @@
     </div>
     <div class="form-group">
       <label>Instagram (opcional)</label>
-      <input type="text" id="citaInstagram" placeholder="@nombre"/>
+      <input type="text" id="citaInstagram" placeholder="@nombre" autocapitalize="none"/>
     </div>
     <div class="form-group">
       <label>Servicio</label>
@@ -536,7 +615,7 @@
     </div>
     <div class="form-group">
       <label>Precio (CLP $)</label>
-      <input type="number" id="citaPrecio" placeholder="0"/>
+      <input type="number" id="citaPrecio" placeholder="0" inputmode="numeric"/>
     </div>
     <div class="form-group">
       <label>Notas</label>
@@ -555,7 +634,7 @@
     <div class="modal-title">Nueva Clienta</div>
     <div class="form-group">
       <label>Nombre completo</label>
-      <input type="text" id="clientaNombre" placeholder="Ej: María García"/>
+      <input type="text" id="clientaNombre" placeholder="Ej: María García" autocapitalize="words"/>
     </div>
     <div class="form-group">
       <label>Teléfono</label>
@@ -565,8 +644,13 @@
       </div>
     </div>
     <div class="form-group">
+      <label>RUT</label>
+      <input type="text" id="clientaRut" placeholder="Ej: 12.345.678-9" maxlength="12" oninput="formatRut(this)" autocapitalize="none"/>
+      <div class="rut-hint">Sin puntos ni guión → se formatea automáticamente</div>
+    </div>
+    <div class="form-group">
       <label>Instagram (opcional)</label>
-      <input type="text" id="clientaInstagram" placeholder="@nombre"/>
+      <input type="text" id="clientaInstagram" placeholder="@nombre" autocapitalize="none"/>
     </div>
     <div class="form-group">
       <label>Notas</label>
@@ -631,7 +715,6 @@
   </div>
 </div>
 
-
 <!-- MODAL: AVISO RESERVA -->
 <div class="modal-overlay" id="modalAvisoReserva">
   <div class="modal">
@@ -651,6 +734,45 @@
 </div>
 
 <script>
+// ── FRASES MOTIVACIONALES ──
+const FRASES = [
+  "Cada clienta que entra por tu puerta es una oportunidad de hacer magia. Tú tienes ese don. 💛",
+  "El éxito no llega sola, lo construyes día a día con cada uña, cada color, cada sonrisa. ¡Sigue adelante!",
+  "Eres tu propio jefe, tu propia marca, tu propio milagro. No te rindas nunca. 🌟",
+  "Las mujeres que trabajan con sus manos crean arte que el mundo lleva puesto. Eso eres tú. 💅",
+  "Los días difíciles te están preparando para los momentos más grandes. Confía en el proceso.",
+  "Tu trabajo embellece a otras mujeres. Recuerda también brillar tú. ✨",
+  "Cada amanecer es una nueva cita con tu sueño. Levántate y ve por él.",
+  "No necesitas que nadie te dé permiso para ser grande. Tú ya lo eres. 👑",
+  "Las manos que trabajan duro hoy son las que construyen el futuro de mañana.",
+  "Eres el resultado de todo lo que no te rindiste. ¡Orgullo puro! 🔥",
+  "Tu perseverancia es más poderosa que cualquier obstáculo. Sigue creando belleza.",
+  "Cada clienta satisfecha es una victoria tuya. Celebra cada una de ellas. 🥂",
+  "El trabajo con pasión nunca se siente como trabajo. Tú lo sabes bien, sigue brillando.",
+  "Eres emprendedora, artista y guerrera. Una combinación imparable. 💪",
+  "El camino es tuyo y ya lo estás recorriendo. Qué valiente eres. 🌺",
+  "Tus sueños merecen el mismo cuidado que le das a las uñas de tus clientas. ¡Cuídalos!",
+  "La constancia es el secreto de las grandes. Tú ya lo estás aplicando cada día.",
+  "Hoy es un buen día para crear algo hermoso. Empieza por ti misma. ✨",
+  "Mujer que trabaja, mujer que conquista. ¡Hoy también ganarás! 💛",
+  "Cada pequeño paso que das es progreso real. No te compares, avanza. 🚀"
+];
+
+function showMotivationalMessage() {
+  const today = new Date().toDateString();
+  const stored = localStorage.getItem('motivational_date');
+  let idx = localStorage.getItem('motivational_idx');
+
+  if (stored !== today || idx === null) {
+    idx = Math.floor(Math.random() * FRASES.length);
+    localStorage.setItem('motivational_date', today);
+    localStorage.setItem('motivational_idx', idx);
+  }
+
+  const el = document.getElementById('motivationalText');
+  if (el) el.textContent = FRASES[parseInt(idx)];
+}
+
 // ── STATE ──
 let allCitas = [];
 let allClientas = [];
@@ -659,6 +781,7 @@ let currentTab = 'inicio';
 let calCurrentDate = new Date();
 let selectedCalDate = null;
 let portfolioImageData = null;
+let appReady = false;
 
 // ── FIREBASE READY ──
 window.addEventListener('firebaseReady', init);
@@ -669,10 +792,23 @@ function init() {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('appShell').style.display = 'block';
       showTab('inicio', document.querySelector('.nav-btn'));
-      listenData();
+      showMotivationalMessage();
+      if (!appReady) {
+        listenData();
+        appReady = true;
+      }
     } else {
-      document.getElementById('loginScreen').style.display = 'flex';
-      document.getElementById('appShell').style.display = 'none';
+      // FIX 2: Only show login if we are not already showing it
+      // (avoids flicker on pull-to-refresh)
+      if (appReady) {
+        // User explicitly logged out
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('appShell').style.display = 'none';
+        appReady = false;
+      } else {
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('appShell').style.display = 'none';
+      }
     }
   });
 }
@@ -683,15 +819,24 @@ async function doLogin() {
   const pass = document.getElementById('loginPass').value;
   const errEl = document.getElementById('loginError');
   errEl.textContent = '';
+  const btn = document.querySelector('.btn-login');
+  btn.textContent = 'Entrando...';
+  btn.disabled = true;
   try {
     await window.fbFns.signInWithEmailAndPassword(window.fbAuth, email, pass);
   } catch(e) {
     errEl.textContent = 'Correo o contraseña incorrectos';
+    btn.textContent = 'Entrar';
+    btn.disabled = false;
   }
 }
+
 async function doLogout() {
+  if (!confirm('¿Cerrar sesión?')) return;
+  appReady = false;
   await window.fbFns.signOut(window.fbAuth);
 }
+
 document.getElementById('loginEmail').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('loginPass').focus(); });
 document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
@@ -842,7 +987,7 @@ function renderCalendar() {
     const isToday = dateStr === today;
     const hasCita = citasDates.has(dateStr);
     const isSelected = dateStr === selectedCalDate;
-    html += `<div class="cal-day ${isToday?'today':''} ${hasCita?'has-cita':''} ${isSelected&&!isToday?'':''}${isSelected?'selected-day':''}" 
+    html += `<div class="cal-day ${isToday?'today':''} ${hasCita?'has-cita':''}"
       style="${isSelected&&!isToday?'background:var(--cream2);font-weight:700':''}"
       onclick="calSelectDay('${dateStr}')">${d}</div>`;
   }
@@ -859,14 +1004,13 @@ function calSelectDay(date) {
 }
 
 // ── CITA MODAL ──
-function openNewCita() {
+function prefillNewCita() {
   document.getElementById('editCitaId').value = '';
   document.getElementById('modalCitaTitle').textContent = 'Nueva Cita';
   ['citaNombre','citaTelefono','citaInstagram','citaNotas','citaPrecio'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('citaServicio').value = '';
-  document.getElementById('citaFecha').value = new Date().toISOString().split('T')[0];
+  document.getElementById('citaFecha').value = selectedCalDate || new Date().toISOString().split('T')[0];
   document.getElementById('citaHora').value = '';
-  openModal('modalCita');
 }
 
 function editCita(id) {
@@ -912,7 +1056,6 @@ async function saveCita() {
   }
 }
 
-
 function showAvisoReserva(data) {
   const msg = `Hola mi bella💅 ✨ Tu cita con Irianis Marcano ha sido registrada para el ${formatDate(data.fecha)}${data.hora ? ' a las ' + data.hora : ''}. Servicio: ${data.servicio || 'a confirmar'}. ¡Te esperamos!`;
   document.getElementById('avisoReservaMsg').textContent = msg;
@@ -954,6 +1097,16 @@ function verCita(id) {
   openModal('modalVerCita');
 }
 
+// ── RUT FORMAT ──
+function formatRut(input) {
+  let val = input.value.replace(/[^0-9kK]/g, '').toUpperCase();
+  if (val.length < 2) { input.value = val; return; }
+  const dv = val.slice(-1);
+  let num = val.slice(0, -1);
+  num = num.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  input.value = num + '-' + dv;
+}
+
 // ── CLIENTAS ──
 function renderClientas() {
   const el = document.getElementById('listClientas');
@@ -967,7 +1120,7 @@ function renderClientas() {
       <div class="clienta-avatar">${c.nombre.charAt(0).toUpperCase()}</div>
       <div class="clienta-info" onclick="verClienta('${c.id}')">
         <div class="clienta-name">${c.nombre}</div>
-        <div class="clienta-detail">${c.telefono?'+56'+c.telefono:''}${c.instagram?' • '+c.instagram:''}</div>
+        <div class="clienta-detail">${c.rut?c.rut+' • ':''}${c.telefono?'+56'+c.telefono:''}${c.instagram?' • '+c.instagram:''}</div>
       </div>
       <div class="clienta-actions">
         ${c.telefono?`<button class="btn-icon" onclick="window.open('https://wa.me/+56${c.telefono}','_blank')">
@@ -990,6 +1143,7 @@ function verClienta(id) {
 
   document.getElementById('modalVerClientaContent').innerHTML = `
     <div class="modal-title">${c.nombre}</div>
+    ${c.rut?`<div style="margin-bottom:6px;font-size:14px;color:var(--text2)">🪪 RUT: ${c.rut}</div>`:''}
     ${c.telefono?`<div style="margin-bottom:6px;font-size:14px;color:var(--text2)">📞 +56${c.telefono}</div>`:''}
     ${c.instagram?`<div style="margin-bottom:6px;font-size:14px;color:var(--text2)">📷 ${c.instagram}</div>`:''}
     ${c.notas?`<div style="margin-bottom:10px;font-size:13px;color:var(--text3);font-style:italic">${c.notas}</div>`:''}
@@ -1037,6 +1191,7 @@ async function saveClienta() {
   const data = {
     nombre: document.getElementById('clientaNombre').value.trim(),
     telefono: document.getElementById('clientaTelefono').value.trim(),
+    rut: document.getElementById('clientaRut').value.trim(),
     instagram: document.getElementById('clientaInstagram').value.trim(),
     notas: document.getElementById('clientaNotas').value.trim(),
     createdAt: new Date().toISOString()
@@ -1044,7 +1199,7 @@ async function saveClienta() {
   if(!data.nombre) { alert('El nombre es requerido'); return; }
   const { collection, addDoc } = window.fbFns;
   await addDoc(collection(window.fbDb,'clientas'), data);
-  ['clientaNombre','clientaTelefono','clientaInstagram','clientaNotas'].forEach(id=>document.getElementById(id).value='');
+  ['clientaNombre','clientaTelefono','clientaRut','clientaInstagram','clientaNotas'].forEach(id=>document.getElementById(id).value='');
   closeModal('modalClienta');
 }
 
@@ -1057,7 +1212,7 @@ async function deleteClienta(id) {
 function populateClientaSelect() {
   const sel = document.getElementById('portfolioClientaId');
   const cur = sel.value;
-  sel.innerHTML = '<option value="">Sin vincular</option>' + 
+  sel.innerHTML = '<option value="">Sin vincular</option>' +
     allClientas.sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');
   sel.value = cur;
 }
@@ -1106,24 +1261,19 @@ async function savePortfolio() {
   if(!portfolioImageData) { alert('Selecciona una foto'); return; }
   const categoria = document.getElementById('portfolioCategoria').value;
   const clientaId = document.getElementById('portfolioClientaId').value;
-
   try {
-    // Compress image before saving to Firestore
     const compressed = await compressImage(portfolioImageData, 800, 0.7);
-
     const { collection, addDoc } = window.fbFns;
     await addDoc(collection(window.fbDb,'portfolio'), {
       url: compressed, categoria, clientaId: clientaId || null,
       createdAt: new Date().toISOString()
     });
-
     portfolioImageData = null;
     document.getElementById('portfolioPreview').style.display = 'none';
     document.getElementById('portfolioFile').value = '';
     closeModal('modalPortfolio');
   } catch(e) {
     alert('Error al guardar la foto: ' + e.message);
-    console.error(e);
   }
 }
 
@@ -1162,14 +1312,6 @@ document.querySelectorAll('.modal-overlay').forEach(el => {
   el.addEventListener('click', e => { if(e.target===el) el.classList.remove('open'); });
 });
 
-// Fix: nueva cita button
-document.querySelector('[onclick="openModal(\'modalCita\')"]').addEventListener('click', () => {
-  // prefill date
-  document.getElementById('editCitaId').value = '';
-  document.getElementById('modalCitaTitle').textContent = 'Nueva Cita';
-  document.getElementById('citaFecha').value = new Date().toISOString().split('T')[0];
-});
-
 // ── HELPERS ──
 function formatDate(str) {
   if(!str) return '';
@@ -1177,8 +1319,6 @@ function formatDate(str) {
   const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
   return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
 }
-
-
 
 // ── GANANCIAS ──
 let gananciasPeriodo = 'mes';
@@ -1220,10 +1360,8 @@ function renderGanancias(periodo) {
   document.getElementById('gCitas').textContent = citas.length;
   document.getElementById('gPromedio').textContent = '$'+promedio.toLocaleString('es-CL');
 
-  // Bar chart por semana (últimas 6 semanas) o por mes
   renderBarChart(periodo, citas);
 
-  // Top servicios
   const servicios = {};
   citas.forEach(c => { if(c.servicio) servicios[c.servicio] = (servicios[c.servicio]||0) + 1; });
   const top = Object.entries(servicios).sort((a,b)=>b[1]-a[1]).slice(0,5);
@@ -1244,15 +1382,11 @@ function renderBarChart(periodo, citas) {
   const barEl = document.getElementById('barChart');
   const labEl = document.getElementById('barLabels');
   const now = new Date();
-
   let grupos = [];
 
   if(periodo === 'mes') {
-    // Por semanas del mes actual
     for(let s=0; s<5; s++) {
       const ini = s*7+1, fin = Math.min((s+1)*7, 31);
-      const mes = String(now.getMonth()+1).padStart(2,'0');
-      const año = now.getFullYear();
       const total = citas.filter(c=>{
         if(!c.fecha) return false;
         const d = parseInt(c.fecha.split('-')[2]);
@@ -1261,7 +1395,6 @@ function renderBarChart(periodo, citas) {
       if(total > 0 || s < 4) grupos.push({ label: `S${s+1}`, total });
     }
   } else if(periodo === '3meses') {
-    // Por mes
     for(let i=2; i>=0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
       const mesStr = String(d.getMonth()+1).padStart(2,'0');
@@ -1271,7 +1404,6 @@ function renderBarChart(periodo, citas) {
       grupos.push({ label: meses[d.getMonth()], total });
     }
   } else {
-    // Por mes del año
     const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
     for(let m=0; m<=now.getMonth(); m++) {
       const mesStr = String(m+1).padStart(2,'0');
@@ -1281,8 +1413,6 @@ function renderBarChart(periodo, citas) {
   }
 
   const maxVal = Math.max(...grupos.map(g=>g.total), 1);
-  const barW = `calc((100% - ${(grupos.length-1)*6}px) / ${grupos.length})`;
-
   barEl.innerHTML = grupos.map(g => {
     const h = Math.max(Math.round(g.total/maxVal*100), g.total>0?4:0);
     return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px">
@@ -1290,11 +1420,10 @@ function renderBarChart(periodo, citas) {
       <div style="width:100%;height:${h}px;background:linear-gradient(180deg,var(--gold),var(--gold-dark));border-radius:4px 4px 0 0;transition:height 0.4s ease;min-height:${g.total>0?4:0}px"></div>
     </div>`;
   }).join('');
-
   labEl.innerHTML = grupos.map(g=>`<div style="flex:1;text-align:center;font-size:10px;color:var(--text3)">${g.label}</div>`).join('');
 }
 
-// ── PULL TO REFRESH ──
+// ── FIX 2: PULL TO REFRESH – no reload, just re-render ──
 (function() {
   let startY = 0;
   let pulling = false;
@@ -1346,13 +1475,17 @@ function renderBarChart(periodo, citas) {
     const dist = e.changedTouches[0].clientY - startY;
     pulling = false;
     if(dist > 80) {
+      // FIX 2: Re-render in place instead of reloading the page
       indicator.style.height = '44px';
       document.getElementById('pullText').textContent = 'Actualizando...';
       document.getElementById('pullSpinner').textContent = '⟳';
       document.getElementById('pullSpinner').style.animation = 'spin 0.8s linear infinite';
       setTimeout(() => {
-        window.location.reload();
-      }, 800);
+        renderAll();
+        renderClientas();
+        renderPortfolio();
+        if(indicator) { indicator.style.height = '0'; setTimeout(()=>{ if(indicator){indicator.remove();indicator=null;} },300); }
+      }, 700);
     } else {
       indicator.style.height = '0';
       setTimeout(() => { if(indicator) { indicator.remove(); indicator = null; } }, 300);
