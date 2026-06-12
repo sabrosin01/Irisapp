@@ -44,6 +44,145 @@
 html,body{width:100%;max-width:100%;overflow-x:hidden;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;min-height:-webkit-fill-available;}
 
+/* ══════════════════════════════════
+   INSTALL SCREEN
+══════════════════════════════════ */
+#installScreen{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#0e0b04 0%,#1a1508 45%,#0e0b04 100%);
+  padding:40px 28px;
+  padding-top:calc(40px + env(safe-area-inset-top));
+  padding-bottom:calc(40px + env(safe-area-inset-bottom));
+}
+/* Shimmer background decoration */
+#installScreen::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 20%, rgba(201,168,76,0.06) 0%, transparent 70%),
+             radial-gradient(ellipse 40% 30% at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+.install-logo-wrap{
+  position:relative;margin-bottom:28px;
+}
+.install-logo-ring{
+  width:100px;height:100px;border-radius:50%;
+  border:1.5px solid rgba(201,168,76,0.35);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.install-logo-ring::before{
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:1px solid rgba(201,168,76,0.12);
+}
+.install-logo-ring::after{
+  content:'';position:absolute;inset:-12px;border-radius:50%;
+  border:1px solid rgba(201,168,76,0.06);
+}
+.install-logo-img{
+  width:90px;height:90px;border-radius:50%;
+  object-fit:cover;display:block;
+}
+.install-logo-fallback{
+  width:90px;height:90px;border-radius:50%;
+  background:rgba(201,168,76,0.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;font-weight:300;letter-spacing:2px;
+  color:var(--gold);font-style:italic;font-family:Georgia,serif;
+}
+
+.install-name{
+  color:var(--gold);font-size:26px;font-weight:300;
+  letter-spacing:4px;text-transform:uppercase;
+  font-family:Georgia,serif;font-style:italic;
+  margin-bottom:6px;text-align:center;
+}
+.install-tagline{
+  color:rgba(201,168,76,0.5);font-size:11px;
+  letter-spacing:2.5px;text-transform:uppercase;
+  margin-bottom:40px;text-align:center;
+}
+
+.install-divider{
+  width:40px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.4),transparent);
+  margin:0 auto 32px;
+}
+
+.install-label{
+  font-size:11px;text-transform:uppercase;letter-spacing:2px;
+  color:rgba(255,255,255,0.3);margin-bottom:20px;text-align:center;
+}
+
+.install-steps{
+  width:100%;max-width:320px;
+  display:flex;flex-direction:column;gap:14px;
+  margin-bottom:36px;
+}
+.install-step{
+  display:flex;align-items:center;gap:16px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(201,168,76,0.12);
+  border-radius:14px;padding:14px 18px;
+}
+.install-step-num{
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--gold);
+  flex-shrink:0;
+}
+.install-step-icon{
+  font-size:20px;flex-shrink:0;width:28px;text-align:center;
+}
+.install-step-text{
+  flex:1;
+}
+.install-step-title{
+  font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);
+  margin-bottom:2px;
+}
+.install-step-sub{
+  font-size:11px;color:rgba(255,255,255,0.35);line-height:1.4;
+}
+
+.install-btn-check{
+  width:100%;max-width:320px;
+  padding:16px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  border:none;border-radius:14px;
+  color:#fff;font-size:15px;font-weight:600;
+  letter-spacing:0.5px;cursor:pointer;
+  transition:opacity 0.2s,transform 0.15s;
+  margin-bottom:12px;
+}
+.install-btn-check:active{opacity:0.85;transform:scale(0.98);}
+
+.install-hint{
+  font-size:11px;color:rgba(201,168,76,0.35);
+  text-align:center;letter-spacing:0.5px;
+  max-width:260px;line-height:1.5;
+}
+
+/* Feedback message */
+.install-feedback{
+  width:100%;max-width:320px;
+  border-radius:12px;padding:12px 16px;
+  font-size:13px;font-weight:600;text-align:center;
+  margin-bottom:14px;display:none;
+}
+.install-feedback.ok{
+  background:rgba(22,163,74,0.15);
+  border:1px solid rgba(22,163,74,0.3);
+  color:#4ade80;display:block;
+}
+.install-feedback.warn{
+  background:rgba(234,179,8,0.1);
+  border:1px solid rgba(234,179,8,0.25);
+  color:#fbbf24;display:block;
+}
+
 /* LOGIN */
 #loginScreen{width:100%;min-height:100vh;min-height:-webkit-fill-available;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#1a1508 0%,#2e2010 60%,#1a1508 100%);padding:32px 24px;}
 .login-logo{width:110px;height:110px;border-radius:50%;border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;margin-bottom:20px;background:rgba(201,168,76,0.08);}
@@ -214,12 +353,75 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 .bloqueo-item{background:var(--white);border-radius:var(--radius);padding:12px 16px;margin-bottom:8px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;}
 
 @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.install-steps .install-step{animation:fadeIn 0.4s ease both;}
+.install-steps .install-step:nth-child(1){animation-delay:0.1s;}
+.install-steps .install-step:nth-child(2){animation-delay:0.2s;}
+.install-steps .install-step:nth-child(3){animation-delay:0.3s;}
 </style>
 </head>
 <body>
 
+<!-- ══════════════════════════════════
+     PANTALLA DE INSTALACIÓN
+     Se muestra solo si NO es standalone
+══════════════════════════════════ -->
+<div id="installScreen">
+  <div class="install-logo-wrap">
+    <div class="install-logo-ring">
+      <img class="install-logo-img" src="IMG_0581.png" alt="Irianis Marcano"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div class="install-logo-fallback" style="display:none">IM</div>
+    </div>
+  </div>
+
+  <div class="install-name">Irianis Marcano</div>
+  <div class="install-tagline">Estilista &amp; Nails · App profesional</div>
+
+  <div class="install-divider"></div>
+
+  <div class="install-label">Instala la app en tu iPhone</div>
+
+  <div class="install-steps">
+    <div class="install-step">
+      <div class="install-step-num">1</div>
+      <div class="install-step-icon">⎋</div>
+      <div class="install-step-text">
+        <div class="install-step-title">Pulsa Compartir</div>
+        <div class="install-step-sub">El ícono de la caja con flecha, abajo del Safari</div>
+      </div>
+    </div>
+    <div class="install-step">
+      <div class="install-step-num">2</div>
+      <div class="install-step-icon">＋</div>
+      <div class="install-step-text">
+        <div class="install-step-title">Agregar a pantalla de inicio</div>
+        <div class="install-step-sub">Desplázate hacia abajo en el menú que aparece</div>
+      </div>
+    </div>
+    <div class="install-step">
+      <div class="install-step-num">3</div>
+      <div class="install-step-icon">💅</div>
+      <div class="install-step-text">
+        <div class="install-step-title">Abre desde el ícono instalado</div>
+        <div class="install-step-sub">Busca el ícono en tu pantalla de inicio</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="install-feedback" id="installFeedback"></div>
+
+  <button class="install-btn-check" onclick="checkIfInstalled()">
+    ✓ Ya instalé la app
+  </button>
+
+  <div class="install-hint">
+    Una vez instalada, la app funcionará sin Safari, con acceso rápido desde tu pantalla de inicio
+  </div>
+</div>
+
 <!-- LOGIN -->
-<div id="loginScreen">
+<div id="loginScreen" style="display:none">
   <div class="login-logo"><span>IM</span></div>
   <h1>Irianis Marcano</h1>
   <p>Estilista &amp; Nails</p>
@@ -356,80 +558,50 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   <!-- HERRAMIENTAS -->
   <div id="tab-herramientas" class="content" style="display:none">
     <div class="section-title" style="margin-bottom:20px">Herramientas</div>
-
-    <!-- Reporte fiscal -->
     <div class="card" style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
         <div style="font-size:28px">📊</div>
-        <div>
-          <div style="font-size:15px;font-weight:700;color:var(--text)">Reporte Fiscal</div>
-          <div style="font-size:12px;color:var(--text3)">Resumen mensual de ingresos y gastos</div>
-        </div>
+        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Reporte Fiscal</div><div style="font-size:12px;color:var(--text3)">Resumen mensual de ingresos y gastos</div></div>
       </div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenReporte')">Ver reporte</button>
     </div>
-
-    <!-- Registro de gastos -->
     <div class="card" style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
         <div style="font-size:28px">💸</div>
-        <div>
-          <div style="font-size:15px;font-weight:700;color:var(--text)">Registro de Gastos</div>
-          <div style="font-size:12px;color:var(--text3)">Insumos, marketing y más</div>
-        </div>
+        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Registro de Gastos</div><div style="font-size:12px;color:var(--text3)">Insumos, marketing y más</div></div>
       </div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenGastos')">Ver gastos</button>
     </div>
-
-    <!-- Clientas perdidas -->
     <div class="card" style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
         <div style="font-size:28px">⚠️</div>
-        <div>
-          <div style="font-size:15px;font-weight:700;color:var(--text)">Clientas Perdidas</div>
-          <div style="font-size:12px;color:var(--text3)">Sin visita hace más de 45 días</div>
-        </div>
+        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Clientas Perdidas</div><div style="font-size:12px;color:var(--text3)">Sin visita hace más de 45 días</div></div>
       </div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenPerdidas')">Ver clientas</button>
     </div>
-
-    <!-- Plantillas WhatsApp -->
     <div class="card" style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
         <div style="font-size:28px">💬</div>
-        <div>
-          <div style="font-size:15px;font-weight:700;color:var(--text)">Plantillas WhatsApp</div>
-          <div style="font-size:12px;color:var(--text3)">Mensajes listos para enviar</div>
-        </div>
+        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Plantillas WhatsApp</div><div style="font-size:12px;color:var(--text3)">Mensajes listos para enviar</div></div>
       </div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenPlantillas')">Ver plantillas</button>
     </div>
-
-    <!-- Horario de trabajo -->
     <div class="card" style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
         <div style="font-size:28px">🕐</div>
-        <div>
-          <div style="font-size:15px;font-weight:700;color:var(--text)">Horario de Trabajo</div>
-          <div style="font-size:12px;color:var(--text3)">Días y horas disponibles + bloqueos</div>
-        </div>
+        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Horario de Trabajo</div><div style="font-size:12px;color:var(--text3)">Días y horas disponibles + bloqueos</div></div>
       </div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenHorario')">Configurar</button>
     </div>
-
-    <!-- Notas rápidas -->
     <div class="card" style="margin-bottom:14px">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px">
         <div style="font-size:28px">📝</div>
-        <div>
-          <div style="font-size:15px;font-weight:700;color:var(--text)">Notas Rápidas</div>
-          <div style="font-size:12px;color:var(--text3)">Ideas, pedidos, pendientes</div>
-        </div>
+        <div><div style="font-size:15px;font-weight:700;color:var(--text)">Notas Rápidas</div><div style="font-size:12px;color:var(--text3)">Ideas, pedidos, pendientes</div></div>
       </div>
       <div style="height:12px"></div>
       <button class="btn-primary" onclick="openSubscreen('subscreenNotas')">Abrir notas</button>
@@ -476,9 +648,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     <div class="subscreen-title">Reporte Fiscal</div>
   </div>
   <div style="padding:20px 16px 40px">
-    <div class="tabs" id="reporteTabs">
-      <button class="tab-btn active" onclick="switchReporte(0,this)">Ene</button>
-    </div>
+    <div class="tabs" id="reporteTabs"><button class="tab-btn active" onclick="switchReporte(0,this)">Ene</button></div>
     <div id="reporteContent"></div>
   </div>
 </div>
@@ -533,14 +703,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     <div class="card" style="margin-bottom:14px">
       <div class="card-title">Horario</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-        <div class="form-group" style="margin-bottom:0">
-          <label>Desde</label>
-          <input type="time" id="horarioDesde" value="09:00"/>
-        </div>
-        <div class="form-group" style="margin-bottom:0">
-          <label>Hasta</label>
-          <input type="time" id="horarioHasta" value="18:00"/>
-        </div>
+        <div class="form-group" style="margin-bottom:0"><label>Desde</label><input type="time" id="horarioDesde" value="09:00"/></div>
+        <div class="form-group" style="margin-bottom:0"><label>Hasta</label><input type="time" id="horarioHasta" value="18:00"/></div>
       </div>
       <div style="height:14px"></div>
       <button class="btn-primary" onclick="saveHorario()">Guardar horario</button>
@@ -728,7 +892,63 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 </div>
 
 <script>
-// ── FRASES ──
+// ══════════════════════════════════
+// PWA INSTALL DETECTION
+// ══════════════════════════════════
+(function() {
+  // Checks if running in standalone mode (installed PWA)
+  function isStandalone() {
+    return (
+      window.navigator.standalone === true ||                          // iOS Safari
+      window.matchMedia('(display-mode: standalone)').matches ||      // Android / Chrome
+      window.matchMedia('(display-mode: fullscreen)').matches ||      // Fullscreen PWA
+      document.referrer.startsWith('android-app://')                  // TWA Android
+    );
+  }
+
+  if (isStandalone()) {
+    // Running as installed PWA — hide install screen entirely
+    const el = document.getElementById('installScreen');
+    if (el) el.style.display = 'none';
+  } else {
+    // Running in browser — show install screen, hide the rest
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appShell').style.display = 'none';
+  }
+})();
+
+// Button: "Ya instalé la app"
+function checkIfInstalled() {
+  const isStandalone =
+    window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.matchMedia('(display-mode: fullscreen)').matches ||
+    document.referrer.startsWith('android-app://');
+
+  const fb = document.getElementById('installFeedback');
+
+  if (isStandalone) {
+    // Already in standalone — shouldn't normally reach here, but just in case
+    fb.className = 'install-feedback ok';
+    fb.textContent = '✓ ¡App instalada correctamente! Redirigiendo...';
+    setTimeout(() => {
+      document.getElementById('installScreen').style.display = 'none';
+    }, 1200);
+  } else {
+    // Not standalone yet
+    fb.className = 'install-feedback warn';
+    fb.textContent = 'Aún no detectamos la instalación. Sigue los pasos y abre desde el ícono en tu pantalla de inicio.';
+    // Auto-hide feedback after 4s
+    setTimeout(() => {
+      fb.className = 'install-feedback';
+      fb.textContent = '';
+    }, 4000);
+  }
+}
+
+// ══════════════════════════════════
+// FRASES
+// ══════════════════════════════════
 const FRASES = [
   "Cada clienta que entra por tu puerta es una oportunidad de hacer magia. Tú tienes ese don. 💛",
   "El éxito no llega solo, lo construyes día a día con cada uña, cada color, cada sonrisa.",
@@ -777,12 +997,14 @@ window.addEventListener('firebaseReady', init);
 function init() {
   window.fbFns.onAuthStateChanged(window.fbAuth, user => {
     if (user) {
+      document.getElementById('installScreen').style.display='none';
       document.getElementById('loginScreen').style.display='none';
       document.getElementById('appShell').style.display='block';
       showTab('inicio', document.querySelector('.nav-btn'));
       showMotivationalMessage();
       if (!appReady) { listenData(); appReady=true; }
     } else {
+      document.getElementById('installScreen').style.display='none';
       document.getElementById('loginScreen').style.display='flex';
       document.getElementById('appShell').style.display='none';
       appReady=false;
@@ -817,7 +1039,6 @@ function listenData() {
   onSnapshot(query(collection(db,'gastos'),orderBy('fecha')),snap=>{allGastos=snap.docs.map(d=>({id:d.id,...d.data()}));renderGastos();});
   onSnapshot(collection(db,'notas'),snap=>{allNotas=snap.docs.map(d=>({id:d.id,...d.data()}));renderNotas();});
   onSnapshot(collection(db,'bloqueos'),snap=>{allBloqueos=snap.docs.map(d=>({id:d.id,...d.data()}));renderBloqueos();});
-  // Load config
   getDoc(doc(db,'config','app')).then(d=>{ if(d.exists()){appConfig={...appConfig,...d.data()};applyConfig();} });
 }
 
@@ -1185,7 +1406,6 @@ function renderGanancias(periodo){
   else if(periodo==='3meses'){const hace3=new Date(now);hace3.setMonth(mes-2);const desde=hace3.toISOString().split('T')[0].substring(0,7);citas=allCitas.filter(c=>c.fecha&&c.fecha.substring(0,7)>=desde);label='Últimos 3 meses';}
   else{citas=allCitas.filter(c=>c.fecha&&c.fecha.startsWith(`${año}`));label='Este año';}
   const total=citas.reduce((s,c)=>s+(Number(c.precio)||0),0);
-  // filter gastos same period
   let gastosCitas=[];
   if(periodo==='mes'){const mesStr=String(mes+1).padStart(2,'0');gastosCitas=allGastos.filter(g=>g.fecha&&g.fecha.startsWith(`${año}-${mesStr}`));}
   else if(periodo==='3meses'){const hace3=new Date(now);hace3.setMonth(mes-2);const desde=hace3.toISOString().split('T')[0].substring(0,7);gastosCitas=allGastos.filter(g=>g.fecha&&g.fecha.substring(0,7)>=desde);}
@@ -1269,9 +1489,6 @@ function renderReporte(){
   const ingresos=citas.reduce((s,c)=>s+(Number(c.precio)||0),0);
   const totalGastos=gastos.reduce((s,g)=>s+(Number(g.monto)||0),0);
   const neto=ingresos-totalGastos;
-  // Group gastos by categoria
-  const gastosPorCat={};
-  gastos.forEach(g=>{gastosPorCat[g.categoria]=(gastosPorCat[g.categoria]||0)+Number(g.monto||0);});
   const el=document.getElementById('reporteContent');
   el.innerHTML=`
     <div style="text-align:center;margin-bottom:20px">
@@ -1354,7 +1571,6 @@ const PLANTILLAS=[
 ];
 function renderPlantillas(){
   const el=document.getElementById('plantillasContent');
-  // Get upcoming citas for quick send
   const proximas=allCitas.filter(c=>c.fecha>=new Date().toISOString().split('T')[0]&&c.telefono).slice(0,5);
   el.innerHTML=PLANTILLAS.map(p=>`
     <div class="plantilla-item">
@@ -1471,7 +1687,7 @@ function formatDate(str){
   return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
 }
 
-// ── PULL TO REFRESH (no reload) ──
+// ── PULL TO REFRESH ──
 (function(){
   let startY=0,pulling=false,indicator=null;
   function createIndicator(){const el=document.createElement('div');el.style.cssText='position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:center;gap:8px;background:#1a1508;color:#C9A84C;font-size:13px;font-weight:600;letter-spacing:1px;height:0;overflow:hidden;transition:height 0.2s ease;';el.innerHTML='<span id="ps">↓</span> <span id="pt">Desliza para actualizar</span>';document.body.appendChild(el);return el;}
@@ -1484,4 +1700,3 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('/Irisapp/sw.j
 </script>
 </body>
 </html>
-
