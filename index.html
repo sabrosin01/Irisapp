@@ -9,7 +9,6 @@
 <link rel="apple-touch-icon" href="IMG_0581.png"/>
 <link rel="manifest" href="manifest.json"/>
 <title>Irianis Marcano</title>
-
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -25,12 +24,10 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const auth = getAuth(app);
-  window.fbDb = db;
-  window.fbAuth = auth;
+  window.fbDb = db; window.fbAuth = auth;
   window.fbFns = { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, onSnapshot, setDoc, getDoc, signInWithEmailAndPassword, signOut, onAuthStateChanged };
   window.dispatchEvent(new Event('firebaseReady'));
 </script>
-
 <style>
 :root {
   --cream:#FAF8F4; --cream2:#F2EEE8; --cream3:#E8E2D8;
@@ -39,28 +36,17 @@
   --white:#FFFFFF; --danger:#ef4444;
   --shadow:0 2px 12px rgba(44,36,22,0.08);
   --radius:16px; --radius-sm:10px;
+  --estado-espera-bg:#fef9c3; --estado-espera-c:#854d0e;
+  --estado-atendida-bg:#dcfce7; --estado-atendida-c:#15803d;
+  --estado-perdida-bg:#fee2e2; --estado-perdida-c:#b91c1c;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;max-width:100%;overflow-x:hidden;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;min-height:-webkit-fill-available;}
 
-/* ══════════════════════════════════
-   INSTALL SCREEN
-══════════════════════════════════ */
-#installScreen{
-  position:fixed;inset:0;z-index:9999;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:linear-gradient(160deg,#0e0b04 0%,#1a1508 45%,#0e0b04 100%);
-  padding:40px 28px;
-  padding-top:calc(40px + env(safe-area-inset-top));
-  padding-bottom:calc(40px + env(safe-area-inset-bottom));
-}
-#installScreen::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 50% at 50% 20%, rgba(201,168,76,0.06) 0%, transparent 70%),
-             radial-gradient(ellipse 40% 30% at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
-  pointer-events:none;
-}
+/* INSTALL */
+#installScreen{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#0e0b04 0%,#1a1508 45%,#0e0b04 100%);padding:40px 28px;padding-top:calc(40px + env(safe-area-inset-top));padding-bottom:calc(40px + env(safe-area-inset-bottom));}
+#installScreen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 20%, rgba(201,168,76,0.06) 0%, transparent 70%);pointer-events:none;}
 .install-logo-wrap{position:relative;margin-bottom:28px;}
 .install-logo-ring{width:100px;height:100px;border-radius:50%;border:1.5px solid rgba(201,168,76,0.35);display:flex;align-items:center;justify-content:center;position:relative;}
 .install-logo-ring::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(201,168,76,0.12);}
@@ -78,7 +64,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .install-step-text{flex:1;}
 .install-step-title{font-size:13px;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:2px;}
 .install-step-sub{font-size:11px;color:rgba(255,255,255,0.35);line-height:1.4;}
-.install-btn-check{width:100%;max-width:320px;padding:16px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:600;letter-spacing:0.5px;cursor:pointer;transition:opacity 0.2s,transform 0.15s;margin-bottom:12px;}
+.install-btn-check{width:100%;max-width:320px;padding:16px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;transition:opacity 0.2s,transform 0.15s;margin-bottom:12px;}
 .install-btn-check:active{opacity:0.85;transform:scale(0.98);}
 .install-hint{font-size:11px;color:rgba(201,168,76,0.35);text-align:center;letter-spacing:0.5px;max-width:260px;line-height:1.5;}
 .install-feedback{width:100%;max-width:320px;border-radius:12px;padding:12px 16px;font-size:13px;font-weight:600;text-align:center;margin-bottom:14px;display:none;}
@@ -123,7 +109,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .motivational-label{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:rgba(201,168,76,0.6);margin-bottom:6px;font-weight:600;}
 .motivational-text{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;font-style:italic;font-family:Georgia,serif;padding-right:36px;}
 
-/* META PROGRESS */
+/* META */
 .meta-card{background:var(--white);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow);}
 .meta-bar-bg{background:var(--cream2);border-radius:6px;height:8px;margin-top:8px;overflow:hidden;}
 .meta-bar-fill{height:8px;border-radius:6px;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width 0.6s ease;}
@@ -160,30 +146,46 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 .phone-row input{flex:1;min-width:0;}
 .rut-hint{font-size:10px;color:var(--text3);margin-top:4px;}
 
-/* CITA ITEMS */
-.cita-item{background:var(--white);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;width:100%;overflow:hidden;}
-.cita-color{width:4px;height:44px;border-radius:2px;flex-shrink:0;}
+/* ══ CITA ITEM — barra de color dinámica por estado ══ */
+.cita-item{background:var(--white);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;width:100%;overflow:hidden;transition:opacity 0.2s;}
+.cita-color{width:5px;border-radius:3px;flex-shrink:0;align-self:stretch;min-height:44px;transition:background 0.3s;}
 .cita-info{flex:1;min-width:0;}
 .cita-name{font-size:15px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cita-detail{font-size:12px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cita-price{font-size:14px;font-weight:600;color:var(--gold);white-space:nowrap;}
 .cita-actions{display:flex;gap:4px;flex-shrink:0;}
 
-/* ══ ESTADO CITA BUTTONS ══ */
-.estado-btns{display:flex;gap:4px;margin-top:6px;}
-.estado-btn{border:none;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;cursor:pointer;opacity:0.35;transition:opacity 0.2s,transform 0.15s;white-space:nowrap;}
+/* ══ ESTADO BUTTONS ══ */
+.estado-btns{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;}
+.estado-btn{border:none;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;cursor:pointer;opacity:0.3;transition:opacity 0.2s,transform 0.15s;white-space:nowrap;}
 .estado-btn:active{transform:scale(0.95);}
 .estado-btn.activo{opacity:1;}
-.estado-btn.espera{background:#fef9c3;color:#854d0e;}
-.estado-btn.atendida{background:#dcfce7;color:#15803d;}
-.estado-btn.perdida{background:#fee2e2;color:#b91c1c;}
+.estado-btn.espera{background:var(--estado-espera-bg);color:var(--estado-espera-c);}
+.estado-btn.atendida{background:var(--estado-atendida-bg);color:var(--estado-atendida-c);}
+.estado-btn.perdida{background:var(--estado-perdida-bg);color:var(--estado-perdida-c);}
 
+/* ══ MÉTODO DE PAGO CHIPS ══ */
+.pago-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
+.pago-chip{border:none;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer;background:var(--cream2);color:var(--text2);transition:all 0.2s;white-space:nowrap;}
+.pago-chip.activo{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;}
+.pago-chip:active{transform:scale(0.95);}
+
+/* BADGE DE PAGO */
+.pago-badge{display:inline-flex;align-items:center;gap:3px;background:rgba(201,168,76,0.12);border-radius:6px;padding:2px 7px;font-size:10px;font-weight:600;color:var(--gold-dark);}
+
+/* CLIENTAS */
 .clienta-item{background:var(--white);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;width:100%;overflow:hidden;}
 .clienta-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:600;flex-shrink:0;}
 .clienta-info{flex:1;min-width:0;}
 .clienta-name{font-size:15px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .clienta-detail{font-size:12px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .clienta-actions{display:flex;gap:6px;flex-shrink:0;}
+
+/* ══ BÚSQUEDA ══ */
+.search-bar{position:relative;margin-bottom:14px;}
+.search-bar input{padding-left:38px;background:var(--white);border:1.5px solid var(--cream3);font-size:15px;}
+.search-bar input:focus{border-color:var(--gold);}
+.search-bar svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--text3);fill:none;stroke-width:2;pointer-events:none;}
 
 /* SECTION HEADER */
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;}
@@ -238,7 +240,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 .wa-btn{display:flex;align-items:center;gap:8px;background:#25D366;border:none;border-radius:var(--radius-sm);color:#fff;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity 0.2s;}
 .wa-btn:active{opacity:0.85;}
 
-/* GASTO ITEM */
+/* GASTOS */
 .gasto-item{background:var(--white);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;}
 .gasto-icon{width:40px;height:40px;border-radius:10px;background:var(--cream2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
 .gasto-info{flex:1;min-width:0;}
@@ -246,12 +248,12 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 .gasto-cat{font-size:11px;color:var(--text3);margin-top:2px;}
 .gasto-monto{font-size:14px;font-weight:700;color:var(--danger);white-space:nowrap;}
 
-/* PLANTILLAS WA */
+/* PLANTILLAS */
 .plantilla-item{background:var(--white);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);}
 .plantilla-label{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
 .plantilla-text{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:10px;}
 
-/* LOST CLIENT */
+/* BADGES */
 .lost-badge{background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:2px 8px;font-size:10px;color:var(--danger);font-weight:600;}
 .ok-badge{background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:2px 8px;font-size:10px;color:#16a34a;font-weight:600;}
 
@@ -263,7 +265,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 .note-item{background:var(--white);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);}
 .bloqueo-item{background:var(--white);border-radius:var(--radius);padding:12px 16px;margin-bottom:8px;box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:center;}
 
-@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+/* ══ CONTADOR ATENDIDAS ══ */
+.atendidas-badge{display:inline-flex;align-items:center;gap:4px;background:var(--estado-atendida-bg);color:var(--estado-atendida-c);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;}
+
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .install-steps .install-step{animation:fadeIn 0.4s ease both;}
 .install-steps .install-step:nth-child(1){animation-delay:0.1s;}
@@ -272,45 +276,20 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 </style>
 </head>
 <body>
-
-<!-- PANTALLA DE INSTALACIÓN -->
+<!-- INSTALL -->
 <div id="installScreen">
-  <div class="install-logo-wrap">
-    <div class="install-logo-ring">
-      <img class="install-logo-img" src="IMG_0581.png" alt="Irianis Marcano"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-      <div class="install-logo-fallback" style="display:none">IM</div>
-    </div>
-  </div>
+  <div class="install-logo-wrap"><div class="install-logo-ring">
+    <img class="install-logo-img" src="IMG_0581.png" alt="Irianis Marcano" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+    <div class="install-logo-fallback" style="display:none">IM</div>
+  </div></div>
   <div class="install-name">Irianis Marcano</div>
   <div class="install-tagline">Estilista &amp; Nails · App profesional</div>
   <div class="install-divider"></div>
   <div class="install-label">Instala la app en tu iPhone</div>
   <div class="install-steps">
-    <div class="install-step">
-      <div class="install-step-num">1</div>
-      <div class="install-step-icon">⎋</div>
-      <div class="install-step-text">
-        <div class="install-step-title">Pulsa Compartir</div>
-        <div class="install-step-sub">El ícono de la caja con flecha, abajo del Safari</div>
-      </div>
-    </div>
-    <div class="install-step">
-      <div class="install-step-num">2</div>
-      <div class="install-step-icon">＋</div>
-      <div class="install-step-text">
-        <div class="install-step-title">Agregar a pantalla de inicio</div>
-        <div class="install-step-sub">Desplázate hacia abajo en el menú que aparece</div>
-      </div>
-    </div>
-    <div class="install-step">
-      <div class="install-step-num">3</div>
-      <div class="install-step-icon">💅</div>
-      <div class="install-step-text">
-        <div class="install-step-title">Abre desde el ícono instalado</div>
-        <div class="install-step-sub">Busca el ícono en tu pantalla de inicio</div>
-      </div>
-    </div>
+    <div class="install-step"><div class="install-step-num">1</div><div class="install-step-icon">⎋</div><div class="install-step-text"><div class="install-step-title">Pulsa Compartir</div><div class="install-step-sub">El ícono de la caja con flecha, abajo del Safari</div></div></div>
+    <div class="install-step"><div class="install-step-num">2</div><div class="install-step-icon">＋</div><div class="install-step-text"><div class="install-step-title">Agregar a pantalla de inicio</div><div class="install-step-sub">Desplázate hacia abajo en el menú que aparece</div></div></div>
+    <div class="install-step"><div class="install-step-num">3</div><div class="install-step-icon">💅</div><div class="install-step-text"><div class="install-step-title">Abre desde el ícono instalado</div><div class="install-step-sub">Busca el ícono en tu pantalla de inicio</div></div></div>
   </div>
   <div class="install-feedback" id="installFeedback"></div>
   <button class="install-btn-check" onclick="checkIfInstalled()">✓ Ya instalé la app</button>
@@ -320,8 +299,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
 <!-- LOGIN -->
 <div id="loginScreen" style="display:none">
   <div class="login-logo"><span>IM</span></div>
-  <h1>Irianis Marcano</h1>
-  <p>Estilista &amp; Nails</p>
+  <h1>Irianis Marcano</h1><p>Estilista &amp; Nails</p>
   <div class="login-card">
     <input type="email" id="loginEmail" placeholder="Correo electrónico" autocomplete="email" autocapitalize="none" spellcheck="false"/>
     <input type="password" id="loginPass" placeholder="Contraseña" autocomplete="current-password"/>
@@ -330,13 +308,26 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
+<!-- FACE ID LOCK SCREEN -->
+<div id="lockScreen" style="display:none;position:fixed;inset:0;z-index:5000;background:linear-gradient(160deg,#0e0b04 0%,#1a1508 45%,#0e0b04 100%);flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;padding-top:calc(40px + env(safe-area-inset-top));">
+  <div style="width:90px;height:90px;border-radius:50%;border:2px solid rgba(201,168,76,0.4);display:flex;align-items:center;justify-content:center;margin-bottom:24px;background:rgba(201,168,76,0.08);">
+    <svg viewBox="0 0 24 24" style="width:40px;height:40px;stroke:#C9A84C;fill:none;stroke-width:1.5"><path d="M12 1C8.5 1 6 3.5 6 7v2H4a1 1 0 00-1 1v10a1 1 0 001 1h16a1 1 0 001-1V10a1 1 0 00-1-1h-2V7c0-3.5-2.5-6-6-6z"/><circle cx="12" cy="15" r="2" fill="#C9A84C" stroke="none"/></svg>
+  </div>
+  <div style="color:var(--gold);font-size:22px;font-weight:300;letter-spacing:3px;font-family:Georgia,serif;font-style:italic;margin-bottom:8px;">Irianis Marcano</div>
+  <div style="color:rgba(201,168,76,0.5);font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:48px;">Verifica tu identidad</div>
+  <button id="faceIdBtn" onclick="requestFaceId()" style="background:linear-gradient(135deg,#C9A84C,#A07830);border:none;border-radius:16px;color:#fff;padding:16px 40px;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:0.5px;margin-bottom:16px;transition:opacity 0.2s;">
+    🔓 Usar Face ID
+  </button>
+  <button onclick="showPasswordFallback()" style="background:none;border:none;color:rgba(201,168,76,0.5);font-size:13px;cursor:pointer;padding:8px;letter-spacing:0.5px;">
+    Usar contraseña
+  </button>
+  <div id="lockError" style="color:#ff8080;font-size:13px;text-align:center;margin-top:16px;min-height:18px;"></div>
+</div>
+
 <!-- APP -->
 <div id="appShell">
   <div class="header">
-    <div>
-      <div class="header-title">Irianis Marcano</div>
-      <div class="header-sub">Estilista &amp; Nails</div>
-    </div>
+    <div><div class="header-title">Irianis Marcano</div><div class="header-sub">Estilista &amp; Nails</div></div>
     <button class="btn-logout" onclick="doLogout()">Salir</button>
   </div>
 
@@ -348,36 +339,20 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     </div>
     <div class="meta-card">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:2px">Meta mensual</div>
-          <div style="font-size:13px;font-weight:600;color:var(--text)" id="metaTexto">— / —</div>
-        </div>
-        <button class="btn-icon" onclick="openModal('modalMeta')" title="Configurar meta">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
-        </button>
+        <div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:2px">Meta mensual</div><div style="font-size:13px;font-weight:600;color:var(--text)" id="metaTexto">— / —</div></div>
+        <button class="btn-icon" onclick="openModal('modalMeta')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg></button>
       </div>
       <div class="meta-bar-bg"><div class="meta-bar-fill" id="metaBar" style="width:0%"></div></div>
       <div style="font-size:10px;color:var(--text3);margin-top:5px" id="metaPct">0% completado</div>
     </div>
     <div class="stats-row">
-      <div class="stat-card gold">
-        <div class="stat-label">Hoy</div>
-        <div class="stat-value" id="statHoy">$0</div>
-        <div class="stat-sub" id="statHoyCitas">0 citas</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Esta semana</div>
-        <div class="stat-value" id="statSemana">$0</div>
-        <div class="stat-sub" id="statSemanaCitas">0 citas</div>
-      </div>
+      <div class="stat-card gold"><div class="stat-label">Hoy</div><div class="stat-value" id="statHoy">$0</div><div class="stat-sub" id="statHoyCitas">0 citas</div></div>
+      <div class="stat-card"><div class="stat-label">Esta semana</div><div class="stat-value" id="statSemana">$0</div><div class="stat-sub" id="statSemanaCitas">0 citas</div></div>
     </div>
-    <div class="card">
-      <div class="card-title">Próximas citas</div>
-      <div id="listProximas"><div class="loading">Cargando...</div></div>
-    </div>
+    <div class="card"><div class="card-title">Próximas citas</div><div id="listProximas"><div class="loading">Cargando...</div></div></div>
   </div>
 
-  <!-- AGENDA -->
+  <!-- AGENDA — con pestañas Pendientes / Atendidas -->
   <div id="tab-citas" class="content" style="display:none">
     <div class="section-header">
       <div class="section-title">Agenda</div>
@@ -386,15 +361,24 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     <div id="calWidget"></div>
     <div style="margin-top:16px">
       <div class="card-title" id="citasDateLabel">Todas las citas</div>
+      <div class="tabs" id="agendaTabs" style="margin-bottom:12px">
+        <button class="tab-btn active" onclick="switchAgendaTab('pendientes',this)">⏳ Pendientes</button>
+        <button class="tab-btn" onclick="switchAgendaTab('atendidas',this)">✅ Atendidas</button>
+        <button class="tab-btn" onclick="switchAgendaTab('todas',this)">Todas</button>
+      </div>
       <div id="listCitas"><div class="loading">Cargando...</div></div>
     </div>
   </div>
 
-  <!-- CLIENTAS -->
+  <!-- CLIENTAS — con búsqueda -->
   <div id="tab-clientas" class="content" style="display:none">
     <div class="section-header">
       <div class="section-title">Clientas</div>
       <button class="btn-primary" style="width:auto;padding:10px 18px" onclick="openModal('modalClienta')">+ Nueva</button>
+    </div>
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="clientaSearch" placeholder="Buscar clienta..." oninput="renderClientas()" autocapitalize="none"/>
     </div>
     <div class="tabs" id="clientasTabs">
       <button class="tab-btn active" onclick="switchClientasTab('todas',this)">Todas</button>
@@ -437,84 +421,39 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
       <div id="barChart" style="display:flex;align-items:flex-end;gap:6px;height:100px;padding:0 4px"></div>
       <div id="barLabels" style="display:flex;gap:6px;margin-top:6px;padding:0 4px"></div>
     </div>
-    <div class="card">
-      <div class="card-title" style="margin-bottom:12px">Servicios más solicitados</div>
-      <div id="topServicios"></div>
-    </div>
+    <div class="card"><div class="card-title" style="margin-bottom:12px">Servicios más solicitados</div><div id="topServicios"></div></div>
   </div>
 
   <!-- HERRAMIENTAS -->
   <div id="tab-herramientas" class="content" style="display:none">
     <div class="section-title" style="margin-bottom:20px">Herramientas</div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">📊</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Reporte Fiscal</div><div style="font-size:12px;color:var(--text3)">Resumen mensual de ingresos y gastos</div></div></div>
-      <div style="height:12px"></div>
-      <button class="btn-primary" onclick="openSubscreen('subscreenReporte')">Ver reporte</button>
-    </div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">💸</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Registro de Gastos</div><div style="font-size:12px;color:var(--text3)">Insumos, marketing y más</div></div></div>
-      <div style="height:12px"></div>
-      <button class="btn-primary" onclick="openSubscreen('subscreenGastos')">Ver gastos</button>
-    </div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">⚠️</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Clientas Perdidas</div><div style="font-size:12px;color:var(--text3)">Sin visita hace más de 45 días</div></div></div>
-      <div style="height:12px"></div>
-      <button class="btn-primary" onclick="openSubscreen('subscreenPerdidas')">Ver clientas</button>
-    </div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">💬</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Plantillas WhatsApp</div><div style="font-size:12px;color:var(--text3)">Mensajes listos para enviar</div></div></div>
-      <div style="height:12px"></div>
-      <button class="btn-primary" onclick="openSubscreen('subscreenPlantillas')">Ver plantillas</button>
-    </div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">🕐</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Horario de Trabajo</div><div style="font-size:12px;color:var(--text3)">Días y horas disponibles + bloqueos</div></div></div>
-      <div style="height:12px"></div>
-      <button class="btn-primary" onclick="openSubscreen('subscreenHorario')">Configurar</button>
-    </div>
-    <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">📝</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Notas Rápidas</div><div style="font-size:12px;color:var(--text3)">Ideas, pedidos, pendientes</div></div></div>
-      <div style="height:12px"></div>
-      <button class="btn-primary" onclick="openSubscreen('subscreenNotas')">Abrir notas</button>
-    </div>
+    <div class="card" style="margin-bottom:14px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">📊</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Reporte Fiscal</div><div style="font-size:12px;color:var(--text3)">Resumen mensual de ingresos y gastos</div></div></div><div style="height:12px"></div><button class="btn-primary" onclick="openSubscreen('subscreenReporte')">Ver reporte</button></div>
+    <div class="card" style="margin-bottom:14px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">💸</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Registro de Gastos</div><div style="font-size:12px;color:var(--text3)">Insumos, marketing y más</div></div></div><div style="height:12px"></div><button class="btn-primary" onclick="openSubscreen('subscreenGastos')">Ver gastos</button></div>
+    <div class="card" style="margin-bottom:14px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">⚠️</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Clientas Perdidas</div><div style="font-size:12px;color:var(--text3)">Sin visita hace más de 45 días</div></div></div><div style="height:12px"></div><button class="btn-primary" onclick="openSubscreen('subscreenPerdidas')">Ver clientas</button></div>
+    <div class="card" style="margin-bottom:14px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">💬</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Plantillas WhatsApp</div><div style="font-size:12px;color:var(--text3)">Mensajes listos para enviar</div></div></div><div style="height:12px"></div><button class="btn-primary" onclick="openSubscreen('subscreenPlantillas')">Ver plantillas</button></div>
+    <div class="card" style="margin-bottom:14px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">🕐</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Horario de Trabajo</div><div style="font-size:12px;color:var(--text3)">Días y horas disponibles + bloqueos</div></div></div><div style="height:12px"></div><button class="btn-primary" onclick="openSubscreen('subscreenHorario')">Configurar</button></div>
+    <div class="card" style="margin-bottom:14px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:4px"><div style="font-size:28px">📝</div><div><div style="font-size:15px;font-weight:700;color:var(--text)">Notas Rápidas</div><div style="font-size:12px;color:var(--text3)">Ideas, pedidos, pendientes</div></div></div><div style="height:12px"></div><button class="btn-primary" onclick="openSubscreen('subscreenNotas')">Abrir notas</button></div>
   </div>
 
   <!-- NAV -->
   <nav class="nav">
-    <button class="nav-btn active" onclick="showTab('inicio',this)">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span>Inicio</span>
-    </button>
-    <button class="nav-btn" onclick="showTab('citas',this)">
-      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <span>Agenda</span>
-    </button>
-    <button class="nav-btn" onclick="showTab('clientas',this)">
-      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-      <span>Clientas</span>
-    </button>
-    <button class="nav-btn" onclick="showTab('portfolio',this)">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-      <span>Portfolio</span>
-    </button>
-    <button class="nav-btn" onclick="showTab('ganancias',this)">
-      <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-      <span>Ganancias</span>
-    </button>
-    <button class="nav-btn" onclick="showTab('herramientas',this)">
-      <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-      <span>Más</span>
-    </button>
+    <button class="nav-btn active" onclick="showTab('inicio',this)"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></button>
+    <button class="nav-btn" onclick="showTab('citas',this)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Agenda</span></button>
+    <button class="nav-btn" onclick="showTab('clientas',this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg><span>Clientas</span></button>
+    <button class="nav-btn" onclick="showTab('portfolio',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Portfolio</span></button>
+    <button class="nav-btn" onclick="showTab('ganancias',this)"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span>Ganancias</span></button>
+    <button class="nav-btn" onclick="showTab('herramientas',this)"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg><span>Más</span></button>
   </nav>
 </div>
 
-<!-- ══ SUBSCREENS ══ -->
+<!-- SUBSCREENS -->
 <div class="subscreen" id="subscreenReporte">
   <div class="subscreen-header">
     <button class="btn-back" onclick="closeSubscreen('subscreenReporte')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="subscreen-title">Reporte Fiscal</div>
   </div>
   <div style="padding:20px 16px 40px">
-    <div class="tabs" id="reporteTabs"><button class="tab-btn active" onclick="switchReporte(0,this)">Ene</button></div>
+    <div class="tabs" id="reporteTabs"></div>
     <div id="reporteContent"></div>
   </div>
 </div>
@@ -525,10 +464,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     <div class="subscreen-title">Registro de Gastos</div>
     <button class="btn-primary" style="width:auto;padding:8px 14px;font-size:13px" onclick="openModal('modalGasto')">+ Gasto</button>
   </div>
-  <div style="padding:20px 16px 40px">
-    <div id="gastosResumen" style="margin-bottom:16px"></div>
-    <div id="listGastos"></div>
-  </div>
+  <div style="padding:20px 16px 40px"><div id="gastosResumen" style="margin-bottom:16px"></div><div id="listGastos"></div></div>
 </div>
 
 <div class="subscreen" id="subscreenPerdidas">
@@ -556,10 +492,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     <div class="subscreen-title">Horario de Trabajo</div>
   </div>
   <div style="padding:20px 16px 40px">
-    <div class="card" style="margin-bottom:14px">
-      <div class="card-title">Días disponibles</div>
-      <div id="diasSelector" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-    </div>
+    <div class="card" style="margin-bottom:14px"><div class="card-title">Días disponibles</div><div id="diasSelector" style="display:flex;gap:8px;flex-wrap:wrap"></div></div>
     <div class="card" style="margin-bottom:14px">
       <div class="card-title">Horario</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -571,7 +504,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <div class="card-title" style="margin-bottom:0">Bloqueos de horario</div>
+        <div class="card-title" style="margin-bottom:0">Bloqueos</div>
         <button class="btn-icon" onclick="openModal('modalBloqueo')" style="border:1px solid var(--cream3);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--text2)">+ Bloqueo</button>
       </div>
       <div id="listBloqueos"></div>
@@ -588,7 +521,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   <div style="padding:20px 16px 40px" id="listNotas"></div>
 </div>
 
-<!-- ══ MODALS ══ -->
+<!-- MODALS -->
+<!-- MODAL CITA — con método de pago -->
 <div class="modal-overlay" id="modalCita">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -600,10 +534,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     <div class="form-group"><label>Servicio</label>
       <select id="citaServicio">
         <option value="">Seleccionar servicio...</option>
-        <option>Manicure</option><option>Pedicure</option><option>Uñas esculpidas</option>
-        <option>Uñas acrílicas</option><option>Gel</option><option>Nail art</option>
-        <option>Tinte cabello</option><option>Corte cabello</option><option>Peinado</option>
-        <option>Tratamiento capilar</option><option>Maquillaje</option><option>Depilación</option><option>Otro</option>
+        <option>Manicure</option><option>Pedicure</option><option>Uñas esculpidas</option><option>Uñas acrílicas</option><option>Gel</option><option>Nail art</option><option>Tinte cabello</option><option>Corte cabello</option><option>Peinado</option><option>Tratamiento capilar</option><option>Maquillaje</option><option>Depilación</option><option>Otro</option>
       </select>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -611,6 +542,16 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
       <div class="form-group"><label>Hora</label><input type="time" id="citaHora"/></div>
     </div>
     <div class="form-group"><label>Precio (CLP $)</label><input type="number" id="citaPrecio" placeholder="0" inputmode="numeric"/></div>
+    <div class="form-group">
+      <label>Método de pago</label>
+      <div class="pago-chips" id="pagoChips">
+        <button class="pago-chip" onclick="selectPago('Efectivo',this)">💵 Efectivo</button>
+        <button class="pago-chip" onclick="selectPago('Transferencia',this)">🏦 Transferencia</button>
+        <button class="pago-chip" onclick="selectPago('Débito',this)">💳 Débito</button>
+        <button class="pago-chip" onclick="selectPago('Mercado Pago',this)">📱 Mercado Pago</button>
+      </div>
+      <input type="hidden" id="citaPago" value=""/>
+    </div>
     <div class="form-group"><label>Notas</label><textarea id="citaNotas" rows="2" placeholder="Detalles adicionales..."></textarea></div>
     <button class="btn-primary" onclick="saveCita()">Guardar cita</button>
     <div style="height:10px"></div>
@@ -641,10 +582,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
     <div class="form-group"><label>Foto</label><input type="file" id="portfolioFile" accept="image/*" onchange="previewPortfolio(this)"/></div>
     <div id="portfolioPreview" style="margin-bottom:14px;display:none"><img id="portfolioPreviewImg" style="width:100%;border-radius:10px;max-height:200px;object-fit:cover"/></div>
     <div class="form-group"><label>Categoría</label>
-      <select id="portfolioCategoria">
-        <option>Manicure</option><option>Pedicure</option><option>Uñas esculpidas</option>
-        <option>Gel</option><option>Nail art</option><option>Cabello</option><option>Maquillaje</option><option>Otro</option>
-      </select>
+      <select id="portfolioCategoria"><option>Manicure</option><option>Pedicure</option><option>Uñas esculpidas</option><option>Gel</option><option>Nail art</option><option>Cabello</option><option>Maquillaje</option><option>Otro</option></select>
     </div>
     <div class="form-group"><label>Clienta (opcional)</label><select id="portfolioClientaId"><option value="">Sin vincular</option></select></div>
     <button class="btn-primary" onclick="savePortfolio()">Guardar foto</button>
@@ -653,211 +591,207 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff
   </div>
 </div>
 
-<div class="modal-overlay" id="modalVerCita">
-  <div class="modal"><div class="modal-handle"></div><div id="modalVerCitaContent"></div>
-    <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closeModal('modalVerCita')">Cerrar</button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalVerClienta">
-  <div class="modal"><div class="modal-handle"></div><div id="modalVerClientaContent"></div>
-    <button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closeModal('modalVerClienta')">Cerrar</button>
-  </div>
-</div>
+<div class="modal-overlay" id="modalVerCita"><div class="modal"><div class="modal-handle"></div><div id="modalVerCitaContent"></div><button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closeModal('modalVerCita')">Cerrar</button></div></div>
+<div class="modal-overlay" id="modalVerClienta"><div class="modal"><div class="modal-handle"></div><div id="modalVerClientaContent"></div><button class="btn-secondary" style="width:100%;margin-top:10px" onclick="closeModal('modalVerClienta')">Cerrar</button></div></div>
 
 <div class="modal-overlay" id="modalAvisoReserva">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="font-size:40px;margin-bottom:8px">💅</div>
-      <div class="modal-title" style="margin-bottom:4px">¡Cita registrada!</div>
-      <div style="font-size:13px;color:var(--text3)">¿Deseas avisar a la clienta por WhatsApp?</div>
-    </div>
+    <div style="text-align:center;margin-bottom:20px"><div style="font-size:40px;margin-bottom:8px">💅</div><div class="modal-title" style="margin-bottom:4px">¡Cita registrada!</div><div style="font-size:13px;color:var(--text3)">¿Deseas avisar a la clienta por WhatsApp?</div></div>
     <div id="avisoReservaMsg" style="background:var(--cream);border-radius:var(--radius-sm);padding:14px;font-size:14px;color:var(--text2);margin-bottom:16px;line-height:1.5;border-left:3px solid var(--gold)"></div>
-    <button class="wa-btn" id="avisoReservaBtn" style="width:100%;justify-content:center;margin-bottom:10px">
-      <svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:20px;height:20px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-      Enviar por WhatsApp
-    </button>
+    <button class="wa-btn" id="avisoReservaBtn" style="width:100%;justify-content:center;margin-bottom:10px"><svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:20px;height:20px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>Enviar por WhatsApp</button>
     <button class="btn-secondary" style="width:100%" onclick="closeModal('modalAvisoReserva')">Ahora no</button>
   </div>
 </div>
 
-<div class="modal-overlay" id="modalMeta">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Meta mensual</div>
-    <div class="form-group"><label>Meta de ingresos (CLP $)</label><input type="number" id="metaInput" placeholder="Ej: 1000000" inputmode="numeric"/></div>
-    <button class="btn-primary" onclick="saveMeta()">Guardar meta</button>
-    <div style="height:10px"></div>
-    <button class="btn-secondary" style="width:100%" onclick="closeModal('modalMeta')">Cancelar</button>
-  </div>
-</div>
+<div class="modal-overlay" id="modalMeta"><div class="modal"><div class="modal-handle"></div><div class="modal-title">Meta mensual</div><div class="form-group"><label>Meta de ingresos (CLP $)</label><input type="number" id="metaInput" placeholder="Ej: 1000000" inputmode="numeric"/></div><button class="btn-primary" onclick="saveMeta()">Guardar meta</button><div style="height:10px"></div><button class="btn-secondary" style="width:100%" onclick="closeModal('modalMeta')">Cancelar</button></div></div>
 
-<div class="modal-overlay" id="modalGasto">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Nuevo Gasto</div>
-    <div class="form-group"><label>Descripción</label><input type="text" id="gastoNombre" placeholder="Ej: Esmaltes OPI x12" autocapitalize="sentences"/></div>
-    <div class="form-group"><label>Categoría</label>
-      <select id="gastoCategoria">
-        <option>Insumos</option><option>Marketing</option><option>Arriendo</option><option>Equipos</option><option>Otros</option>
-      </select>
-    </div>
-    <div class="form-group"><label>Monto (CLP $)</label><input type="number" id="gastoMonto" placeholder="0" inputmode="numeric"/></div>
-    <div class="form-group"><label>Fecha</label><input type="date" id="gastoFecha"/></div>
-    <button class="btn-primary" onclick="saveGasto()">Guardar gasto</button>
-    <div style="height:10px"></div>
-    <button class="btn-secondary" style="width:100%" onclick="closeModal('modalGasto')">Cancelar</button>
-  </div>
-</div>
+<div class="modal-overlay" id="modalGasto"><div class="modal"><div class="modal-handle"></div><div class="modal-title">Nuevo Gasto</div><div class="form-group"><label>Descripción</label><input type="text" id="gastoNombre" placeholder="Ej: Esmaltes OPI x12" autocapitalize="sentences"/></div><div class="form-group"><label>Categoría</label><select id="gastoCategoria"><option>Insumos</option><option>Marketing</option><option>Arriendo</option><option>Equipos</option><option>Otros</option></select></div><div class="form-group"><label>Monto (CLP $)</label><input type="number" id="gastoMonto" placeholder="0" inputmode="numeric"/></div><div class="form-group"><label>Fecha</label><input type="date" id="gastoFecha"/></div><button class="btn-primary" onclick="saveGasto()">Guardar gasto</button><div style="height:10px"></div><button class="btn-secondary" style="width:100%" onclick="closeModal('modalGasto')">Cancelar</button></div></div>
 
-<div class="modal-overlay" id="modalNota">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Nueva Nota</div>
-    <div class="form-group"><label>Nota</label><textarea id="notaTexto" rows="4" placeholder="Escribe aquí..."></textarea></div>
-    <button class="btn-primary" onclick="saveNota()">Guardar nota</button>
-    <div style="height:10px"></div>
-    <button class="btn-secondary" style="width:100%" onclick="closeModal('modalNota')">Cancelar</button>
-  </div>
-</div>
+<div class="modal-overlay" id="modalNota"><div class="modal"><div class="modal-handle"></div><div class="modal-title">Nueva Nota</div><div class="form-group"><label>Nota</label><textarea id="notaTexto" rows="4" placeholder="Escribe aquí..."></textarea></div><button class="btn-primary" onclick="saveNota()">Guardar nota</button><div style="height:10px"></div><button class="btn-secondary" style="width:100%" onclick="closeModal('modalNota')">Cancelar</button></div></div>
 
-<div class="modal-overlay" id="modalBloqueo">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Bloquear horario</div>
-    <div class="form-group"><label>Motivo</label><input type="text" id="bloqueoMotivo" placeholder="Ej: Almuerzo, día libre..." autocapitalize="sentences"/></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-      <div class="form-group"><label>Fecha inicio</label><input type="date" id="bloqueoDesde"/></div>
-      <div class="form-group"><label>Fecha fin</label><input type="date" id="bloqueoHasta"/></div>
-    </div>
-    <button class="btn-primary" onclick="saveBloqueo()">Guardar bloqueo</button>
-    <div style="height:10px"></div>
-    <button class="btn-secondary" style="width:100%" onclick="closeModal('modalBloqueo')">Cancelar</button>
-  </div>
-</div>
-
+<div class="modal-overlay" id="modalBloqueo"><div class="modal"><div class="modal-handle"></div><div class="modal-title">Bloquear horario</div><div class="form-group"><label>Motivo</label><input type="text" id="bloqueoMotivo" placeholder="Ej: Almuerzo, día libre..." autocapitalize="sentences"/></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="form-group"><label>Fecha inicio</label><input type="date" id="bloqueoDesde"/></div><div class="form-group"><label>Fecha fin</label><input type="date" id="bloqueoHasta"/></div></div><button class="btn-primary" onclick="saveBloqueo()">Guardar bloqueo</button><div style="height:10px"></div><button class="btn-secondary" style="width:100%" onclick="closeModal('modalBloqueo')">Cancelar</button></div></div>
 <script>
-// ══ PWA INSTALL DETECTION ══
-(function() {
-  function isStandalone() {
-    return (
-      window.navigator.standalone === true ||
-      window.matchMedia('(display-mode: standalone)').matches ||
-      window.matchMedia('(display-mode: fullscreen)').matches ||
-      document.referrer.startsWith('android-app://')
-    );
-  }
-  if (isStandalone()) {
-    const el = document.getElementById('installScreen');
-    if (el) el.style.display = 'none';
-  } else {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('appShell').style.display = 'none';
-  }
+// ══ PWA ══
+(function(){
+  function isStandalone(){return window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches||window.matchMedia('(display-mode: fullscreen)').matches||document.referrer.startsWith('android-app://');}
+  if(isStandalone()){const el=document.getElementById('installScreen');if(el)el.style.display='none';}
+  else{document.getElementById('loginScreen').style.display='none';document.getElementById('appShell').style.display='none';}
 })();
 
-function checkIfInstalled() {
-  const isStandalone =
-    window.navigator.standalone === true ||
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.matchMedia('(display-mode: fullscreen)').matches ||
-    document.referrer.startsWith('android-app://');
-  const fb = document.getElementById('installFeedback');
-  if (isStandalone) {
-    fb.className = 'install-feedback ok';
-    fb.textContent = '✓ ¡App instalada correctamente! Redirigiendo...';
-    setTimeout(() => { document.getElementById('installScreen').style.display = 'none'; }, 1200);
-  } else {
-    fb.className = 'install-feedback warn';
-    fb.textContent = 'Aún no detectamos la instalación. Sigue los pasos y abre desde el ícono en tu pantalla de inicio.';
-    setTimeout(() => { fb.className = 'install-feedback'; fb.textContent = ''; }, 4000);
-  }
+function checkIfInstalled(){
+  const ok=window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches||window.matchMedia('(display-mode: fullscreen)').matches||document.referrer.startsWith('android-app://');
+  const fb=document.getElementById('installFeedback');
+  if(ok){fb.className='install-feedback ok';fb.textContent='✓ ¡App instalada correctamente!';setTimeout(()=>{document.getElementById('installScreen').style.display='none';},1200);}
+  else{fb.className='install-feedback warn';fb.textContent='Aún no detectamos la instalación. Abre desde el ícono en tu pantalla de inicio.';setTimeout(()=>{fb.className='install-feedback';fb.textContent='';},4000);}
 }
 
 // ══ FRASES ══
-const FRASES = [
-  "Cada clienta que entra por tu puerta es una oportunidad de hacer magia. Tú tienes ese don. 💛",
-  "El éxito no llega solo, lo construyes día a día con cada uña, cada color, cada sonrisa.",
-  "Eres tu propia jefa, tu propia marca, tu propio milagro. No te rindas nunca. 🌟",
-  "Las mujeres que trabajan con sus manos crean arte que el mundo lleva puesto. Eso eres tú. 💅",
-  "Los días difíciles te están preparando para los momentos más grandes. Confía en el proceso.",
-  "Tu trabajo embellece a otras mujeres. Recuerda también brillar tú. ✨",
-  "Cada amanecer es una nueva cita con tu sueño. Levántate y ve por él.",
-  "No necesitas que nadie te dé permiso para ser grande. Tú ya lo eres. 👑",
-  "Las manos que trabajan duro hoy son las que construyen el futuro de mañana.",
-  "Eres el resultado de todo lo que no te rendiste. ¡Orgullo puro! 🔥",
-  "Tu perseverancia es más poderosa que cualquier obstáculo. Sigue creando belleza.",
-  "Cada clienta satisfecha es una victoria tuya. Celebra cada una. 🥂",
-  "El trabajo con pasión nunca se siente como trabajo. Tú lo sabes bien, sigue brillando.",
-  "Eres emprendedora, artista y guerrera. Una combinación imparable. 💪",
-  "El camino es tuyo y ya lo estás recorriendo. Qué valiente eres. 🌺",
-  "Tus sueños merecen el mismo cuidado que le das a las uñas de tus clientas.",
-  "La constancia es el secreto de las grandes. Tú ya lo estás aplicando cada día.",
-  "Hoy es un buen día para crear algo hermoso. Empieza por ti misma. ✨",
-  "Mujer que trabaja, mujer que conquista. ¡Hoy también ganarás! 💛",
-  "Cada pequeño paso que das es progreso real. No te compares, avanza. 🚀"
-];
+const FRASES=["Cada clienta que entra por tu puerta es una oportunidad de hacer magia. Tú tienes ese don. 💛","El éxito no llega solo, lo construyes día a día con cada uña, cada color, cada sonrisa.","Eres tu propia jefa, tu propia marca, tu propio milagro. No te rindas nunca. 🌟","Las mujeres que trabajan con sus manos crean arte que el mundo lleva puesto. Eso eres tú. 💅","Los días difíciles te están preparando para los momentos más grandes. Confía en el proceso.","Tu trabajo embellece a otras mujeres. Recuerda también brillar tú. ✨","Cada amanecer es una nueva cita con tu sueño. Levántate y ve por él.","No necesitas que nadie te dé permiso para ser grande. Tú ya lo eres. 👑","Las manos que trabajan duro hoy son las que construyen el futuro de mañana.","Eres el resultado de todo lo que no te rendiste. ¡Orgullo puro! 🔥","Tu perseverancia es más poderosa que cualquier obstáculo. Sigue creando belleza.","Cada clienta satisfecha es una victoria tuya. Celebra cada una. 🥂","El trabajo con pasión nunca se siente como trabajo. Tú lo sabes bien, sigue brillando.","Eres emprendedora, artista y guerrera. Una combinación imparable. 💪","El camino es tuyo y ya lo estás recorriendo. Qué valiente eres. 🌺","Tus sueños merecen el mismo cuidado que le das a las uñas de tus clientas.","La constancia es el secreto de las grandes. Tú ya lo estás aplicando cada día.","Hoy es un buen día para crear algo hermoso. Empieza por ti misma. ✨","Mujer que trabaja, mujer que conquista. ¡Hoy también ganarás! 💛","Cada pequeño paso que das es progreso real. No te compares, avanza. 🚀"];
+function showMotivationalMessage(){const today=new Date().toDateString();const stored=localStorage.getItem('mot_date');let idx=localStorage.getItem('mot_idx');if(stored!==today||idx===null){idx=Math.floor(Math.random()*FRASES.length);localStorage.setItem('mot_date',today);localStorage.setItem('mot_idx',idx);}const el=document.getElementById('motivationalText');if(el)el.textContent=FRASES[parseInt(idx)];}
 
-function showMotivationalMessage() {
-  const today = new Date().toDateString();
-  const stored = localStorage.getItem('mot_date');
-  let idx = localStorage.getItem('mot_idx');
-  if (stored !== today || idx === null) {
-    idx = Math.floor(Math.random() * FRASES.length);
-    localStorage.setItem('mot_date', today);
-    localStorage.setItem('mot_idx', idx);
+// ══ STATE ══
+let allCitas=[],allClientas=[],allPortfolio=[],allGastos=[],allNotas=[],allBloqueos=[];
+let appConfig={meta:0,horario:{dias:[1,2,3,4,5],desde:'09:00',hasta:'18:00'}};
+let currentTab='inicio',calCurrentDate=new Date(),selectedCalDate=null;
+let portfolioImageData=null,appReady=false,clientasTabFilter='todas';
+let reporteMesIdx=0,agendaTabFilter='pendientes';
+
+window.addEventListener('firebaseReady',init);
+
+// ══ FACE ID — 5 min timeout ══
+const LOCK_TIMEOUT = 5 * 60 * 1000; // 5 minutos
+let lastActiveTime = Date.now();
+let lockCheckInterval = null;
+let faceIdCredentialId = null;
+
+// Actualizar tiempo activo en cualquier interacción
+['touchstart','click','keydown'].forEach(ev=>{
+  document.addEventListener(ev, ()=>{ lastActiveTime = Date.now(); }, {passive:true});
+});
+
+function showScreen(name){
+  document.getElementById('installScreen').style.display='none';
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('lockScreen').style.display='none';
+  document.getElementById('appShell').style.display='none';
+  if(name==='login') document.getElementById('loginScreen').style.display='flex';
+  else if(name==='lock') document.getElementById('lockScreen').style.display='flex';
+  else if(name==='app'){
+    document.getElementById('appShell').style.display='block';
+    startLockWatcher();
   }
-  const el = document.getElementById('motivationalText');
-  if (el) el.textContent = FRASES[parseInt(idx)];
 }
 
-// ── STATE ──
-let allCitas=[], allClientas=[], allPortfolio=[], allGastos=[], allNotas=[], allBloqueos=[];
-let appConfig = { meta:0, horario:{ dias:[1,2,3,4,5], desde:'09:00', hasta:'18:00' } };
-let currentTab='inicio', calCurrentDate=new Date(), selectedCalDate=null;
-let portfolioImageData=null, appReady=false, clientasTabFilter='todas';
-let reporteMesIdx=0;
+function startLockWatcher(){
+  if(lockCheckInterval) clearInterval(lockCheckInterval);
+  lockCheckInterval = setInterval(()=>{
+    if(Date.now() - lastActiveTime > LOCK_TIMEOUT){
+      const user = window.fbAuth.currentUser;
+      if(user && document.getElementById('appShell').style.display!=='none'){
+        clearInterval(lockCheckInterval);
+        showScreen('lock');
+        // Auto-trigger Face ID
+        setTimeout(()=>requestFaceId(), 400);
+      }
+    }
+  }, 30000); // revisar cada 30s
+}
 
-window.addEventListener('firebaseReady', init);
+// ── REGISTRAR FACE ID (primera vez) ──
+async function registerFaceId(){
+  if(!window.PublicKeyCredential){return false;}
+  try{
+    const cred = await navigator.credentials.create({
+      publicKey:{
+        challenge: crypto.getRandomValues(new Uint8Array(32)),
+        rp:{ name:'Irianis Marcano App', id: location.hostname },
+        user:{ id: new Uint8Array(16), name:'irianis', displayName:'Irianis Marcano' },
+        pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
+        authenticatorSelection:{ authenticatorAttachment:'platform', userVerification:'required' },
+        timeout: 60000
+      }
+    });
+    if(cred){
+      const idB64 = btoa(String.fromCharCode(...new Uint8Array(cred.rawId)));
+      localStorage.setItem('faceIdCredId', idB64);
+      faceIdCredentialId = idB64;
+      return true;
+    }
+  }catch(e){ return false; }
+  return false;
+}
 
-function init() {
-  window.fbFns.onAuthStateChanged(window.fbAuth, user => {
-    if (user) {
+// ── VERIFICAR FACE ID ──
+async function requestFaceId(){
+  const btn = document.getElementById('faceIdBtn');
+  const errEl = document.getElementById('lockError');
+  errEl.textContent = '';
+  if(!window.PublicKeyCredential){
+    errEl.textContent = 'Face ID no disponible en este dispositivo';
+    return;
+  }
+  btn.textContent = '⏳ Verificando...'; btn.disabled = true;
+  try{
+    const storedId = localStorage.getItem('faceIdCredId');
+    const allowCreds = storedId ? [{
+      type:'public-key',
+      id: Uint8Array.from(atob(storedId), c=>c.charCodeAt(0)),
+      transports:['internal']
+    }] : [];
+    await navigator.credentials.get({
+      publicKey:{
+        challenge: crypto.getRandomValues(new Uint8Array(32)),
+        allowCredentials: allowCreds,
+        userVerification:'required',
+        timeout: 60000
+      }
+    });
+    // Face ID OK
+    lastActiveTime = Date.now();
+    btn.textContent = '🔓 Usar Face ID'; btn.disabled = false;
+    showScreen('app');
+  }catch(e){
+    btn.textContent = '🔓 Usar Face ID'; btn.disabled = false;
+    if(e.name==='NotAllowedError'){
+      errEl.textContent = 'Face ID cancelado. Intenta de nuevo o usa contraseña.';
+    } else {
+      errEl.textContent = 'No se pudo verificar. Usa tu contraseña.';
+    }
+  }
+}
+
+function showPasswordFallback(){
+  // Cerrar sesión y mostrar login normal
+  showScreen('login');
+}
+
+function init(){
+  window.fbFns.onAuthStateChanged(window.fbAuth, async user=>{
+    if(user){
       document.getElementById('installScreen').style.display='none';
-      document.getElementById('loginScreen').style.display='none';
-      document.getElementById('appShell').style.display='block';
-      showTab('inicio', document.querySelector('.nav-btn'));
+      showTab('inicio',document.querySelector('.nav-btn'));
       showMotivationalMessage();
-      if (!appReady) { listenData(); appReady=true; }
+      if(!appReady){listenData();appReady=true;}
+      // Verificar si hay Face ID registrado
+      const hasFaceId = localStorage.getItem('faceIdCredId');
+      if(!hasFaceId && window.PublicKeyCredential){
+        // Primera vez: registrar Face ID silenciosamente
+        const ok = await registerFaceId();
+        if(ok) localStorage.setItem('faceIdRegistered','1');
+      }
+      showScreen('app');
     } else {
       document.getElementById('installScreen').style.display='none';
-      document.getElementById('loginScreen').style.display='flex';
-      document.getElementById('appShell').style.display='none';
+      if(lockCheckInterval) clearInterval(lockCheckInterval);
+      showScreen('login');
       appReady=false;
     }
   });
 }
 
-async function doLogin() {
+async function doLogin(){
   const email=document.getElementById('loginEmail').value.trim();
   const pass=document.getElementById('loginPass').value;
   const errEl=document.getElementById('loginError');
   errEl.textContent='';
   const btn=document.querySelector('.btn-login');
-  btn.textContent='Entrando...'; btn.disabled=true;
-  try { await window.fbFns.signInWithEmailAndPassword(window.fbAuth,email,pass); }
-  catch(e) { errEl.textContent='Correo o contraseña incorrectos'; btn.textContent='Entrar'; btn.disabled=false; }
+  btn.textContent='Entrando...';btn.disabled=true;
+  try{await window.fbFns.signInWithEmailAndPassword(window.fbAuth,email,pass);}
+  catch(e){errEl.textContent='Correo o contraseña incorrectos';btn.textContent='Entrar';btn.disabled=false;}
 }
-async function doLogout() {
-  if(!confirm('¿Cerrar sesión?')) return;
+async function doLogout(){
+  if(!confirm('¿Cerrar sesión?'))return;
   appReady=false;
+  if(lockCheckInterval)clearInterval(lockCheckInterval);
+  localStorage.removeItem('faceIdCredId');
+  localStorage.removeItem('faceIdRegistered');
   await window.fbFns.signOut(window.fbAuth);
 }
 document.getElementById('loginEmail').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginPass').focus();});
 document.getElementById('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-function listenData() {
+function listenData(){
   const {collection,onSnapshot,query,orderBy,doc,getDoc}=window.fbFns;
   const db=window.fbDb;
   onSnapshot(query(collection(db,'citas'),orderBy('fecha')),snap=>{allCitas=snap.docs.map(d=>({id:d.id,...d.data()}));renderAll();});
@@ -866,58 +800,61 @@ function listenData() {
   onSnapshot(query(collection(db,'gastos'),orderBy('fecha')),snap=>{allGastos=snap.docs.map(d=>({id:d.id,...d.data()}));renderGastos();});
   onSnapshot(collection(db,'notas'),snap=>{allNotas=snap.docs.map(d=>({id:d.id,...d.data()}));renderNotas();});
   onSnapshot(collection(db,'bloqueos'),snap=>{allBloqueos=snap.docs.map(d=>({id:d.id,...d.data()}));renderBloqueos();});
-  getDoc(doc(db,'config','app')).then(d=>{ if(d.exists()){appConfig={...appConfig,...d.data()};applyConfig();} });
+  getDoc(doc(db,'config','app')).then(d=>{if(d.exists()){appConfig={...appConfig,...d.data()};applyConfig();}});
 }
 
-function applyConfig() {
-  if(document.getElementById('metaInput')) document.getElementById('metaInput').value=appConfig.meta||'';
-  if(document.getElementById('horarioDesde')) document.getElementById('horarioDesde').value=appConfig.horario?.desde||'09:00';
-  if(document.getElementById('horarioHasta')) document.getElementById('horarioHasta').value=appConfig.horario?.hasta||'18:00';
-  renderDiasSelector();
-  renderMetaBar();
+function applyConfig(){
+  if(document.getElementById('metaInput'))document.getElementById('metaInput').value=appConfig.meta||'';
+  if(document.getElementById('horarioDesde'))document.getElementById('horarioDesde').value=appConfig.horario?.desde||'09:00';
+  if(document.getElementById('horarioHasta'))document.getElementById('horarioHasta').value=appConfig.horario?.hasta||'18:00';
+  renderDiasSelector();renderMetaBar();
 }
 
-// ── TABS ──
-function showTab(name,btn) {
+// ══ TABS ══
+function showTab(name,btn){
   ['inicio','citas','clientas','portfolio','ganancias','herramientas'].forEach(t=>document.getElementById('tab-'+t).style.display='none');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).style.display='block';
-  if(btn) btn.classList.add('active');
+  if(btn)btn.classList.add('active');
   currentTab=name;
-  if(name==='citas') renderCalendar();
-  if(name==='portfolio') renderPortfolio();
-  if(name==='ganancias') renderGanancias('mes');
+  if(name==='citas')renderCalendar();
+  if(name==='portfolio')renderPortfolio();
+  if(name==='ganancias')renderGanancias('mes');
+}
+function renderAll(){renderInicio();renderCitasList();if(currentTab==='citas')renderCalendar();}
+
+// ══ AGENDA TABS ══
+function switchAgendaTab(filter,btn){
+  agendaTabFilter=filter;
+  document.querySelectorAll('#agendaTabs .tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderCitasList();
 }
 
-function renderAll() { renderInicio(); renderCitasList(); if(currentTab==='citas') renderCalendar(); }
-
-// ── META BAR ──
-function renderMetaBar() {
-  const now=new Date(); const mesStr=String(now.getMonth()+1).padStart(2,'0');
+// ══ META BAR ══
+function renderMetaBar(){
+  const now=new Date();const mesStr=String(now.getMonth()+1).padStart(2,'0');
   const citasMes=allCitas.filter(c=>c.fecha&&c.fecha.startsWith(`${now.getFullYear()}-${mesStr}`));
   const totalMes=citasMes.reduce((s,c)=>s+(Number(c.precio)||0),0);
   const meta=Number(appConfig.meta)||0;
   const pct=meta>0?Math.min(Math.round(totalMes/meta*100),100):0;
-  const textoEl=document.getElementById('metaTexto');
-  const barEl=document.getElementById('metaBar');
-  const pctEl=document.getElementById('metaPct');
-  if(textoEl) textoEl.textContent=meta>0?`$${totalMes.toLocaleString('es-CL')} / $${meta.toLocaleString('es-CL')}`:'Configura tu meta →';
-  if(barEl) barEl.style.width=pct+'%';
-  if(pctEl) pctEl.textContent=meta>0?pct+'% completado':'';
+  const textoEl=document.getElementById('metaTexto');const barEl=document.getElementById('metaBar');const pctEl=document.getElementById('metaPct');
+  if(textoEl)textoEl.textContent=meta>0?`$${totalMes.toLocaleString('es-CL')} / $${meta.toLocaleString('es-CL')}`:'Configura tu meta →';
+  if(barEl)barEl.style.width=pct+'%';
+  if(pctEl)pctEl.textContent=meta>0?pct+'% completado':'';
 }
-
-async function saveMeta() {
+async function saveMeta(){
   const val=Number(document.getElementById('metaInput').value)||0;
   appConfig.meta=val;
   const {doc,setDoc}=window.fbFns;
   await setDoc(doc(window.fbDb,'config','app'),appConfig);
-  renderMetaBar(); closeModal('modalMeta');
+  renderMetaBar();closeModal('modalMeta');
 }
 
-// ── INICIO ──
-function renderInicio() {
+// ══ INICIO ══
+function renderInicio(){
   const today=new Date().toISOString().split('T')[0];
-  const sw=getStartOfWeek(new Date()); const ew=getEndOfWeek(new Date());
+  const sw=getStartOfWeek(new Date());const ew=getEndOfWeek(new Date());
   const citasHoy=allCitas.filter(c=>c.fecha===today);
   const citasSemana=allCitas.filter(c=>c.fecha>=sw&&c.fecha<=ew);
   document.getElementById('statHoy').textContent='$'+citasHoy.reduce((s,c)=>s+(Number(c.precio)||0),0).toLocaleString('es-CL');
@@ -925,54 +862,60 @@ function renderInicio() {
   document.getElementById('statSemana').textContent='$'+citasSemana.reduce((s,c)=>s+(Number(c.precio)||0),0).toLocaleString('es-CL');
   document.getElementById('statSemanaCitas').textContent=citasSemana.length+' cita'+(citasSemana.length!==1?'s':'');
   renderMetaBar();
-  const proximas=allCitas.filter(c=>c.fecha>=today).slice(0,5);
+  const proximas=allCitas.filter(c=>c.fecha>=today&&(c.estado||'espera')!=='atendida').slice(0,5);
   const el=document.getElementById('listProximas');
-  el.innerHTML=proximas.length?proximas.map(c=>citaItemHTML(c)).join(''):'<div class="today-empty"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div>Sin citas próximas</div></div>';
+  el.innerHTML=proximas.length?proximas.map(c=>citaItemHTML(c)).join(''):'<div class="today-empty"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div>Sin citas pendientes</div></div>';
 }
-
 function getStartOfWeek(d){const day=d.getDay(),diff=d.getDate()-day+(day===0?-6:1);return new Date(d.setDate(diff)).toISOString().split('T')[0];}
 function getEndOfWeek(d){const s=new Date(getStartOfWeek(new Date()));s.setDate(s.getDate()+6);return s.toISOString().split('T')[0];}
 
-// ── CUMPLEAÑOS ──
-function checkCumpleanos() {
-  const today=new Date(); const mm=String(today.getMonth()+1).padStart(2,'0'); const dd=String(today.getDate()).padStart(2,'0');
+// ══ CUMPLEAÑOS ══
+function checkCumpleanos(){
+  const today=new Date();const mm=String(today.getMonth()+1).padStart(2,'0');const dd=String(today.getDate()).padStart(2,'0');
   allClientas.forEach(c=>{
-    if(c.cumple){
-      const parts=c.cumple.split('-');
-      if(parts[1]===mm&&parts[2]===dd){
-        const key='cumple_notif_'+c.id+'_'+today.getFullYear();
-        if(!localStorage.getItem(key)){
-          localStorage.setItem(key,'1');
-          if(confirm(`🎂 ¡Hoy es el cumpleaños de ${c.nombre}! ¿Quieres enviarle un mensaje de WhatsApp?`)){
-            if(c.telefono){
-              const msg=encodeURIComponent(`Hola ${c.nombre}! 🎂✨ Desde Irianis Marcano te deseamos un feliz cumpleaños. ¡Que este día esté tan hermoso como tú! 💅👑`);
-              window.open('https://wa.me/+56'+c.telefono+'?text='+msg,'_blank');
-            }
-          }
-        }
-      }
-    }
+    if(c.cumple){const parts=c.cumple.split('-');if(parts[1]===mm&&parts[2]===dd){const key='cumple_notif_'+c.id+'_'+today.getFullYear();if(!localStorage.getItem(key)){localStorage.setItem(key,'1');if(confirm(`🎂 ¡Hoy es el cumpleaños de ${c.nombre}! ¿Quieres enviarle un mensaje de WhatsApp?`)){if(c.telefono){const msg=encodeURIComponent(`Hola ${c.nombre}! 🎂✨ Desde Irianis Marcano te deseamos un feliz cumpleaños. ¡Que este día esté tan hermoso como tú! 💅👑`);window.open('https://wa.me/+56'+c.telefono+'?text='+msg,'_blank');}}}}}
   });
 }
 
-// ── CITAS LIST ──
-function renderCitasList() {
-  const el=document.getElementById('listCitas'); let citas=allCitas;
+// ══ CITAS LIST — con filtro de pestañas ══
+function renderCitasList(){
+  const el=document.getElementById('listCitas');
+  let citas=allCitas;
   if(selectedCalDate){citas=allCitas.filter(c=>c.fecha===selectedCalDate);document.getElementById('citasDateLabel').textContent=formatDate(selectedCalDate);}
   else document.getElementById('citasDateLabel').textContent='Todas las citas';
-  el.innerHTML=citas.length?citas.map(c=>citaItemHTML(c)).join(''):'<div class="today-empty">Sin citas para este día</div>';
+
+  // Filtrar por pestaña
+  if(agendaTabFilter==='pendientes'){
+    citas=citas.filter(c=>(c.estado||'espera')!=='atendida');
+  } else if(agendaTabFilter==='atendidas'){
+    citas=citas.filter(c=>c.estado==='atendida');
+  }
+
+  if(!citas.length){
+    const msg=agendaTabFilter==='atendidas'?'✅ Sin citas atendidas aún':'Sin citas pendientes';
+    el.innerHTML=`<div class="today-empty">${msg}</div>`;
+    return;
+  }
+
+  // Mostrar contador si es pestaña atendidas
+  const header=agendaTabFilter==='atendidas'?`<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px"><span class="atendidas-badge">✅ ${citas.length} atendida${citas.length!==1?'s':''}</span></div>`:'';
+  el.innerHTML=header+citas.map(c=>citaItemHTML(c)).join('');
 }
 
-// ══ CITA ITEM HTML — con estados ══
-function citaItemHTML(c) {
-  const colors={'Manicure':'#C9A84C','Pedicure':'#A07830','Uñas esculpidas':'#8B6914','Gel':'#D4B483','Nail art':'#E8C97A','Cabello':'#6B5B3E','Tinte cabello':'#9A8868','Maquillaje':'#C4956A'};
-  const color=colors[c.servicio]||'#C9A84C';
+// ══ CITA ITEM — barra de color según estado + pago ══
+const PAGO_EMOJI={'Efectivo':'💵','Transferencia':'🏦','Débito':'💳','Mercado Pago':'📱'};
+function citaItemHTML(c){
+  const serviceColors={'Manicure':'#C9A84C','Pedicure':'#A07830','Uñas esculpidas':'#8B6914','Gel':'#D4B483','Nail art':'#E8C97A','Cabello':'#6B5B3E','Tinte cabello':'#9A8868','Maquillaje':'#C4956A'};
   const estado=c.estado||'espera';
+  // Barra lateral según estado
+  const barColor=estado==='atendida'?'#16a34a':estado==='perdida'?'#ef4444':'#C9A84C';
+  const pagoHtml=c.pago?`<span class="pago-badge">${PAGO_EMOJI[c.pago]||'💳'} ${c.pago}</span>`:'';
   return `<div class="cita-item">
-    <div class="cita-color" style="background:${color}"></div>
+    <div class="cita-color" style="background:${barColor}"></div>
     <div class="cita-info" onclick="verCita('${c.id}')">
       <div class="cita-name">${c.nombre}</div>
-      <div class="cita-detail">${c.servicio||''} • ${formatDate(c.fecha)} ${c.hora||''}</div>
+      <div class="cita-detail">${c.servicio||''} · ${formatDate(c.fecha)} ${c.hora||''}</div>
+      ${pagoHtml?`<div style="margin-top:3px">${pagoHtml}</div>`:''}
       <div class="estado-btns">
         <button class="estado-btn espera ${estado==='espera'?'activo':''}" onclick="event.stopPropagation();setCitaEstado('${c.id}','espera')">🟡 En espera</button>
         <button class="estado-btn atendida ${estado==='atendida'?'activo':''}" onclick="event.stopPropagation();setCitaEstado('${c.id}','atendida')">✅ Atendida</button>
@@ -989,14 +932,20 @@ function citaItemHTML(c) {
   </div>`;
 }
 
-// ══ CAMBIAR ESTADO DE CITA ══
-async function setCitaEstado(id, estado) {
+async function setCitaEstado(id,estado){
   const {doc,updateDoc}=window.fbFns;
   await updateDoc(doc(window.fbDb,'citas',id),{estado});
 }
 
-// ── CALENDAR ──
-function renderCalendar() {
+// ══ MÉTODO DE PAGO ══
+function selectPago(pago,btn){
+  document.querySelectorAll('#pagoChips .pago-chip').forEach(b=>b.classList.remove('activo'));
+  btn.classList.add('activo');
+  document.getElementById('citaPago').value=pago;
+}
+
+// ══ CALENDARIO ══
+function renderCalendar(){
   const el=document.getElementById('calWidget');
   const year=calCurrentDate.getFullYear(),month=calCurrentDate.getMonth();
   const today=new Date().toISOString().split('T')[0];
@@ -1025,7 +974,7 @@ function calPrev(){calCurrentDate.setMonth(calCurrentDate.getMonth()-1);renderCa
 function calNext(){calCurrentDate.setMonth(calCurrentDate.getMonth()+1);renderCalendar();}
 function calSelectDay(date){selectedCalDate=selectedCalDate===date?null:date;renderCalendar();renderCitasList();}
 
-// ── CITA CRUD ──
+// ══ CITA CRUD ══
 function prefillNewCita(){
   document.getElementById('editCitaId').value='';
   document.getElementById('modalCitaTitle').textContent='Nueva Cita';
@@ -1033,9 +982,12 @@ function prefillNewCita(){
   document.getElementById('citaServicio').value='';
   document.getElementById('citaFecha').value=selectedCalDate||new Date().toISOString().split('T')[0];
   document.getElementById('citaHora').value='';
+  document.getElementById('citaPago').value='';
+  document.querySelectorAll('#pagoChips .pago-chip').forEach(b=>b.classList.remove('activo'));
 }
+
 function editCita(id){
-  const c=allCitas.find(x=>x.id===id); if(!c) return;
+  const c=allCitas.find(x=>x.id===id);if(!c)return;
   document.getElementById('editCitaId').value=id;
   document.getElementById('modalCitaTitle').textContent='Editar Cita';
   document.getElementById('citaNombre').value=c.nombre||'';
@@ -1046,16 +998,31 @@ function editCita(id){
   document.getElementById('citaHora').value=c.hora||'';
   document.getElementById('citaPrecio').value=c.precio||'';
   document.getElementById('citaNotas').value=c.notas||'';
+  document.getElementById('citaPago').value=c.pago||'';
+  document.querySelectorAll('#pagoChips .pago-chip').forEach(b=>{b.classList.toggle('activo',b.textContent.includes(c.pago||'__none__'));});
   openModal('modalCita');
 }
+
 async function saveCita(){
   const id=document.getElementById('editCitaId').value;
-  const data={nombre:document.getElementById('citaNombre').value.trim(),telefono:document.getElementById('citaTelefono').value.trim(),instagram:document.getElementById('citaInstagram').value.trim(),servicio:document.getElementById('citaServicio').value,fecha:document.getElementById('citaFecha').value,hora:document.getElementById('citaHora').value,precio:document.getElementById('citaPrecio').value,notas:document.getElementById('citaNotas').value.trim(),updatedAt:new Date().toISOString()};
+  const data={
+    nombre:document.getElementById('citaNombre').value.trim(),
+    telefono:document.getElementById('citaTelefono').value.trim(),
+    instagram:document.getElementById('citaInstagram').value.trim(),
+    servicio:document.getElementById('citaServicio').value,
+    fecha:document.getElementById('citaFecha').value,
+    hora:document.getElementById('citaHora').value,
+    precio:document.getElementById('citaPrecio').value,
+    pago:document.getElementById('citaPago').value,
+    notas:document.getElementById('citaNotas').value.trim(),
+    updatedAt:new Date().toISOString()
+  };
   if(!data.nombre||!data.fecha){alert('Nombre y fecha son requeridos');return;}
   const {collection,addDoc,updateDoc,doc}=window.fbFns;
   if(id){await updateDoc(doc(window.fbDb,'citas',id),data);closeModal('modalCita');}
   else{data.createdAt=new Date().toISOString();data.estado='espera';await addDoc(collection(window.fbDb,'citas'),data);closeModal('modalCita');if(data.telefono)showAvisoReserva(data);}
 }
+
 function showAvisoReserva(data){
   const msg=`Hola mi bella💅 ✨ Tu cita con Irianis Marcano ha sido registrada para el ${formatDate(data.fecha)}${data.hora?' a las '+data.hora:''}. Servicio: ${data.servicio||'a confirmar'}. ¡Te esperamos!`;
   document.getElementById('avisoReservaMsg').textContent=msg;
@@ -1063,47 +1030,59 @@ function showAvisoReserva(data){
   document.getElementById('avisoReservaBtn').onclick=()=>{window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(msg),'_blank');closeModal('modalAvisoReserva');};
   openModal('modalAvisoReserva');
 }
+
 async function deleteCita(id){
-  if(!confirm('¿Eliminar esta cita?')) return;
+  if(!confirm('¿Eliminar esta cita?'))return;
   const {doc,deleteDoc}=window.fbFns;
   await deleteDoc(doc(window.fbDb,'citas',id));
 }
+
 function verCita(id){
-  const c=allCitas.find(x=>x.id===id); if(!c) return;
+  const c=allCitas.find(x=>x.id===id);if(!c)return;
   const tel=c.telefono?'+56'+c.telefono:null;
   const msg=encodeURIComponent(`Hola mi bella💅 ✨Te recuerdo tu cita con Irianis Marcano el ${formatDate(c.fecha)}${c.hora?' a las '+c.hora:''}. ¡Te esperamos!`);
+  const WA_ICON=`<svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:18px;height:18px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>`;
   document.getElementById('modalVerCitaContent').innerHTML=`
     <div class="modal-title">${c.nombre}</div>
-    <div style="margin-bottom:16px">${c.servicio?`<span class="tag-service">${c.servicio}</span> `:''}<span class="chip">${formatDate(c.fecha)}${c.hora?' '+c.hora:''}</span>${c.precio?`<span class="chip">$${Number(c.precio).toLocaleString('es-CL')}</span>`:''}</div>
+    <div style="margin-bottom:12px;display:flex;flex-wrap:wrap;gap:4px">${c.servicio?`<span class="tag-service">${c.servicio}</span>`:''}<span class="chip">${formatDate(c.fecha)}${c.hora?' '+c.hora:''}</span>${c.precio?`<span class="chip">$${Number(c.precio).toLocaleString('es-CL')}</span>`:''}${c.pago?`<span class="pago-badge">${PAGO_EMOJI[c.pago]||''} ${c.pago}</span>`:''}</div>
     ${c.telefono?`<div style="margin-bottom:8px;font-size:14px;color:var(--text2)">📞 +56${c.telefono}</div>`:''}
     ${c.instagram?`<div style="margin-bottom:8px;font-size:14px;color:var(--text2)">📷 ${c.instagram}</div>`:''}
     ${c.notas?`<div style="margin-bottom:16px;font-size:13px;color:var(--text3);font-style:italic">${c.notas}</div>`:''}
-    ${tel?`<button class="wa-btn" style="width:100%;justify-content:center;margin-bottom:8px" onclick="window.open('https://wa.me/${tel}?text=${msg}','_blank')"><svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:18px;height:18px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>Recordatorio WhatsApp</button>`:''}
+    ${tel?`<button class="wa-btn" style="width:100%;justify-content:center;margin-bottom:8px" onclick="window.open('https://wa.me/${tel}?text=${msg}','_blank')">${WA_ICON} Recordatorio WhatsApp</button>`:''}
     ${c.instagram?`<button class="btn-secondary" style="width:100%;margin-bottom:8px" onclick="window.open('https://instagram.com/${c.instagram.replace('@','')}','_blank')">📷 Ver Instagram</button>`:''}
   `;
   openModal('modalVerCita');
 }
 
-// ── CLIENTAS ──
+// ══ CLIENTAS — con búsqueda ══
 function switchClientasTab(filter,btn){
   clientasTabFilter=filter;
   document.querySelectorAll('#clientasTabs .tab-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
+  if(btn)btn.classList.add('active');
   renderClientas();
 }
+
 function renderClientas(){
   const el=document.getElementById('listClientas');
-  const today=new Date(); const limit=45;
+  const today=new Date();const limit=45;
+  const searchTerm=(document.getElementById('clientaSearch')?.value||'').toLowerCase().trim();
+
   let list=clientasTabFilter==='perdidas'
-    ? allClientas.filter(c=>{
-        const citas=allCitas.filter(x=>x.nombre===c.nombre);
-        if(!citas.length) return true;
-        const last=citas.sort((a,b)=>b.fecha.localeCompare(a.fecha))[0];
-        const diff=Math.floor((today-new Date(last.fecha))/(1000*60*60*24));
-        return diff>=limit;
-      })
-    : [...allClientas].sort((a,b)=>a.nombre.localeCompare(b.nombre));
-  if(!list.length){el.innerHTML='<div class="today-empty">'+(clientasTabFilter==='perdidas'?'🎉 ¡Ninguna clienta perdida!':'Sin clientas registradas')+'</div>';return;}
+    ?allClientas.filter(c=>{const citas=allCitas.filter(x=>x.nombre===c.nombre);if(!citas.length)return true;const last=citas.sort((a,b)=>b.fecha.localeCompare(a.fecha))[0];return Math.floor((today-new Date(last.fecha))/(1000*60*60*24))>=limit;})
+    :[...allClientas].sort((a,b)=>a.nombre.localeCompare(b.nombre));
+
+  // Filtrar por búsqueda
+  if(searchTerm){
+    list=list.filter(c=>c.nombre.toLowerCase().includes(searchTerm)||(c.telefono||'').includes(searchTerm)||(c.instagram||'').toLowerCase().includes(searchTerm));
+  }
+
+  if(!list.length){
+    el.innerHTML=`<div class="today-empty">${searchTerm?'Sin resultados para "'+searchTerm+'"':clientasTabFilter==='perdidas'?'🎉 ¡Ninguna clienta perdida!':'Sin clientas registradas'}</div>`;
+    return;
+  }
+
+  const WA_ICON=`<svg viewBox="0 0 24 24" fill="#25D366" stroke="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>`;
+
   el.innerHTML=list.map(c=>{
     const citas=allCitas.filter(x=>x.nombre===c.nombre);
     const last=citas.length?citas.sort((a,b)=>b.fecha.localeCompare(a.fecha))[0]:null;
@@ -1117,7 +1096,7 @@ function renderClientas(){
         <div style="margin-top:4px">${badge}</div>
       </div>
       <div class="clienta-actions">
-        ${c.telefono?`<button class="btn-icon" onclick="window.open('https://wa.me/+56${c.telefono}','_blank')"><svg viewBox="0 0 24 24" fill="#25D366" stroke="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></button>`:''}
+        ${c.telefono?`<button class="btn-icon" onclick="window.open('https://wa.me/+56${c.telefono}','_blank')">${WA_ICON}</button>`:''}
         <button class="btn-icon" onclick="deleteClienta('${c.id}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
       </div>
     </div>`;
@@ -1125,10 +1104,11 @@ function renderClientas(){
 }
 
 function verClienta(id){
-  const c=allClientas.find(x=>x.id===id); if(!c) return;
+  const c=allClientas.find(x=>x.id===id);if(!c)return;
   const fotos=allPortfolio.filter(p=>p.clientaId===id);
   const historial=allCitas.filter(x=>x.nombre===c.nombre).sort((a,b)=>b.fecha.localeCompare(a.fecha));
   const totalGastado=historial.reduce((s,x)=>s+(Number(x.precio)||0),0);
+  const WA_ICON=`<svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:18px;height:18px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>`;
   document.getElementById('modalVerClientaContent').innerHTML=`
     <div class="modal-title">${c.nombre}</div>
     ${c.rut?`<div style="margin-bottom:6px;font-size:14px;color:var(--text2)">🪪 RUT: ${c.rut}</div>`:''}
@@ -1138,13 +1118,13 @@ function verClienta(id){
     ${c.notas?`<div style="margin-bottom:10px;font-size:13px;color:var(--text3);font-style:italic">${c.notas}</div>`:''}
     ${historial.length?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
       <div style="background:var(--cream);border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:3px">Visitas</div><div style="font-size:22px;font-weight:700;color:var(--text)">${historial.length}</div></div>
-      <div style="background:rgba(201,168,76,0.1);border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:3px">Total gastado</div><div style="font-size:22px;font-weight:700;color:var(--gold)">$${totalGastado.toLocaleString('es-CL')}</div></div>
+      <div style="background:rgba(201,168,76,0.1);border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:3px">Total</div><div style="font-size:22px;font-weight:700;color:var(--gold)">$${totalGastado.toLocaleString('es-CL')}</div></div>
     </div>
     <div class="card-title" style="margin-bottom:8px">Historial</div>
-    <div style="margin-bottom:14px;max-height:160px;overflow-y:auto">${historial.map(h=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--cream2)"><div><div style="font-size:13px;font-weight:600;color:var(--text)">${h.servicio||'Sin especificar'}</div><div style="font-size:11px;color:var(--text3)">${formatDate(h.fecha)}${h.hora?' • '+h.hora:''}</div></div>${h.precio?`<div style="font-size:13px;font-weight:600;color:var(--gold)">$${Number(h.precio).toLocaleString('es-CL')}</div>`:''}</div>`).join('')}</div>`:''}
+    <div style="margin-bottom:14px;max-height:160px;overflow-y:auto">${historial.map(h=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--cream2)"><div><div style="font-size:13px;font-weight:600;color:var(--text)">${h.servicio||'Sin especificar'}</div><div style="font-size:11px;color:var(--text3)">${formatDate(h.fecha)}${h.hora?' • '+h.hora:''}${h.pago?' · '+(PAGO_EMOJI[h.pago]||'')+' '+h.pago:''}</div></div>${h.precio?`<div style="font-size:13px;font-weight:600;color:var(--gold)">$${Number(h.precio).toLocaleString('es-CL')}</div>`:''}</div>`).join('')}</div>`:''}
     ${fotos.length?`<div class="card-title" style="margin-bottom:8px">Fotos (${fotos.length})</div><div class="portfolio-grid" style="margin-bottom:14px">${fotos.map(f=>`<div class="portfolio-item"><img src="${f.url}"/></div>`).join('')}</div>`:''}
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      ${c.telefono?`<button class="wa-btn" onclick="window.open('https://wa.me/+56${c.telefono}','_blank')"><svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:18px;height:18px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>WhatsApp</button>`:''}
+      ${c.telefono?`<button class="wa-btn" onclick="window.open('https://wa.me/+56${c.telefono}','_blank')">${WA_ICON} WhatsApp</button>`:''}
       ${c.instagram?`<button class="btn-secondary" onclick="window.open('https://instagram.com/${c.instagram.replace('@','')}','_blank')">📷 Instagram</button>`:''}
     </div>`;
   openModal('modalVerClienta');
@@ -1158,26 +1138,11 @@ async function saveClienta(){
   ['clientaNombre','clientaTelefono','clientaRut','clientaCumple','clientaInstagram','clientaNotas'].forEach(id=>document.getElementById(id).value='');
   closeModal('modalClienta');
 }
-async function deleteClienta(id){
-  if(!confirm('¿Eliminar esta clienta?')) return;
-  const {doc,deleteDoc}=window.fbFns;
-  await deleteDoc(doc(window.fbDb,'clientas',id));
-}
-function populateClientaSelect(){
-  const sel=document.getElementById('portfolioClientaId');
-  const cur=sel.value;
-  sel.innerHTML='<option value="">Sin vincular</option>'+allClientas.sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');
-  sel.value=cur;
-}
-function formatRut(input){
-  let val=input.value.replace(/[^0-9kK]/g,'').toUpperCase();
-  if(val.length<2){input.value=val;return;}
-  const dv=val.slice(-1); let num=val.slice(0,-1);
-  num=num.replace(/\B(?=(\d{3})+(?!\d))/g,'.');
-  input.value=num+'-'+dv;
-}
+async function deleteClienta(id){if(!confirm('¿Eliminar esta clienta?'))return;const {doc,deleteDoc}=window.fbFns;await deleteDoc(doc(window.fbDb,'clientas',id));}
+function populateClientaSelect(){const sel=document.getElementById('portfolioClientaId');const cur=sel.value;sel.innerHTML='<option value="">Sin vincular</option>'+allClientas.sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('');sel.value=cur;}
+function formatRut(input){let val=input.value.replace(/[^0-9kK]/g,'').toUpperCase();if(val.length<2){input.value=val;return;}const dv=val.slice(-1);let num=val.slice(0,-1);num=num.replace(/\B(?=(\d{3})+(?!\d))/g,'.');input.value=num+'-'+dv;}
 
-// ── PORTFOLIO ──
+// ══ PORTFOLIO ══
 let activePortfolioFilter='';
 function renderPortfolio(){
   const categories=[...new Set(allPortfolio.map(p=>p.categoria).filter(Boolean))];
@@ -1188,58 +1153,23 @@ function renderPortfolio(){
   grid.innerHTML=filtered.length?filtered.map(p=>`<div class="portfolio-item"><img src="${p.url}" loading="lazy"/>${p.categoria?`<div class="portfolio-item-label">${p.categoria}</div>`:''}<button class="portfolio-item-del" onclick="deletePortfolio('${p.id}')">×</button></div>`).join(''):'<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3)">Sin fotos aún</div>';
 }
 function filterPortfolio(cat){activePortfolioFilter=cat;renderPortfolio();}
-function previewPortfolio(input){
-  const file=input.files[0]; if(!file) return;
-  const reader=new FileReader();
-  reader.onload=e=>{portfolioImageData=e.target.result;document.getElementById('portfolioPreviewImg').src=portfolioImageData;document.getElementById('portfolioPreview').style.display='block';};
-  reader.readAsDataURL(file);
-}
+function previewPortfolio(input){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=e=>{portfolioImageData=e.target.result;document.getElementById('portfolioPreviewImg').src=portfolioImageData;document.getElementById('portfolioPreview').style.display='block';};reader.readAsDataURL(file);}
 async function savePortfolio(){
   if(!portfolioImageData){alert('Selecciona una foto');return;}
   const categoria=document.getElementById('portfolioCategoria').value;
   const clientaId=document.getElementById('portfolioClientaId').value;
-  try{
-    const compressed=await compressImage(portfolioImageData,800,0.7);
-    const {collection,addDoc}=window.fbFns;
-    await addDoc(collection(window.fbDb,'portfolio'),{url:compressed,categoria,clientaId:clientaId||null,createdAt:new Date().toISOString()});
-    portfolioImageData=null;
-    document.getElementById('portfolioPreview').style.display='none';
-    document.getElementById('portfolioFile').value='';
-    closeModal('modalPortfolio');
-  }catch(e){alert('Error al guardar la foto: '+e.message);}
+  try{const compressed=await compressImage(portfolioImageData,800,0.7);const {collection,addDoc}=window.fbFns;await addDoc(collection(window.fbDb,'portfolio'),{url:compressed,categoria,clientaId:clientaId||null,createdAt:new Date().toISOString()});portfolioImageData=null;document.getElementById('portfolioPreview').style.display='none';document.getElementById('portfolioFile').value='';closeModal('modalPortfolio');}
+  catch(e){alert('Error al guardar la foto: '+e.message);}
 }
-function compressImage(dataUrl,maxSize,quality){
-  return new Promise(resolve=>{
-    const img=new Image();
-    img.onload=()=>{
-      const canvas=document.createElement('canvas'); let w=img.width,h=img.height;
-      if(w>maxSize||h>maxSize){if(w>h){h=h*maxSize/w;w=maxSize;}else{w=w*maxSize/h;h=maxSize;}}
-      canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);
-      resolve(canvas.toDataURL('image/jpeg',quality));
-    };
-    img.src=dataUrl;
-  });
-}
-async function deletePortfolio(id){
-  if(!confirm('¿Eliminar esta foto?')) return;
-  const {doc,deleteDoc}=window.fbFns;
-  await deleteDoc(doc(window.fbDb,'portfolio',id));
-}
-function shareGallery(){
-  const url=window.location.origin+window.location.pathname.replace('index.html','')+'galeria.html';
-  if(navigator.share){navigator.share({title:'Portfolio Irianis Marcano 💅',text:'Mira mi trabajo de uñas y estilismo 💅✨',url});}
-  else{navigator.clipboard.writeText(url).then(()=>alert('Enlace copiado: '+url));}
-}
+function compressImage(dataUrl,maxSize,quality){return new Promise(resolve=>{const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');let w=img.width,h=img.height;if(w>maxSize||h>maxSize){if(w>h){h=h*maxSize/w;w=maxSize;}else{w=w*maxSize/h;h=maxSize;}}canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(img,0,0,w,h);resolve(canvas.toDataURL('image/jpeg',quality));};img.src=dataUrl;});}
+async function deletePortfolio(id){if(!confirm('¿Eliminar esta foto?'))return;const {doc,deleteDoc}=window.fbFns;await deleteDoc(doc(window.fbDb,'portfolio',id));}
+function shareGallery(){const url=window.location.origin+window.location.pathname.replace('index.html','')+'galeria.html';if(navigator.share){navigator.share({title:'Portfolio Irianis Marcano 💅',text:'Mira mi trabajo de uñas y estilismo 💅✨',url});}else{navigator.clipboard.writeText(url).then(()=>alert('Enlace copiado: '+url));}}
 
-// ── GANANCIAS ──
-function switchGanancias(periodo,btn){
-  document.querySelectorAll('#gananciasTabs .tab-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  renderGanancias(periodo);
-}
+// ══ GANANCIAS ══
+function switchGanancias(periodo,btn){document.querySelectorAll('#gananciasTabs .tab-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderGanancias(periodo);}
 function renderGanancias(periodo){
-  const now=new Date(); const año=now.getFullYear(); const mes=now.getMonth();
-  let citas=[]; let label='';
+  const now=new Date();const año=now.getFullYear();const mes=now.getMonth();
+  let citas=[];let label='';
   if(periodo==='mes'){const mesStr=String(mes+1).padStart(2,'0');citas=allCitas.filter(c=>c.fecha&&c.fecha.startsWith(`${año}-${mesStr}`));label='Este mes';}
   else if(periodo==='3meses'){const hace3=new Date(now);hace3.setMonth(mes-2);const desde=hace3.toISOString().split('T')[0].substring(0,7);citas=allCitas.filter(c=>c.fecha&&c.fecha.substring(0,7)>=desde);label='Últimos 3 meses';}
   else{citas=allCitas.filter(c=>c.fecha&&c.fecha.startsWith(`${año}`));label='Este año';}
@@ -1254,14 +1184,13 @@ function renderGanancias(periodo){
   document.getElementById('gGastos').textContent='-$'+totalGastos.toLocaleString('es-CL');
   document.getElementById('gNeto').textContent='$'+(total-totalGastos).toLocaleString('es-CL');
   renderBarChart(periodo,citas);
-  const servicios={};
-  citas.forEach(c=>{if(c.servicio)servicios[c.servicio]=(servicios[c.servicio]||0)+1;});
+  const servicios={};citas.forEach(c=>{if(c.servicio)servicios[c.servicio]=(servicios[c.servicio]||0)+1;});
   const top=Object.entries(servicios).sort((a,b)=>b[1]-a[1]).slice(0,5);
   const maxCount=top.length?top[0][1]:1;
-  document.getElementById('topServicios').innerHTML=top.length?top.map(([serv,count])=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;color:var(--text2)">${serv}</span><span style="font-size:12px;font-weight:600;color:var(--gold)">${count} cita${count!==1?'s':''}</span></div><div style="background:var(--cream2);border-radius:4px;height:6px"><div style="background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;height:6px;width:${Math.round(count/maxCount*100)}%;transition:width 0.5s ease"></div></div></div>`).join(''):'<div style="color:var(--text3);font-size:13px">Sin datos aún</div>';
+  document.getElementById('topServicios').innerHTML=top.length?top.map(([serv,count])=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:13px;color:var(--text2)">${serv}</span><span style="font-size:12px;font-weight:600;color:var(--gold)">${count} cita${count!==1?'s':''}</span></div><div style="background:var(--cream2);border-radius:4px;height:6px"><div style="background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:4px;height:6px;width:${Math.round(count/maxCount*100)}%"></div></div></div>`).join(''):'<div style="color:var(--text3);font-size:13px">Sin datos aún</div>';
 }
 function renderBarChart(periodo,citas){
-  const barEl=document.getElementById('barChart'); const labEl=document.getElementById('barLabels'); const now=new Date(); let grupos=[];
+  const barEl=document.getElementById('barChart');const labEl=document.getElementById('barLabels');const now=new Date();let grupos=[];
   if(periodo==='mes'){for(let s=0;s<5;s++){const ini=s*7+1,fin=Math.min((s+1)*7,31);const total=citas.filter(c=>{if(!c.fecha)return false;const d=parseInt(c.fecha.split('-')[2]);return d>=ini&&d<=fin;}).reduce((s,c)=>s+(Number(c.precio)||0),0);if(total>0||s<4)grupos.push({label:`S${s+1}`,total});}}
   else if(periodo==='3meses'){for(let i=2;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);const mesStr=String(d.getMonth()+1).padStart(2,'0');const añoStr=d.getFullYear();const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];const total=citas.filter(c=>c.fecha&&c.fecha.startsWith(`${añoStr}-${mesStr}`)).reduce((s,c)=>s+(Number(c.precio)||0),0);grupos.push({label:meses[d.getMonth()],total});}}
   else{const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];for(let m=0;m<=now.getMonth();m++){const mesStr=String(m+1).padStart(2,'0');const total=citas.filter(c=>c.fecha&&c.fecha.startsWith(`${now.getFullYear()}-${mesStr}`)).reduce((s,c)=>s+(Number(c.precio)||0),0);grupos.push({label:meses[m],total});}}
@@ -1270,7 +1199,7 @@ function renderBarChart(periodo,citas){
   labEl.innerHTML=grupos.map(g=>`<div style="flex:1;text-align:center;font-size:10px;color:var(--text3)">${g.label}</div>`).join('');
 }
 
-// ── GASTOS ──
+// ══ GASTOS ══
 async function saveGasto(){
   const data={nombre:document.getElementById('gastoNombre').value.trim(),categoria:document.getElementById('gastoCategoria').value,monto:document.getElementById('gastoMonto').value,fecha:document.getElementById('gastoFecha').value,createdAt:new Date().toISOString()};
   if(!data.nombre||!data.monto){alert('Descripción y monto son requeridos');return;}
@@ -1280,46 +1209,28 @@ async function saveGasto(){
   closeModal('modalGasto');
 }
 function renderGastos(){
-  const now=new Date(); const mesStr=String(now.getMonth()+1).padStart(2,'0');
+  const now=new Date();const mesStr=String(now.getMonth()+1).padStart(2,'0');
   const gastosMes=allGastos.filter(g=>g.fecha&&g.fecha.startsWith(`${now.getFullYear()}-${mesStr}`));
   const totalMes=gastosMes.reduce((s,g)=>s+(Number(g.monto)||0),0);
   const resEl=document.getElementById('gastosResumen');
-  if(resEl) resEl.innerHTML=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px">Gastos este mes</div><div style="font-size:24px;font-weight:700;color:var(--danger)">$${totalMes.toLocaleString('es-CL')}</div></div><div style="font-size:32px">💸</div></div></div>`;
-  const el=document.getElementById('listGastos');
-  if(!el) return;
+  if(resEl)resEl.innerHTML=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:4px">Gastos este mes</div><div style="font-size:24px;font-weight:700;color:var(--danger)">$${totalMes.toLocaleString('es-CL')}</div></div><div style="font-size:32px">💸</div></div></div>`;
+  const el=document.getElementById('listGastos');if(!el)return;
   const catEmoji={'Insumos':'💅','Marketing':'📱','Arriendo':'🏠','Equipos':'🔧','Otros':'📦'};
   const sorted=[...allGastos].sort((a,b)=>b.fecha?.localeCompare(a.fecha||'')||0);
-  el.innerHTML=sorted.length?sorted.map(g=>`<div class="gasto-item">
-    <div class="gasto-icon">${catEmoji[g.categoria]||'📦'}</div>
-    <div class="gasto-info"><div class="gasto-nombre">${g.nombre}</div><div class="gasto-cat">${g.categoria} • ${formatDate(g.fecha)}</div></div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-      <div class="gasto-monto">-$${Number(g.monto).toLocaleString('es-CL')}</div>
-      <button class="btn-icon" onclick="deleteGasto('${g.id}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>
-    </div>
-  </div>`).join(''):'<div class="today-empty">Sin gastos registrados</div>';
+  el.innerHTML=sorted.length?sorted.map(g=>`<div class="gasto-item"><div class="gasto-icon">${catEmoji[g.categoria]||'📦'}</div><div class="gasto-info"><div class="gasto-nombre">${g.nombre}</div><div class="gasto-cat">${g.categoria} • ${formatDate(g.fecha)}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><div class="gasto-monto">-$${Number(g.monto).toLocaleString('es-CL')}</div><button class="btn-icon" onclick="deleteGasto('${g.id}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button></div></div>`).join(''):'<div class="today-empty">Sin gastos registrados</div>';
 }
-async function deleteGasto(id){
-  if(!confirm('¿Eliminar este gasto?')) return;
-  const {doc,deleteDoc}=window.fbFns;
-  await deleteDoc(doc(window.fbDb,'gastos',id));
-}
+async function deleteGasto(id){if(!confirm('¿Eliminar este gasto?'))return;const {doc,deleteDoc}=window.fbFns;await deleteDoc(doc(window.fbDb,'gastos',id));}
 
-// ── REPORTE FISCAL ──
+// ══ REPORTE FISCAL — con PDF ══
 function openSubscreenReporte(){
-  const now=new Date(); const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const now=new Date();const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const tabs=document.getElementById('reporteTabs');
   tabs.innerHTML=meses.slice(0,now.getMonth()+1).map((m,i)=>`<button class="tab-btn ${i===now.getMonth()?'active':''}" onclick="switchReporte(${i},this)">${m}</button>`).join('');
-  reporteMesIdx=now.getMonth();
-  renderReporte();
+  reporteMesIdx=now.getMonth();renderReporte();
 }
-function switchReporte(idx,btn){
-  reporteMesIdx=idx;
-  document.querySelectorAll('#reporteTabs .tab-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  renderReporte();
-}
+function switchReporte(idx,btn){reporteMesIdx=idx;document.querySelectorAll('#reporteTabs .tab-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderReporte();}
 function renderReporte(){
-  const now=new Date(); const año=now.getFullYear(); const m=reporteMesIdx;
+  const now=new Date();const año=now.getFullYear();const m=reporteMesIdx;
   const mesStr=String(m+1).padStart(2,'0');
   const meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   const citas=allCitas.filter(c=>c.fecha&&c.fecha.startsWith(`${año}-${mesStr}`));
@@ -1329,10 +1240,7 @@ function renderReporte(){
   const neto=ingresos-totalGastos;
   const el=document.getElementById('reporteContent');
   el.innerHTML=`
-    <div style="text-align:center;margin-bottom:20px">
-      <div style="font-size:13px;color:var(--text3);margin-bottom:4px">${meses[m]} ${año}</div>
-      <div style="font-size:11px;color:var(--text3)">${citas.length} citas registradas</div>
-    </div>
+    <div style="text-align:center;margin-bottom:20px"><div style="font-size:13px;color:var(--text3);margin-bottom:4px">${meses[m]} ${año}</div><div style="font-size:11px;color:var(--text3)">${citas.length} citas registradas</div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">
       <div class="stat-card gold"><div class="stat-label">Ingresos</div><div class="stat-value">$${(ingresos/1000).toFixed(0)}k</div></div>
       <div class="stat-card"><div class="stat-label">Gastos</div><div class="stat-value" style="color:var(--danger)">$${(totalGastos/1000).toFixed(0)}k</div></div>
@@ -1340,15 +1248,67 @@ function renderReporte(){
     </div>
     <div class="card" style="margin-bottom:14px">
       <div class="card-title" style="margin-bottom:12px">Detalle de ingresos</div>
-      ${citas.map(c=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--cream2);font-size:13px"><div><div style="font-weight:600;color:var(--text)">${c.nombre}</div><div style="color:var(--text3)">${c.servicio||'—'} • ${formatDate(c.fecha)}</div></div><div style="font-weight:700;color:var(--gold)">${c.precio?'$'+Number(c.precio).toLocaleString('es-CL'):'—'}</div></div>`).join('')||'<div style="color:var(--text3);font-size:13px">Sin citas este mes</div>'}
+      ${citas.map(c=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--cream2);font-size:13px"><div><div style="font-weight:600;color:var(--text)">${c.nombre}</div><div style="color:var(--text3)">${c.servicio||'—'} • ${formatDate(c.fecha)}${c.pago?' · '+(PAGO_EMOJI[c.pago]||'')+' '+c.pago:''}</div></div><div style="font-weight:700;color:var(--gold)">${c.precio?'$'+Number(c.precio).toLocaleString('es-CL'):'—'}</div></div>`).join('')||'<div style="color:var(--text3);font-size:13px">Sin citas este mes</div>'}
     </div>
-    ${gastos.length?`<div class="card" style="margin-bottom:14px">
-      <div class="card-title" style="margin-bottom:12px">Detalle de gastos</div>
-      ${gastos.map(g=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--cream2);font-size:13px"><div><div style="font-weight:600;color:var(--text)">${g.nombre}</div><div style="color:var(--text3)">${g.categoria} • ${formatDate(g.fecha)}</div></div><div style="font-weight:700;color:var(--danger)">-$${Number(g.monto).toLocaleString('es-CL')}</div></div>`).join('')}
-    </div>`:''}
-    <button class="btn-primary" onclick="exportarReporte(${m},${año})">📤 Exportar como texto</button>
+    ${gastos.length?`<div class="card" style="margin-bottom:14px"><div class="card-title" style="margin-bottom:12px">Detalle de gastos</div>${gastos.map(g=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--cream2);font-size:13px"><div><div style="font-weight:600;color:var(--text)">${g.nombre}</div><div style="color:var(--text3)">${g.categoria} • ${formatDate(g.fecha)}</div></div><div style="font-weight:700;color:var(--danger)">-$${Number(g.monto).toLocaleString('es-CL')}</div></div>`).join('')}</div>`:''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <button class="btn-primary" onclick="exportarPDF(${m},${año})">📄 PDF</button>
+      <button class="btn-secondary" onclick="exportarReporte(${m},${año})">📤 Texto</button>
+    </div>
   `;
 }
+
+// ══ EXPORTAR PDF ══
+function exportarPDF(mes,año){
+  const meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const mesStr=String(mes+1).padStart(2,'0');
+  const citas=allCitas.filter(c=>c.fecha&&c.fecha.startsWith(`${año}-${mesStr}`));
+  const gastos=allGastos.filter(g=>g.fecha&&g.fecha.startsWith(`${año}-${mesStr}`));
+  const ingresos=citas.reduce((s,c)=>s+(Number(c.precio)||0),0);
+  const totalGastos=gastos.reduce((s,g)=>s+(Number(g.monto)||0),0);
+  const neto=ingresos-totalGastos;
+
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Reporte ${meses[mes]} ${año}</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#2C2416;padding:32px;max-width:600px;margin:0 auto;}
+    h1{color:#C9A84C;font-size:22px;margin-bottom:4px;}
+    .sub{color:#9A8868;font-size:13px;margin-bottom:24px;}
+    .resumen{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;}
+    .box{border-radius:10px;padding:14px;text-align:center;}
+    .box.gold{background:#1a1508;color:#C9A84C;}
+    .box.red{background:#fef2f2;color:#ef4444;}
+    .box.neu{background:#FAF8F4;}
+    .box .val{font-size:20px;font-weight:700;}
+    .box .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:4px;}
+    table{width:100%;border-collapse:collapse;margin-bottom:20px;font-size:13px;}
+    th{text-align:left;padding:8px;background:#FAF8F4;color:#9A8868;font-size:11px;text-transform:uppercase;letter-spacing:1px;}
+    td{padding:8px;border-bottom:1px solid #F2EEE8;}
+    .seccion{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#9A8868;margin-bottom:8px;margin-top:20px;}
+    .footer{margin-top:32px;font-size:11px;color:#9A8868;text-align:center;border-top:1px solid #F2EEE8;padding-top:16px;}
+    @media print{body{padding:16px;}}
+  </style></head><body>
+  <h1>Irianis Marcano 💅</h1>
+  <div class="sub">Reporte Fiscal — ${meses[mes]} ${año} · Estilista &amp; Nails</div>
+  <div class="resumen">
+    <div class="box gold"><div class="lbl">Ingresos</div><div class="val">$${ingresos.toLocaleString('es-CL')}</div></div>
+    <div class="box red"><div class="lbl">Gastos</div><div class="val">$${totalGastos.toLocaleString('es-CL')}</div></div>
+    <div class="box neu"><div class="lbl">Neto</div><div class="val" style="color:${neto>=0?'#C9A84C':'#ef4444'}">$${neto.toLocaleString('es-CL')}</div></div>
+  </div>
+  <div class="seccion">Citas (${citas.length})</div>
+  <table><thead><tr><th>Fecha</th><th>Clienta</th><th>Servicio</th><th>Pago</th><th>Monto</th></tr></thead><tbody>
+  ${citas.map(c=>`<tr><td>${formatDate(c.fecha)}</td><td>${c.nombre}</td><td>${c.servicio||'—'}</td><td>${c.pago?PAGO_EMOJI[c.pago]+' '+c.pago:'—'}</td><td style="font-weight:700;color:#C9A84C">${c.precio?'$'+Number(c.precio).toLocaleString('es-CL'):'—'}</td></tr>`).join('')||'<tr><td colspan="5" style="text-align:center;color:#9A8868">Sin citas este mes</td></tr>'}
+  </tbody></table>
+  ${gastos.length?`<div class="seccion">Gastos (${gastos.length})</div><table><thead><tr><th>Fecha</th><th>Descripción</th><th>Categoría</th><th>Monto</th></tr></thead><tbody>${gastos.map(g=>`<tr><td>${formatDate(g.fecha)}</td><td>${g.nombre}</td><td>${g.categoria}</td><td style="font-weight:700;color:#ef4444">-$${Number(g.monto).toLocaleString('es-CL')}</td></tr>`).join('')}</tbody></table>`:''}
+  <div class="footer">Generado por la app de Irianis Marcano · ${new Date().toLocaleDateString('es-CL')}</div>
+  </body></html>`;
+
+  const blob=new Blob([html],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const win=window.open(url,'_blank');
+  if(win){setTimeout(()=>{win.print();},600);}
+  else{alert('Activa las ventanas emergentes para generar el PDF');}
+}
+
 function exportarReporte(mes,año){
   const meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   const mesStr=String(mes+1).padStart(2,'0');
@@ -1356,176 +1316,103 @@ function exportarReporte(mes,año){
   const gastos=allGastos.filter(g=>g.fecha&&g.fecha.startsWith(`${año}-${mesStr}`));
   const ingresos=citas.reduce((s,c)=>s+(Number(c.precio)||0),0);
   const totalGastos=gastos.reduce((s,g)=>s+(Number(g.monto)||0),0);
-  let txt=`REPORTE FISCAL — ${meses[mes]} ${año}\nIrianis Marcano · Estilista & Nails\n${'─'.repeat(40)}\n\n`;
-  txt+=`INGRESOS: $${ingresos.toLocaleString('es-CL')}\n`;
-  txt+=`GASTOS:   $${totalGastos.toLocaleString('es-CL')}\n`;
-  txt+=`NETO:     $${(ingresos-totalGastos).toLocaleString('es-CL')}\n\n`;
-  txt+=`CITAS (${citas.length}):\n`;
-  citas.forEach(c=>{txt+=`  · ${formatDate(c.fecha)} — ${c.nombre} — ${c.servicio||'—'} — ${c.precio?'$'+Number(c.precio).toLocaleString('es-CL'):'sin precio'}\n`;});
+  let txt=`REPORTE FISCAL — ${meses[mes]} ${año}\nIrianis Marcano · Estilista & Nails\n${'─'.repeat(40)}\n\nINGRESOS: $${ingresos.toLocaleString('es-CL')}\nGASTOS:   $${totalGastos.toLocaleString('es-CL')}\nNETO:     $${(ingresos-totalGastos).toLocaleString('es-CL')}\n\nCITAS (${citas.length}):\n`;
+  citas.forEach(c=>{txt+=`  · ${formatDate(c.fecha)} — ${c.nombre} — ${c.servicio||'—'} — ${c.pago||'—'} — ${c.precio?'$'+Number(c.precio).toLocaleString('es-CL'):'sin precio'}\n`;});
   if(gastos.length){txt+=`\nGASTOS (${gastos.length}):\n`;gastos.forEach(g=>{txt+=`  · ${formatDate(g.fecha)} — ${g.nombre} — ${g.categoria} — $${Number(g.monto).toLocaleString('es-CL')}\n`;});}
   txt+=`\nGenerado por la app de Irianis Marcano`;
   if(navigator.share){navigator.share({title:`Reporte ${meses[mes]} ${año}`,text:txt});}
-  else{navigator.clipboard.writeText(txt).then(()=>alert('Reporte copiado al portapapeles ✓'));}
+  else{navigator.clipboard.writeText(txt).then(()=>alert('Reporte copiado ✓'));}
 }
 
-// ── CLIENTAS PERDIDAS ──
+// ══ CLIENTAS PERDIDAS ══
 function renderPerdidas(){
-  const today=new Date(); const limit=45;
-  const el=document.getElementById('listPerdidas');
-  const perdidas=allClientas.filter(c=>{
-    const citas=allCitas.filter(x=>x.nombre===c.nombre);
-    if(!citas.length) return true;
-    const last=citas.sort((a,b)=>b.fecha.localeCompare(a.fecha))[0];
-    return Math.floor((today-new Date(last.fecha))/(1000*60*60*24))>=limit;
-  });
-  if(!perdidas.length){el.innerHTML='<div class="today-empty">🎉 ¡Ninguna clienta perdida!<br><div style="font-size:13px;margin-top:8px">Todas visitaron en los últimos 45 días</div></div>';return;}
-  el.innerHTML=perdidas.map(c=>{
-    const citas=allCitas.filter(x=>x.nombre===c.nombre).sort((a,b)=>b.fecha.localeCompare(a.fecha));
-    const last=citas[0];
-    const diff=last?Math.floor((today-new Date(last.fecha))/(1000*60*60*24)):null;
-    const msg=encodeURIComponent(`Hola ${c.nombre}! 💅✨ Hace tiempo que no te vemos por acá. ¡Te extrañamos! ¿Cuándo vienes a ponerte hermosa con Irianis Marcano? 👑`);
-    return `<div class="clienta-item">
-      <div class="clienta-avatar" style="background:linear-gradient(135deg,#ef4444,#b91c1c)">${c.nombre.charAt(0)}</div>
-      <div class="clienta-info">
-        <div class="clienta-name">${c.nombre}</div>
-        <div class="clienta-detail">${last?`Última visita: ${formatDate(last.fecha)}`:'Sin visitas'}</div>
-        <div style="margin-top:4px"><span class="lost-badge">${diff!==null?diff+'d sin visita':'Nueva'}</span></div>
-      </div>
-      ${c.telefono?`<button class="wa-btn" style="padding:8px 10px" onclick="window.open('https://wa.me/+56${c.telefono}?text=${msg}','_blank')">
-        <svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:18px;height:18px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-      </button>`:''}
-    </div>`;
+  const today=new Date();const limit=45;const el=document.getElementById('listPerdidas');
+  const perdidas=allClientas.filter(c=>{const citas=allCitas.filter(x=>x.nombre===c.nombre);if(!citas.length)return true;const last=citas.sort((a,b)=>b.fecha.localeCompare(a.fecha))[0];return Math.floor((today-new Date(last.fecha))/(1000*60*60*24))>=limit;});
+  if(!perdidas.length){el.innerHTML='<div class="today-empty">🎉 ¡Ninguna clienta perdida!</div>';return;}
+  const WA_ICON=`<svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:18px;height:18px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>`;
+  el.innerHTML=perdidas.map(c=>{const citas=allCitas.filter(x=>x.nombre===c.nombre).sort((a,b)=>b.fecha.localeCompare(a.fecha));const last=citas[0];const diff=last?Math.floor((today-new Date(last.fecha))/(1000*60*60*24)):null;const msg=encodeURIComponent(`Hola ${c.nombre}! 💅✨ Hace tiempo que no te vemos por acá. ¡Te extrañamos! ¿Cuándo vienes a ponerte hermosa con Irianis Marcano? 👑`);
+    return `<div class="clienta-item"><div class="clienta-avatar" style="background:linear-gradient(135deg,#ef4444,#b91c1c)">${c.nombre.charAt(0)}</div><div class="clienta-info"><div class="clienta-name">${c.nombre}</div><div class="clienta-detail">${last?`Última visita: ${formatDate(last.fecha)}`:'Sin visitas'}</div><div style="margin-top:4px"><span class="lost-badge">${diff!==null?diff+'d sin visita':'Nueva'}</span></div></div>${c.telefono?`<button class="wa-btn" style="padding:8px 10px" onclick="window.open('https://wa.me/+56${c.telefono}?text=${msg}','_blank')">${WA_ICON}</button>`:''}</div>`;
   }).join('');
 }
 
-// ── PLANTILLAS WHATSAPP ──
+// ══ PLANTILLAS ══
 const PLANTILLAS=[
-  {label:'✅ Confirmación de cita',texto:(n,f,h,s)=>`Hola ${n}! 💅 Te confirmamos tu cita el ${f}${h?' a las '+h:''}. Servicio: ${s||'a confirmar'}. ¡Te esperamos con todo listo! — Irianis Marcano ✨`},
+  {label:'✅ Confirmación de cita',texto:(n,f,h,s)=>`Hola ${n}! 💅 Te confirmamos tu cita el ${f}${h?' a las '+h:''}. Servicio: ${s||'a confirmar'}. ¡Te esperamos! — Irianis Marcano ✨`},
   {label:'⏰ Recordatorio (día antes)',texto:(n,f,h,s)=>`Hola mi bella ${n}! 💅 Mañana te esperamos ${h?'a las '+h:''} para tu ${s||'cita'}. ¡No te olvides! — Irianis Marcano ✨`},
-  {label:'🎂 Feliz cumpleaños',texto:(n)=>`Hola ${n}! 🎂✨ Desde Irianis Marcano te deseamos un feliz cumpleaños. Que este día esté tan hermoso como tú! 💅👑`},
-  {label:'🌟 Promoción / Novedad',texto:(n)=>`Hola ${n}! 💅✨ Tenemos novedades especiales para ti esta semana. ¡Escríbenos y te contamos! — Irianis Marcano`},
-  {label:'💔 Recuperar clienta',texto:(n)=>`Hola ${n}! 💅 Hace tiempo que no te vemos. ¡Te extrañamos! ¿Cuándo vuelves a ponerte hermosa? Tenemos algo especial para ti. 👑 — Irianis Marcano`},
-  {label:'⭐ Pedir reseña',texto:(n)=>`Hola ${n}! ✨ Esperamos que hayas quedado feliz con tu servicio. Si tienes un minuto, nos encantaría que nos dejaras una reseña en Instagram @irianisalondebelleza 💅 ¡Gracias!`},
+  {label:'🎂 Feliz cumpleaños',texto:(n)=>`Hola ${n}! 🎂✨ Desde Irianis Marcano te deseamos un feliz cumpleaños. ¡Que este día esté tan hermoso como tú! 💅👑`},
+  {label:'🌟 Promoción / Novedad',texto:(n)=>`Hola ${n}! 💅✨ Tenemos novedades especiales para ti esta semana. ¡Escríbenos! — Irianis Marcano`},
+  {label:'💔 Recuperar clienta',texto:(n)=>`Hola ${n}! 💅 Hace tiempo que no te vemos. ¡Te extrañamos! ¿Cuándo vuelves? — Irianis Marcano 👑`},
+  {label:'⭐ Pedir reseña',texto:(n)=>`Hola ${n}! ✨ ¿Quedaste feliz con tu servicio? Nos encantaría una reseña en @irianisalondebelleza 💅 ¡Gracias!`},
 ];
 function renderPlantillas(){
   const el=document.getElementById('plantillasContent');
   const proximas=allCitas.filter(c=>c.fecha>=new Date().toISOString().split('T')[0]&&c.telefono).slice(0,5);
-  el.innerHTML=PLANTILLAS.map(p=>`
-    <div class="plantilla-item">
-      <div class="plantilla-label">${p.label}</div>
-      <div class="plantilla-text">${p.texto('[Nombre]','[Fecha]','[Hora]','[Servicio]')}</div>
-      ${proximas.length?`<div style="margin-bottom:8px"><select id="sel_${p.label.replace(/\W/g,'')}" style="font-size:13px;padding:8px 12px"><option value="">— Elegir clienta —</option>${proximas.map(c=>`<option value="${c.id}">${c.nombre} · ${formatDate(c.fecha)}</option>`).join('')}</select></div>`:''}
-      <button class="wa-btn" style="font-size:12px;padding:8px 12px" onclick="enviarPlantilla('${p.label.replace(/\W/g,'')}',${PLANTILLAS.indexOf(p)})">
-        <svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:16px;height:16px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        Enviar
-      </button>
-    </div>`).join('');
+  const WA_ICON=`<svg viewBox="0 0 24 24" fill="white" stroke="none" style="width:16px;height:16px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>`;
+  el.innerHTML=PLANTILLAS.map(p=>`<div class="plantilla-item"><div class="plantilla-label">${p.label}</div><div class="plantilla-text">${p.texto('[Nombre]','[Fecha]','[Hora]','[Servicio]')}</div>${proximas.length?`<div style="margin-bottom:8px"><select id="sel_${p.label.replace(/\W/g,'')}" style="font-size:13px;padding:8px 12px"><option value="">— Elegir clienta —</option>${proximas.map(c=>`<option value="${c.id}">${c.nombre} · ${formatDate(c.fecha)}</option>`).join('')}</select></div>`:''}<button class="wa-btn" style="font-size:12px;padding:8px 12px" onclick="enviarPlantilla('${p.label.replace(/\W/g,'')}',${PLANTILLAS.indexOf(p)})">${WA_ICON} Enviar</button></div>`).join('');
 }
 function enviarPlantilla(selId,pIdx){
-  const sel=document.getElementById('sel_'+selId);
-  const citaId=sel?sel.value:'';
-  const cita=citaId?allCitas.find(c=>c.id===citaId):null;
-  const p=PLANTILLAS[pIdx];
-  if(cita&&cita.telefono){
-    const msg=p.texto(cita.nombre,formatDate(cita.fecha),cita.hora,cita.servicio);
-    window.open('https://wa.me/+56'+cita.telefono+'?text='+encodeURIComponent(msg),'_blank');
-  } else {
-    const nombre=prompt('Nombre de la clienta:','');
-    if(!nombre) return;
-    const tel=prompt('Teléfono (sin +56):','');
-    if(!tel) return;
-    const msg=p.texto(nombre,'','','');
-    window.open('https://wa.me/+56'+tel+'?text='+encodeURIComponent(msg),'_blank');
-  }
+  const sel=document.getElementById('sel_'+selId);const citaId=sel?sel.value:'';const cita=citaId?allCitas.find(c=>c.id===citaId):null;const p=PLANTILLAS[pIdx];
+  if(cita&&cita.telefono){window.open('https://wa.me/+56'+cita.telefono+'?text='+encodeURIComponent(p.texto(cita.nombre,formatDate(cita.fecha),cita.hora,cita.servicio)),'_blank');}
+  else{const nombre=prompt('Nombre de la clienta:','');if(!nombre)return;const tel=prompt('Teléfono (sin +56):','');if(!tel)return;window.open('https://wa.me/+56'+tel+'?text='+encodeURIComponent(p.texto(nombre,'','','')),'_blank');}
 }
 
-// ── HORARIO ──
+// ══ HORARIO ══
 const DIAS_NOMBRES=['Do','Lu','Ma','Mi','Ju','Vi','Sa'];
 function renderDiasSelector(){
-  const el=document.getElementById('diasSelector'); if(!el) return;
+  const el=document.getElementById('diasSelector');if(!el)return;
   const selDias=appConfig.horario?.dias||[1,2,3,4,5];
   el.innerHTML=DIAS_NOMBRES.map((d,i)=>`<button onclick="toggleDia(${i},this)" style="width:40px;height:40px;border-radius:50%;border:1.5px solid ${selDias.includes(i)?'var(--gold)':'var(--cream3)'};background:${selDias.includes(i)?'var(--gold)':'var(--white)'};color:${selDias.includes(i)?'#fff':'var(--text2)'};font-size:13px;font-weight:600;cursor:pointer">${d}</button>`).join('');
 }
 function toggleDia(idx,btn){
-  if(!appConfig.horario) appConfig.horario={dias:[1,2,3,4,5],desde:'09:00',hasta:'18:00'};
-  const dias=appConfig.horario.dias||[];
-  const pos=dias.indexOf(idx);
-  if(pos>=0) dias.splice(pos,1); else dias.push(idx);
+  if(!appConfig.horario)appConfig.horario={dias:[1,2,3,4,5],desde:'09:00',hasta:'18:00'};
+  const dias=appConfig.horario.dias||[];const pos=dias.indexOf(idx);
+  if(pos>=0)dias.splice(pos,1);else dias.push(idx);
   appConfig.horario.dias=dias;
   btn.style.background=dias.includes(idx)?'var(--gold)':'var(--white)';
   btn.style.borderColor=dias.includes(idx)?'var(--gold)':'var(--cream3)';
   btn.style.color=dias.includes(idx)?'#fff':'var(--text2)';
 }
 async function saveHorario(){
-  if(!appConfig.horario) appConfig.horario={dias:[1,2,3,4,5],desde:'09:00',hasta:'18:00'};
+  if(!appConfig.horario)appConfig.horario={dias:[1,2,3,4,5],desde:'09:00',hasta:'18:00'};
   appConfig.horario.desde=document.getElementById('horarioDesde').value;
   appConfig.horario.hasta=document.getElementById('horarioHasta').value;
-  const {doc,setDoc}=window.fbFns;
-  await setDoc(doc(window.fbDb,'config','app'),appConfig);
-  alert('Horario guardado ✓');
+  const {doc,setDoc}=window.fbFns;await setDoc(doc(window.fbDb,'config','app'),appConfig);alert('Horario guardado ✓');
 }
 async function saveBloqueo(){
   const data={motivo:document.getElementById('bloqueoMotivo').value.trim(),desde:document.getElementById('bloqueoDesde').value,hasta:document.getElementById('bloqueoHasta').value,createdAt:new Date().toISOString()};
   if(!data.motivo||!data.desde){alert('Motivo y fecha son requeridos');return;}
-  const {collection,addDoc}=window.fbFns;
-  await addDoc(collection(window.fbDb,'bloqueos'),data);
-  ['bloqueoMotivo','bloqueoDesde','bloqueoHasta'].forEach(id=>document.getElementById(id).value='');
-  closeModal('modalBloqueo');
+  const {collection,addDoc}=window.fbFns;await addDoc(collection(window.fbDb,'bloqueos'),data);
+  ['bloqueoMotivo','bloqueoDesde','bloqueoHasta'].forEach(id=>document.getElementById(id).value='');closeModal('modalBloqueo');
 }
 function renderBloqueos(){
-  const el=document.getElementById('listBloqueos'); if(!el) return;
+  const el=document.getElementById('listBloqueos');if(!el)return;
   el.innerHTML=allBloqueos.length?allBloqueos.map(b=>`<div class="bloqueo-item"><div><div style="font-size:14px;font-weight:600;color:var(--text)">${b.motivo}</div><div style="font-size:12px;color:var(--text3)">${formatDate(b.desde)}${b.hasta&&b.hasta!==b.desde?' → '+formatDate(b.hasta):''}</div></div><button class="btn-icon" onclick="deleteBloqueo('${b.id}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button></div>`).join(''):'<div style="color:var(--text3);font-size:13px">Sin bloqueos registrados</div>';
 }
-async function deleteBloqueo(id){
-  if(!confirm('¿Eliminar este bloqueo?')) return;
-  const {doc,deleteDoc}=window.fbFns;
-  await deleteDoc(doc(window.fbDb,'bloqueos',id));
-}
+async function deleteBloqueo(id){if(!confirm('¿Eliminar?'))return;const {doc,deleteDoc}=window.fbFns;await deleteDoc(doc(window.fbDb,'bloqueos',id));}
 
-// ── NOTAS ──
-async function saveNota(){
-  const texto=document.getElementById('notaTexto').value.trim();
-  if(!texto){alert('Escribe algo primero');return;}
-  const {collection,addDoc}=window.fbFns;
-  await addDoc(collection(window.fbDb,'notas'),{texto,createdAt:new Date().toISOString()});
-  document.getElementById('notaTexto').value='';
-  closeModal('modalNota');
-}
-function renderNotas(){
-  const el=document.getElementById('listNotas'); if(!el) return;
-  const sorted=[...allNotas].sort((a,b)=>b.createdAt?.localeCompare(a.createdAt||'')||0);
-  el.innerHTML=sorted.length?sorted.map(n=>`<div class="note-item"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div style="font-size:14px;color:var(--text);line-height:1.5;flex:1">${n.texto}</div><button class="btn-icon" onclick="deleteNota('${n.id}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button></div><div style="font-size:10px;color:var(--text3);margin-top:6px">${n.createdAt?new Date(n.createdAt).toLocaleDateString('es-CL'):''}</div></div>`).join(''):'<div class="today-empty">Sin notas aún</div>';
-}
-async function deleteNota(id){
-  if(!confirm('¿Eliminar esta nota?')) return;
-  const {doc,deleteDoc}=window.fbFns;
-  await deleteDoc(doc(window.fbDb,'notas',id));
-}
+// ══ NOTAS ══
+async function saveNota(){const texto=document.getElementById('notaTexto').value.trim();if(!texto){alert('Escribe algo primero');return;}const {collection,addDoc}=window.fbFns;await addDoc(collection(window.fbDb,'notas'),{texto,createdAt:new Date().toISOString()});document.getElementById('notaTexto').value='';closeModal('modalNota');}
+function renderNotas(){const el=document.getElementById('listNotas');if(!el)return;const sorted=[...allNotas].sort((a,b)=>b.createdAt?.localeCompare(a.createdAt||'')||0);el.innerHTML=sorted.length?sorted.map(n=>`<div class="note-item"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div style="font-size:14px;color:var(--text);line-height:1.5;flex:1">${n.texto}</div><button class="btn-icon" onclick="deleteNota('${n.id}')"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button></div><div style="font-size:10px;color:var(--text3);margin-top:6px">${n.createdAt?new Date(n.createdAt).toLocaleDateString('es-CL'):''}</div></div>`).join(''):'<div class="today-empty">Sin notas aún</div>';}
+async function deleteNota(id){if(!confirm('¿Eliminar?'))return;const {doc,deleteDoc}=window.fbFns;await deleteDoc(doc(window.fbDb,'notas',id));}
 
-// ── SUBSCREEN / MODAL UTILS ──
+// ══ UTILS ══
 function openSubscreen(id){
   document.getElementById(id).classList.add('open');
   if(id==='subscreenGastos'){renderGastos();document.getElementById('gastoFecha').value=new Date().toISOString().split('T')[0];}
-  if(id==='subscreenPerdidas') renderPerdidas();
-  if(id==='subscreenPlantillas') renderPlantillas();
-  if(id==='subscreenReporte') openSubscreenReporte();
+  if(id==='subscreenPerdidas')renderPerdidas();
+  if(id==='subscreenPlantillas')renderPlantillas();
+  if(id==='subscreenReporte')openSubscreenReporte();
   if(id==='subscreenHorario'){renderDiasSelector();renderBloqueos();}
-  if(id==='subscreenNotas') renderNotas();
+  if(id==='subscreenNotas')renderNotas();
 }
 function closeSubscreen(id){document.getElementById(id).classList.remove('open');}
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});});
 
-// ── HELPERS ──
-function formatDate(str){
-  if(!str) return '';
-  const [y,m,d]=str.split('-');
-  const meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;
-}
+function formatDate(str){if(!str)return '';const [y,m,d]=str.split('-');const meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];return `${parseInt(d)} ${meses[parseInt(m)-1]} ${y}`;}
 
-// ── PULL TO REFRESH ──
+// ══ PULL TO REFRESH ══
 (function(){
   let startY=0,pulling=false,indicator=null;
   function createIndicator(){const el=document.createElement('div');el.style.cssText='position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:center;gap:8px;background:#1a1508;color:#C9A84C;font-size:13px;font-weight:600;letter-spacing:1px;height:0;overflow:hidden;transition:height 0.2s ease;';el.innerHTML='<span id="ps">↓</span> <span id="pt">Desliza para actualizar</span>';document.body.appendChild(el);return el;}
